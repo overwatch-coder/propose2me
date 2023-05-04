@@ -1,0 +1,40 @@
+const mongoose = require('mongoose');
+
+const postSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    message: {
+        type: String,
+        required: true
+    },
+    senderEmail: {
+        type: String,
+    },
+    senderName: {
+        type: String,
+        required: true
+    },
+    recipientName: {
+        type: String,
+        required: true
+    },
+    senderPhoto: String,
+    recipientPhoto: String,
+    backgroundImage: String,
+    acceptanceMusic: String,
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+        required: true
+    }
+}, {
+    timestamps: true
+})
+
+mongoose.set('strictPopulate', false);
+
+const Post = mongoose.model('post', postSchema);
+
+module.exports = Post;
