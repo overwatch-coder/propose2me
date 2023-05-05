@@ -1,9 +1,14 @@
-const User = require('../models/users.models');
+//import packages
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const validator = require('validator');
+const { generateVerificationHash, verifyHash } = require('dbless-email-verification');
+
+//model imports
+const User = require('../models/users.models');
 const Post = require('../models/posts.models');
 
+// POST - Register a new User
 const register = async (req, res) => {
     const {username, email, password} = req.body;
     try {
@@ -42,22 +47,45 @@ const register = async (req, res) => {
         const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
         if(!token) return res.status(500).json({success: false, message: 'Unable to authenticate user!'});
 
+        //add email verification hash to response
+        const verifyEmailHash = generateVerificationHash(user.email, process.env.JWT_SECRET_KEY, 30);
+
+        //generate a verification query
+        const verificationQuery = `?verificationHash=${verifyEmailHash}&email=${user.email}`;
+
         // set a new cookie and return success message
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: new Date(Date.now() + 900000),
             secure: true
-        }).status(200).json({success: true, message: 'Account successfully created!'});
+        }).status(200).json({success: true, message: 'Account successfully created!', verification: verificationQuery});
+
 
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem creating your account!'})
+        res.status(500).json({success: false, message: 'There was a problem creating your account!', stack: process.env !== 'production' ? error : ""})
     }
 }
 
-const login = async (req, res) => {
-    //clear previous user
-    req.user = null;
 
+//GET - Verify email address
+const verifyEmail = async (req, res) => {
+    const { verificationHash, email } = req.query;
+
+    //check if the user with the email actually exists
+    const user = await User.findOne({email});
+    if(!user) return res.status(404).json({success: false, message: "User with this email does not exist!"});
+
+    //verify the email
+    const isEmailVerified = verifyHash(verificationHash, email, process.env.JWT_SECRET_KEY);
+    if(!isEmailVerified) return res.status(400).json({success: false, message: "Email verification failed!"});
+
+    await User.findOneAndUpdate({email}, {isEmailVerified: true}, {new: true});
+
+    res.status(200).json({success: true, message: 'Email has been successfully verified. You can log in now'});
+}
+
+// POST - User Login 
+const login = async (req, res) => {
     //get data from req.body
     const {email, password} = req.body;
     try {
@@ -77,20 +105,34 @@ const login = async (req, res) => {
         // verify user's password
         if(!(bcrypt.compareSync(password, user.password))) return res.status(400).json({success: false, message: 'Incorrect password!'});
 
-        const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
-        if(!token) return res.status(500).json({success: false, message: 'Unable to authenticate user'});
+        //check if the user is already verified
+        if(user.isEmailVerified === false){
+             //add email verification hash to response
+            const verifyEmailHash = generateVerificationHash(user.email, process.env.JWT_SECRET_KEY, 30);
 
-        res.cookie('access_token', token, {
-            httpOnly: true,
-            expires: new Date(Date.now() + 900000),
-            secure: true
-        }).status(200).json({success: true, message: 'You have successfully signed in!'});
+            const verificationQuery = `?verificationHash=${verifyEmailHash}&email=${user.email}`
+            // set a new cookie and return success message
+            res.status(200).json({success: true, message: 'Verification details generated!', verification: verificationQuery});
+
+        }else{
+            const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
+            if(!token) return res.status(500).json({success: false, message: 'Unable to authenticate user'});
+    
+            res.cookie('access_token', token, {
+                httpOnly: true,
+                expires: new Date(Date.now() + 900000),
+                secure: true
+            }).status(200).json({success: true, message: 'You have successfully signed in!'});
+        }
+
 
     } catch (error) {
         res.status(500).json({success: false, message: 'There was a problem signing into your account!'});
     }
 }
 
+
+//PATCH - Update the details of an existing user
 const updateUser = async (req, res) => {
     const { id } = req.params;
 
@@ -144,6 +186,8 @@ const updateUser = async (req, res) => {
     }
 }
 
+
+//DELETE - Delete a user from the database
 const deleteUser = async (req, res) => {
     const { id } = req.params;
 
@@ -172,6 +216,8 @@ const deleteUser = async (req, res) => {
     }
 }
 
+
+// POST - Logout a user
 const logout = async (req, res) => {
     req.user = "";
     res.clearCookie('access_token').status(200).json({success: true, message: "You've successfully logged out!"});
@@ -182,5 +228,6 @@ module.exports = {
     login,
     updateUser,
     deleteUser,
-    logout
+    logout,
+    verifyEmail
 }

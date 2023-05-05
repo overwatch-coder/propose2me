@@ -3,8 +3,6 @@ const User = require("../models/users.models");
 
 const authenticateUser = async (req, res, next) => {
 
-    req.user = null;
-
     try {
         //access token from cookies and check if it exists
         const token = req.cookies.access_token;

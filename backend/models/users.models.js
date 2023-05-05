@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const Post = require('./posts.models');
 
 const userSchema = new mongoose.Schema({
     username: {
@@ -10,6 +9,10 @@ const userSchema = new mongoose.Schema({
         type: String, 
         unique: true,
         required: true,
+    },
+    isEmailVerified: {
+        type: Boolean,
+        default: false
     },
     password: {
         type: String,
