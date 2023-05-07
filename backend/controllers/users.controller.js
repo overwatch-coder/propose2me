@@ -62,7 +62,7 @@ const register = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem creating your account!', stack: process.env !== 'production' ? error : ""})
+        res.status(500).json({success: false, message: 'There was a problem creating your account!', stack: process.env.NODE_ENV !== 'production' ? error : ""})
     }
 }
 
