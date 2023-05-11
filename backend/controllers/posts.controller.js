@@ -1,5 +1,7 @@
 //module imports
 const Post = require("../models/posts.models");
+const ls = require('tiny-url-generator');
+
 
 // middleware for file uploads
 const { uploadFile } = require("../middleware/imageUpload");
@@ -90,9 +92,20 @@ const createPost = async (req, res) => {
         const post = await postCreated.save();
         if(!post) res.status(500).json({success: false, message: 'Post creation unsuccessful. Try again later!'});
 
-        const maskedData = `${post._id.toString()}-${post.user.toString()}`;
+        //generate actual url
+        const urlToShorten = `${process.env.FRONTEND_URL}/recipient?p=${post._id.toString()}&u=${post.user.toString()}`;
 
-        res.status(200).json({success: true, query: maskedData, message: 'Post creation successful!'});
+        //shorten the url to hide the name
+        const shortenedUrl = await ls.generate({
+            url: urlToShorten,
+            title: "PTM Recipient - Say Yes!",
+            expiry: new Date().setDate(new Date().getDate() + 5)
+        });
+
+        //url to send to client
+        const recipientUrl = shortenedUrl.status !== true ? urlToShorten : shortenedUrl.data.link;
+
+        res.status(200).json({success: true, url: recipientUrl, message: 'Post creation successful!'});
     } catch (error) {
         res.status(500).json({success: false, message: "An unexpected error has occurred!"})
     }

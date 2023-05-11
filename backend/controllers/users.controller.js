@@ -8,6 +8,9 @@ const { generateVerificationHash, verifyHash } = require('dbless-email-verificat
 const User = require('../models/users.models');
 const Post = require('../models/posts.models');
 
+//library imports
+const { sendUserEmail } = require('../lib');
+
 // POST - Register a new User
 const register = async (req, res) => {
     const {username, email, password} = req.body;
@@ -50,38 +53,57 @@ const register = async (req, res) => {
         //add email verification hash to response
         const verifyEmailHash = generateVerificationHash(user.email, process.env.JWT_SECRET_KEY, 30);
 
-        //generate a verification query
-        const verificationQuery = `?verificationHash=${verifyEmailHash}&email=${user.email}`;
+        //generate a verification url and send email to client
+        const verificationURL = `${process.env.FRONTEND_URL}/verify?verification=${verifyEmailHash}&email=${user.email}`;
+
+        const emailContent = `
+        <p>Hello, ${user.username},</p>
+        <p>Please click on the link below to verify your account</p>
+        <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
+        `
+
+        const messageSent = await sendUserEmail(user.email, 'Verify your account', emailContent);
+
+        if(messageSent === "" || !messageSent) return res.status(500).json({success: false, message: 'There was a problem sending the verification link. Try later or enter a valid email'});
 
         // set a new cookie and return success message
         res.cookie('access_token', token, {
             httpOnly: true,
             expires: new Date(Date.now() + 900000),
             secure: true
-        }).status(200).json({success: true, message: 'Account successfully created!', verification: verificationQuery});
+        }).status(200).json({success: true, message: 'Account successfully created!', verification: verificationURL, message_sent: messageSent});
 
 
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem creating your account!', stack: process.env.NODE_ENV !== 'production' ? error : ""})
+        res.status(500).json({stack: (process.env.NODE_ENV !== 'production') ? error : "", success: false, message: 'There was a problem creating your account!', stack: process.env.NODE_ENV !== 'production' ? error : ""})
     }
 }
 
 
 //GET - Verify email address
 const verifyEmail = async (req, res) => {
-    const { verificationHash, email } = req.query;
+    const { verification, email } = req.query;
 
     //check if the user with the email actually exists
     const user = await User.findOne({email});
     if(!user) return res.status(404).json({success: false, message: "User with this email does not exist!"});
 
     //verify the email
-    const isEmailVerified = verifyHash(verificationHash, email, process.env.JWT_SECRET_KEY);
+    const isEmailVerified = verifyHash(verification, email, process.env.JWT_SECRET_KEY);
+    
     if(!isEmailVerified) return res.status(400).json({success: false, message: "Email verification failed!"});
 
     await User.findOneAndUpdate({email}, {isEmailVerified: true}, {new: true});
 
-    res.status(200).json({success: true, message: 'Email has been successfully verified. You can log in now'});
+    const emailContent = `
+    <p>Hello, ${user.username},</p>
+    <p>Your account has been verified successfully!</p>
+    <p>You can now log in using the link: <a href="${process.env.FRONTEND_URL}/login">Login</a></p>
+    `
+    
+    const messageSent = await sendUserEmail(user.email, 'Account Status Confirmation', emailContent);
+
+    res.status(200).json({success: true, message: 'Email has been successfully verified. You can log in now', message_sent: messageSent});
 }
 
 // POST - User Login 
@@ -110,9 +132,19 @@ const login = async (req, res) => {
              //add email verification hash to response
             const verifyEmailHash = generateVerificationHash(user.email, process.env.JWT_SECRET_KEY, 30);
 
-            const verificationQuery = `?verificationHash=${verifyEmailHash}&email=${user.email}`
+            //generate a verification url and send email to client
+            const verificationURL = `${process.env.FRONTEND_URL}/verify?verification=${verifyEmailHash}&email=${user.email}`;
+
+            const emailContent = `
+            <p>Hello, ${user.username},</p>
+            <p>Please click on the link below to verify your account</p>
+            <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
+            `
+            
+            const messageSent = await sendUserEmail(user.email, 'Verify your account', emailContent);
+
             // set a new cookie and return success message
-            res.status(200).json({success: true, message: 'Verification details generated!', verification: verificationQuery});
+            res.status(200).json({success: true, message: 'Verification details generated!', verification: verificationURL, message_sent: messageSent});
 
         }else{
             const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
@@ -127,7 +159,7 @@ const login = async (req, res) => {
 
 
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem signing into your account!'});
+        res.status(500).json({stack: (process.env.NODE_ENV !== 'production') ? error : "", success: false, message: 'There was a problem signing into your account!'});
     }
 }
 
@@ -182,7 +214,7 @@ const updateUser = async (req, res) => {
         //send response to browser
         res.status(200).json({success: true, message: 'Account updated successfully'});
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem updating your details'})
+        res.status(500).json({stack: (process.env.NODE_ENV !== 'production') ? error : "", success: false, message: 'There was a problem updating your details'})
     }
 }
 
@@ -212,7 +244,7 @@ const deleteUser = async (req, res) => {
         res.clearCookie('access_token').status(200).json({success: true, message: 'Account deleted successfully'});
 
     } catch (error) {
-        res.status(500).json({success: false, message: 'There was a problem deleting your account'})
+        res.status(500).json({stack: (process.env.NODE_ENV !== 'production') ? error : "", success: false, message: 'There was a problem deleting your account'})
     }
 }
 

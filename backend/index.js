@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use(cors());
-app.use(fileUploads({useTempFiles: true, tempFileDir: `${__dirname}/backend/ptm-uploads`}));
+app.use(fileUploads({useTempFiles: true, tempFileDir: `${__dirname}/ptm-uploads`}));
 
 //connect to database and listen to app
 const port = process.env.PORT || 8000;

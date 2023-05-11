@@ -5,6 +5,6 @@ const router = express.Router();
 const { retrieveMessage } = require('../controllers/recipient.controller');
 
 //controller imports
-router.get('/:query', retrieveMessage);
+router.get('/', retrieveMessage);
 
 module.exports = router;
