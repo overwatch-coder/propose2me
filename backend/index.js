@@ -36,4 +36,4 @@ app.use('/api/auth/posts', postRoutes);
 app.use('/api/recipient', recipientRoutes);
 
 //redirect when route isn't found
-app.use('*', (req, res) => res.status(404).redirect('/'));
+app.use('*', (req, res) => res.status(404).redirect(process.env.FRONTEND_URL));
