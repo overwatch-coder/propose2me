@@ -71,7 +71,7 @@ const register = async (req, res) => {
             httpOnly: true,
             expires: new Date(Date.now() + 900000),
             secure: true
-        }).status(200).json({success: true, message: 'Account successfully created!', verification: verificationURL, message_sent: messageSent});
+        }).status(200).json({success: true, message: 'Account successfully created!', verification: verificationURL, message_sent: messageSent, token});
 
 
     } catch (error) {
@@ -154,7 +154,7 @@ const login = async (req, res) => {
                 httpOnly: true,
                 expires: new Date(Date.now() + 900000),
                 secure: true
-            }).status(200).json({success: true, message: 'You have successfully signed in!'});
+            }).status(200).json({success: true, message: 'You have successfully signed in!', token});
         }
 
 

@@ -5,9 +5,12 @@ const authenticateUser = async (req, res, next) => {
 
     try {
         //access token from cookies and check if it exists
-        const token = req.cookies.access_token;
+        const authorisation = req.headers?.authorisation;
+        if(!authorisation) return res.status(403).json({success: false, message: 'Authorisation headers required!'});
+
+        const token = authorisation.split(" ")[1];
         
-        if(!token) return res.status(403).json({success: false, message: 'Unauthorized access!'});
+        if(!token) return res.status(403).json({success: false, message: 'No token found. Unauthorized access!'});
 
         // verify token's validity
         const id = jwt.verify(token, process.env.JWT_SECRET_KEY);
