@@ -7,6 +7,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const fileUploads = require("express-fileupload");
 
+const {frontend_url} = require('./utils')
+
+console.log(frontend_url);
+
 //import routes
 const userRoutes = require("./routes/users.routes");
 const postRoutes = require("./routes/posts.routes");
@@ -43,4 +47,4 @@ app.use("/api/auth/posts", postRoutes);
 app.use("/api/recipient", recipientRoutes);
 
 //redirect when route isn't found
-app.use("*", (req, res) => res.status(404).redirect(process.env.FRONTEND_URL));
+app.use("*", (req, res) => res.status(404).redirect(frontend_url));

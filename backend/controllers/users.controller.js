@@ -7,6 +7,10 @@ const {
   verifyHash,
 } = require("dbless-email-verification");
 
+const {frontend_url} = require('../utils')
+
+
+
 //model imports
 const User = require("../models/users.models");
 const Post = require("../models/posts.models");
@@ -70,7 +74,7 @@ const register = async (req, res) => {
     );
 
     //generate a verification url and send email to client
-    const verificationURL = `${process.env.FRONTEND_URL}/verify?verification=${verifyEmailHash}&email=${user.email}`;
+    const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
 
     const emailContent = `
         <p>Hello, ${user.username},</p>
@@ -150,7 +154,7 @@ const verifyEmail = async (req, res) => {
   const emailContent = `
     <p>Hello, ${user.username},</p>
     <p>Your account has been verified successfully!</p>
-    <p>You can now log in using the link: <a href="${process.env.FRONTEND_URL}/login">Login</a></p>
+    <p>You can now log in using the link: <a href="${frontend_url}/login">Login</a></p>
     `;
 
   const messageSent = await sendUserEmail(
@@ -207,7 +211,7 @@ const login = async (req, res) => {
       );
 
       //generate a verification url and send email to client
-      const verificationURL = `${process.env.FRONTEND_URL}/verify?verification=${verifyEmailHash}&email=${user.email}`;
+      const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
 
       const emailContent = `
             <p>Hello, ${user.username},</p>

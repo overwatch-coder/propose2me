@@ -1,6 +1,7 @@
 //module imports
 const Post = require("../models/posts.models");
 const ls = require("tiny-url-generator");
+const {frontend_url} = require('../utils')
 
 // middleware for file uploads
 const { uploadFile } = require("../middleware/imageUpload");
@@ -146,7 +147,7 @@ const createPost = async (req, res) => {
 
     //generate actual url
     const urlToShorten = `${
-      process.env.FRONTEND_URL
+      frontend_url
     }/recipient?p=${post._id.toString()}&u=${post.user.toString()}`;
 
     //shorten the url to hide the name
