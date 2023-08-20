@@ -9,8 +9,6 @@ const fileUploads = require("express-fileupload");
 
 const {frontend_url} = require('./utils')
 
-console.log(frontend_url);
-
 //import routes
 const userRoutes = require("./routes/users.routes");
 const postRoutes = require("./routes/posts.routes");
