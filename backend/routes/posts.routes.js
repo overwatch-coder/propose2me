@@ -3,24 +3,24 @@ const router = express.Router();
 
 //controller imports
 const { 
-    getAllPosts, 
+    getAllUserPosts, 
     getSinglePost, 
     createPost, 
     updatePost, 
     deletePost, 
-    allPosts 
+    adminGetsAllPosts 
 } = require('../controllers/posts.controller');
 
 //middleware imports
 const { authenticateUser } = require('../middleware/userAuth');
 
 //get all posts regardless of the user
-router.get('/all', allPosts);
+router.get('/all', adminGetsAllPosts);
 
 //middle to protect authenticated routes
 router.use(authenticateUser);
 
-router.get('/', getAllPosts);
+router.get('/', getAllUserPosts);
 router.get('/:id', getSinglePost);
 router.post('/', createPost);
 router.patch('/:id', updatePost);

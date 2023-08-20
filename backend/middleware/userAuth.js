@@ -5,10 +5,10 @@ const authenticateUser = async (req, res, next) => {
 
     try {
         //access token from cookies and check if it exists
-        const authorisation = req.headers?.authorisation;
-        if(!authorisation) return res.status(403).json({success: false, message: 'Authorisation headers required!'});
+        const authorization = req.headers?.authorization || req.headers?.Authorization;
+        if(!authorization) return res.status(403).json({success: false, message: 'Authorization headers required!'});
 
-        const token = authorisation.split(" ")[1];
+        const token = authorization.split(" ")[1];
         
         if(!token) return res.status(403).json({success: false, message: 'No token found. Unauthorized access!'});
 

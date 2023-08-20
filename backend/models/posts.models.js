@@ -35,6 +35,6 @@ const postSchema = new mongoose.Schema({
 
 mongoose.set('strictPopulate', false);
 
-const Post = mongoose.model('post', postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

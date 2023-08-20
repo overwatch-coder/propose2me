@@ -1,10 +1,10 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
 //controller imports
-const { retrieveMessage } = require('../controllers/recipient.controller');
+const { retrieveMessage } = require("../controllers/recipient.controller");
 
 //controller imports
-router.get('/', retrieveMessage);
+router.get("/", retrieveMessage);
 
 module.exports = router;
