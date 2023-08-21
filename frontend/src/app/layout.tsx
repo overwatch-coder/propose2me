@@ -6,6 +6,9 @@ import { Nunito } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
+// Context Providers
+import AppContextProvider from "@/context/AppContext";
+
 const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -19,14 +22,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning={true}>
       <link rel="icon" type="image/png" href="/favicon.png" />
-      <body className={`${nunito.className} overflow-x-hidden scrollbar-hide`}>
-        <div className="flex flex-col min-h-screen">
-          <Header />
-          <main className="px-5 pt-20 mb-auto md:pt-10 md:px-16">{children}</main>
-          <Footer />
-        </div>
+      <body
+        suppressHydrationWarning={true}
+        className={`${nunito.className} overflow-x-hidden scrollbar-hide`}
+      >
+        <AppContextProvider>
+          <div className="flex flex-col min-h-screen">
+            <Header />
+            <main className="px-5 mb-auto pt-7 md:pt-10 md:px-16">
+              {children}
+            </main>
+            <Footer />
+          </div>
+        </AppContextProvider>
       </body>
     </html>
   );

@@ -7,7 +7,6 @@ import homeHero from "@/assets/hug-hero.png";
 import signUp from "@/assets/sign-up.png";
 import link from "@/assets/link.png";
 
-
 const Home = () => {
   return (
     <main className="flex flex-col space-y-5">
@@ -55,26 +54,41 @@ const Home = () => {
       </section>
 
       {/* Description Section */}
-      <section className="flex flex-col pt-10 gap-y-5">
+      <section className="flex flex-col pt-10 gap-y-3">
         <h2 className="text-xl font-medium text-center text-primary md:text-2xl">
           Writing Your Heart's Desire: <br /> Our Effortless Method
         </h2>
-        <p className="mt-1 text-center text-secondary">
+        <p className="mt-1 text-center text-secondary mb-4">
           Let our effortless method guide you in writing your heart's desire.
         </p>
 
-        <article className="flex flex-col space-y-10">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0">
+        <article className="flex flex-col space-y-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0 md:gap-x-10">
             {/* Content */}
             <div className="md:order-2">
-              <h3 className="uppercase text-primary md:text-xl">
+              <h3 className="uppercase text-primary md:text-xl mb-2">
                 Prepare your request
               </h3>
-              <ol>
-                <li>Fill out our simple form with your heartfelt request.</li>
-                <li>Our website generates a unique link for your proposal.</li>
-                <li>Save the link and send it to your would-be partner.</li>
-              </ol>
+              <ul>
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>1.</span>
+                  <span>
+                    Fill out our simple form with your heartfelt request.
+                  </span>
+                </li>
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>2.</span>
+                  <span>
+                    Our website generates a unique link for your proposal.
+                  </span>
+                </li>
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>3.</span>
+                  <span>
+                    Save the link and send it to your would-be partner.
+                  </span>
+                </li>
+              </ul>
             </div>
 
             {/* Image */}
@@ -89,22 +103,33 @@ const Home = () => {
             />
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0 md:gap-x-10">
             {/* Content */}
             <div>
-              <h3 className="uppercase text-primary md:text-xl">
+              <h3 className="uppercase text-primary md:text-xl mb-2">
                 Send the link to your would-be partner
               </h3>
-              <ol>
-                <li>
-                  Share the link via email, text, or any other messaging app.
+              <ul>
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>1.</span>
+                  <span>
+                    Share the link via email, text, or any other messaging app.
+                  </span>
                 </li>
-                <li>Your partner clicks the link to view your proposal.</li>
-                <li>
-                  Your partner can respond with an answer, and you'll be
-                  notified immediately.
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>2.</span>
+                  <span>
+                    Your partner clicks the link to view your proposal.
+                  </span>
                 </li>
-              </ol>
+                <li className="flex space-x-1 md:space-x-2">
+                  <span>3.</span>
+                  <span>
+                    Your partner can respond with an answer, and you'll be
+                    notified immediately.
+                  </span>
+                </li>
+              </ul>
             </div>
 
             {/* Image */}
