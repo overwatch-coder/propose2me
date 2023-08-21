@@ -95,22 +95,13 @@ const register = async (req, res) => {
           "There was a problem sending the verification link. Try later or enter a valid email",
       });
 
-    // generate token and set a new cookie and return success message
-    const token = jwt.sign(user._id.toString(), process.env.JWT_SECRET_KEY);
-
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        expires: new Date(Date.now() + 900000),
-        secure: true,
-      })
       .status(200)
       .json({
         success: true,
         message: "Account successfully created!",
         verification: verificationURL,
         message_sent: messageSent,
-        token,
       });
   } catch (error) {
     res.status(500).json({
@@ -169,6 +160,7 @@ const verifyEmail = async (req, res) => {
     message_sent: messageSent,
   });
 };
+
 
 // POST - User Login
 const login = async (req, res) => {
