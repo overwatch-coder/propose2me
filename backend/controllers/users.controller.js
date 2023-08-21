@@ -7,9 +7,7 @@ const {
   verifyHash,
 } = require("dbless-email-verification");
 
-const {frontend_url} = require('../utils')
-
-
+const { frontend_url } = require("../utils");
 
 //model imports
 const User = require("../models/users.models");
@@ -77,10 +75,11 @@ const register = async (req, res) => {
     const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
 
     const emailContent = `
-        <p>Hello, ${user.username},</p>
-        <p>Please click on the link below to verify your account</p>
-        <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
-        `;
+            <p>Hello, ${user.username},</p>
+            <p>Please click on the link below to verify your PTM account</p>
+            <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
+            <p>or copy and paste this link into your browser: ${verificationURL}</p>
+            `;
 
     const messageSent = await sendUserEmail(
       user.email,
@@ -95,14 +94,12 @@ const register = async (req, res) => {
           "There was a problem sending the verification link. Try later or enter a valid email",
       });
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        message: "Account successfully created!",
-        verification: verificationURL,
-        message_sent: messageSent,
-      });
+    res.status(200).json({
+      success: true,
+      message: "Account successfully created!",
+      verification: verificationURL,
+      message_sent: messageSent,
+    });
   } catch (error) {
     res.status(500).json({
       stack: process.env.NODE_ENV !== "production" ? error : "",
@@ -144,7 +141,7 @@ const verifyEmail = async (req, res) => {
 
   const emailContent = `
     <p>Hello, ${user.username},</p>
-    <p>Your account has been verified successfully!</p>
+    <p>Your PTM account has been verified successfully!</p>
     <p>You can now log in using the link: <a href="${frontend_url}/login">Login</a></p>
     `;
 
@@ -160,7 +157,6 @@ const verifyEmail = async (req, res) => {
     message_sent: messageSent,
   });
 };
-
 
 // POST - User Login
 const login = async (req, res) => {
@@ -207,8 +203,9 @@ const login = async (req, res) => {
 
       const emailContent = `
             <p>Hello, ${user.username},</p>
-            <p>Please click on the link below to verify your account</p>
+            <p>Please click on the link below to verify your PTM account</p>
             <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
+            <p>or copy and paste this link into your browser: ${verificationURL}</p>
             `;
 
       const messageSent = await sendUserEmail(
@@ -240,8 +237,8 @@ const login = async (req, res) => {
           token,
           user: {
             username: user.username,
-            email: user.email
-          }
+            email: user.email,
+          },
         });
     }
   } catch (error) {
