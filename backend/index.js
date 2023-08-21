@@ -5,9 +5,10 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const morgan = require("morgan");
 const fileUploads = require("express-fileupload");
 
-const {frontend_url} = require('./utils')
+const { frontend_url } = require("./utils");
 
 //import routes
 const userRoutes = require("./routes/users.routes");
@@ -21,7 +22,13 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(cors());
+app.use(morgan("dev"));
+app.use(
+  cors({
+    origin: frontend_url,
+    credentials: true,
+  })
+);
 app.use(
   fileUploads({ useTempFiles: true, tempFileDir: `${__dirname}/ptm-uploads` })
 );
