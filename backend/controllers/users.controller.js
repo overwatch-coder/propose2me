@@ -111,7 +111,7 @@ const register = async (req, res) => {
 
 //GET - Verify email address
 const verifyEmail = async (req, res) => {
-  const { verification, email } = req.query;
+  const { verification, email } = req.body;
 
   //check if the user with the email actually exists
   const user = await User.findOne({ email });

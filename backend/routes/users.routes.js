@@ -16,7 +16,7 @@ const { authenticateUser } = require("../middleware/userAuth");
 const router = express.Router();
 
 router.post("/register", register);
-router.get("/verify", verifyEmail);
+router.post("/verify", verifyEmail);
 router.post("/login", login);
 router.post("/logout", logout);
 
