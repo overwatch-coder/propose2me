@@ -5,11 +5,12 @@ import { verifyAccount } from "@/utils";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 
 const VerifyEmail = () => {
   const [emailVerified, setEmailVerified] = useState(false);
-  const {auth} = useAppContext();
+  const { auth } = useAppContext();
 
   const searchParams = useSearchParams();
 
@@ -35,13 +36,18 @@ const VerifyEmail = () => {
     verifyEmail();
   }, [searchParams]);
 
-  if(auth?.email){
-    return redirect('/request');
+  if (auth?.email) {
+    return redirect("/request");
   }
-
 
   return (
     <>
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>Verify Email | PTM</title>
+        <meta name="description" content="Verify your PTM account" />
+      </Helmet>
+
       {emailVerified && (
         <section
           className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}

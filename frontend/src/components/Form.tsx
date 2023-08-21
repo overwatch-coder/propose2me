@@ -42,6 +42,7 @@ const Form = () => {
           onChange={handleChange}
         />
       </div>
+
       <div className="flex flex-col space-y-2">
         <label htmlFor="password">Password</label>
         <input
