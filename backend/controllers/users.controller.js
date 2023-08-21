@@ -238,6 +238,10 @@ const login = async (req, res) => {
           success: true,
           message: "You have successfully signed in!",
           token,
+          user: {
+            username: user.username,
+            email: user.email
+          }
         });
     }
   } catch (error) {
