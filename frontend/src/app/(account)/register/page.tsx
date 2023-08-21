@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import React, { useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
@@ -11,7 +11,6 @@ import { Helmet } from "react-helmet";
 
 const RegisterPage = () => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const { userData, setUserData, setShowSentEmail, showSentEmail, auth } =
     useAppContext();
@@ -39,7 +38,7 @@ const RegisterPage = () => {
       } else {
         setShowSentEmail(false);
         setEmailMessage("");
-        router.push("/request");
+        return redirect("/request");
       }
       setUserData({
         username: "",

@@ -5,9 +5,6 @@ export const loginOrRegisterAccount = async (
   endpoint: string,
   data: IAccount,
 ) => {
-  const { username, ...others } = data;
-
-  const dataToSubmit = endpoint === "/login" ? others : data;
   const url = `/api${endpoint}`
 
   try {
@@ -16,7 +13,7 @@ export const loginOrRegisterAccount = async (
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(dataToSubmit),
+      body: JSON.stringify(data),
     });
 
     const results = await res.json();

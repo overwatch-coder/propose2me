@@ -1,6 +1,5 @@
 import "./globals.css";
 import type { Metadata } from "next";
-import { Nunito } from "next/font/google";
 
 // components
 import Header from "@/components/Header";
@@ -8,8 +7,6 @@ import Footer from "@/components/Footer";
 
 // Context Providers
 import AppContextProvider from "@/context/AppContext";
-
-const nunito = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PTM - Home of everlasting happiness",
@@ -22,11 +19,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning={true}>
+    <html lang="en" className="scroll-smooth">
       <link rel="icon" type="image/png" href="/favicon.png" />
       <body
         suppressHydrationWarning={true}
-        className={`${nunito.className} overflow-x-hidden scrollbar-hide`}
+        className="overflow-x-hidden scrollbar-hide"
       >
         <AppContextProvider>
           <div className="flex flex-col min-h-screen">

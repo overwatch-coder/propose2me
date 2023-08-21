@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter, redirect } from "next/navigation";
+import { usePathname, redirect } from "next/navigation";
 import React, { useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
@@ -12,7 +12,6 @@ import { Helmet } from "react-helmet";
 
 const LoginPage = () => {
   const pathname = usePathname();
-  const router = useRouter();
 
   const {
     userData,
@@ -52,7 +51,7 @@ const LoginPage = () => {
         localStorage.setItem("auth", JSON.stringify({ ...authValue }));
         setAuth({ ...authValue });
         toast.success(results.message);
-        router.push("/request");
+        return redirect('/request')
       }
 
       setUserData({
