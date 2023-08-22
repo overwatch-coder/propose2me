@@ -19,8 +19,8 @@ const recipientRoutes = require("./routes/recipient.routes");
 const app = express();
 
 //middleware
-app.use(express.json({limit: '50mb'}));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+app.use(express.json({limit: '50mb', extended: false}));
+app.use(express.urlencoded({ extended: false, limit: '50mb', parameterLimit: 50000 }));
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
