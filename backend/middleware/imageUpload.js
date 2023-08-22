@@ -11,7 +11,8 @@ cloudinary.config({
 
 // Upload
 const uploadFile = async (file, folderName) => {
-  let fileToUpload = file === undefined || file === "" ? undefined : file;
+  let fileToUpload =
+    file === undefined || file === "" ? undefined : file?.tempFilePath;
 
   if (fileToUpload !== undefined) {
     try {
@@ -27,13 +28,15 @@ const uploadFile = async (file, folderName) => {
       //delete file from temp folder (ptm-uploads) :: DEV MODE
       if (process.env.NODE_ENV === "development") {
         fs.rmSync(fileToUpload);
+      }else{
+        fs.rmSync(fileToUpload);
       }
 
       //return the url of the uploaded file
       return response.secure_url;
     } catch (error) {
-        console.log({upload: {error}})
-        throw new Error(error?.message);
+      console.log({ upload: { error } });
+      throw new Error(error?.message);
     }
   } else {
     throw new Error("Error uploading file. Try again later!");

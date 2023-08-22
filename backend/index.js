@@ -49,7 +49,7 @@ if(process.env.NODE_ENV === 'development'){
     })
   );
 }else{
-  app.use(fileUploads());
+  app.use(fileUploads({useTempFiles: true, createParentPath: true}));
 }
 
 //connect to database and listen to app
