@@ -20,7 +20,8 @@ const uploadFile = async (file, folderName) => {
             if(!res.public_id) throw Error({success: false, message: 'Error uploading file'});
 
             //delete file from temp folder (ptm-uploads)
-            fs.unlinkSync(fileToUpload);    
+            fs.rmSync(fileToUpload)
+            // fs.unlinkSync(fileToUpload);    
 
             //return the url of the uploaded file
             return res.secure_url;

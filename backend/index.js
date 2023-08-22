@@ -1,4 +1,5 @@
 require("dotenv").config();
+const fs = require('fs');
 
 //import dependancies
 const express = require("express");
@@ -7,6 +8,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 const fileUploads = require("express-fileupload");
+const path = require("path");
 
 const { frontend_url } = require("./utils");
 
@@ -19,8 +21,10 @@ const recipientRoutes = require("./routes/recipient.routes");
 const app = express();
 
 //middleware
-app.use(express.json({limit: '50mb', extended: false}));
-app.use(express.urlencoded({ extended: false, limit: '50mb', parameterLimit: 50000 }));
+app.use(express.json({ limit: "50mb", extended: false }));
+app.use(
+  express.urlencoded({ extended: false, limit: "50mb", parameterLimit: 50000 })
+);
 app.use(cookieParser());
 app.use(morgan("dev"));
 app.use(
@@ -30,13 +34,23 @@ app.use(
   })
 );
 
-// middleware for file upload
+// middleware for file upload (check if the temp folder exists or create one first)
+const uploadDirectoryExists = fs.existsSync(path.join(__dirname, 'ptm-uploads'));
+if(!uploadDirectoryExists){
+  fs.mkdirSync(path.join(__dirname, 'ptm-uploads'));
+}
+
 app.use(
-  fileUploads({ useTempFiles: true, tempFileDir: `${__dirname}/ptm-uploads`, createParentPath: true })
+  fileUploads({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, "ptm-uploads"),
+    createParentPath: true,
+  })
 );
 
 //connect to database and listen to app
 const port = process.env.PORT || 8000;
+
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {

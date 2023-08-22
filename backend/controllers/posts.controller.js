@@ -1,14 +1,14 @@
 //module imports
 const Post = require("../models/posts.models");
-const ls = require("tiny-url-generator");
-const {frontend_url} = require('../utils')
+const { frontend_url } = require("../utils");
 
 // middleware for file uploads
 const { uploadFile } = require("../middleware/imageUpload");
+const { shortenUrl } = require("../lib");
 
 // GET all posts regardless of user
 const adminGetsAllPosts = async (req, res) => {
-  const {admin} = req.body;
+  const { admin } = req.body;
   try {
     if (admin !== "Overwatch") {
       return res.status(403).json({ success: false, message: "Forbidden!" });
@@ -81,13 +81,11 @@ const getSinglePost = async (req, res) => {
         .status(404)
         .json({ success: false, message: "No post found!" });
 
-    res
-      .status(200)
-      .json({
-        success: true,
-        posts: singlePost,
-        message: "Post retrieved successfully",
-      });
+    res.status(200).json({
+      success: true,
+      posts: singlePost,
+      message: "Post retrieved successfully",
+    });
   } catch (error) {
     res
       .status(500)
@@ -146,20 +144,18 @@ const createPost = async (req, res) => {
       });
 
     //generate actual url
-    const urlToShorten = `${
-      frontend_url
-    }/recipient?p=${post._id.toString()}&u=${post.user.toString()}`;
+    const urlToShorten = `${frontend_url}/recipient?p=${post._id.toString()}&u=${post.user.toString()}`;
 
     //shorten the url to hide the name
-    const shortenedUrl = await ls.generate({
-      url: urlToShorten,
-      title: "PTM Recipient - Say Yes!",
-      expiry: new Date().setDate(new Date().getDate() + 5),
-    });
+    const shortenedUrl = await shortenUrl(
+      urlToShorten,
+      "PTM Recipient - Say Yes!",
+      new Date().setDate(new Date().getDate() + 5)
+    );
 
     //url to send to client
     const recipientUrl =
-      shortenedUrl.status !== true ? urlToShorten : shortenedUrl.data.link;
+      shortenedUrl?.status !== true ? urlToShorten : shortenedUrl?.data?.link;
 
     res.status(200).json({
       success: true,

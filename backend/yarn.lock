@@ -1164,10 +1164,10 @@ supports-color@^5.5.0:
   dependencies:
     has-flag "^3.0.0"
 
-tiny-url-generator@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/tiny-url-generator/-/tiny-url-generator-1.0.0.tgz#fa80b4cbeb464dad4f13826ef53b9f3882dde94c"
-  integrity sha512-T1bvBdJYdJQRzdhlvGcXQIUU09w5D1jiZANrhcmFS8pKXYlJ909XQiBZfOQCWpgX0/WifMGxVUeZJc3M+SyWXg==
+tiny-url-generator@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/tiny-url-generator/-/tiny-url-generator-1.0.1.tgz#9e0df8fbcc96d2381f05f3a66dbf7212122c2d46"
+  integrity sha512-l8qdrW11h5gvrzg6TZP0dBHAX3wjBrSqbFK+WKFKI1S31ZZu+w58Ga/v61DDg14naDCIp2ziRfo/SligUzx2dg==
 
 to-regex-range@^5.0.1:
   version "5.0.1"
