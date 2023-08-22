@@ -1,7 +1,7 @@
 const Post = require("../models/posts.models");
 
 const retrieveMessage = async (req, res) => {
-  const { p: id, u: user } = req?.query;
+  const { p: id, u: user } = req.body;
   if (!id || !user)
     return res
       .status(400)
