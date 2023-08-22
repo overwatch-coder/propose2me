@@ -13,6 +13,7 @@ cloudinary.config({
 const uploadFile = async (file, folderName) => {
   let fileToUpload =
     file === undefined || file === "" ? undefined : file?.tempFilePath;
+    console.log({file, fileToUpload});
 
   if (fileToUpload !== undefined) {
     try {
@@ -29,15 +30,13 @@ const uploadFile = async (file, folderName) => {
       if (process.env.NODE_ENV === "development") {
         fs.rmSync(fileToUpload);
       }
-      
+
       //return the url of the uploaded file
       return response.secure_url;
     } catch (error) {
       console.log({ upload: { error } });
       throw new Error(error?.message);
     }
-  } else {
-    throw new Error("Error uploading file. Try again later!");
   }
 };
 
