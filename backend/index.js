@@ -29,8 +29,10 @@ app.use(
     credentials: true,
   })
 );
+
+// middleware for file upload
 app.use(
-  fileUploads({ useTempFiles: true, tempFileDir: `${__dirname}/ptm-uploads` })
+  fileUploads({ useTempFiles: true, tempFileDir: `${__dirname}/ptm-uploads`, createParentPath: true })
 );
 
 //connect to database and listen to app
