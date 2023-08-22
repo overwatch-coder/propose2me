@@ -21,3 +21,22 @@ export interface IRequestData {
   acceptanceMusic?: any;
   backgroundImage?: any;
 }
+
+export interface IRequestMessage {
+  data?:    IRequestMessageData;
+  message: string;
+  success: boolean;
+}
+
+export interface IRequestMessageData {
+  acceptanceMusic: string;
+  message:         string;
+  recipientName:   string;
+  recipientPhoto?:  string;
+  senderEmail:     string;
+  senderName:      string;
+  senderPhoto?:     string;
+  title:           string;
+  backgroundImage?: string
+}
+

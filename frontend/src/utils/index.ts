@@ -23,11 +23,12 @@ export const loginOrRegisterAccount = async (
     return results;
   } catch (error: any) {
     console.log(error);
-    toast.error(
-      process.env.NODE_ENV === "production"
-        ? "An unexpected error has occured. Try again later!"
-        : error.message
-    );
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+    };
+
+    return results;
   }
 };
 
@@ -47,11 +48,12 @@ export const verifyAccount = async (verification: string, email: string) => {
     return results;
   } catch (error: any) {
     console.log(error);
-    toast.error(
-      process.env.NODE_ENV === "production"
-        ? "An unexpected error has occured. Try again later!"
-        : error.message
-    );
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+    };
+
+    return results;
   }
 };
 
@@ -65,16 +67,39 @@ export const createRequest = async (data: any, token: string) => {
       },
     });
 
-    const results = res.data
+    const results = res.data;
 
     return results;
   } catch (error: any) {
     console.log({ error });
     const results = {
       success: false,
-      message: 'There was a problem creating the request. Try again later'
-    }
+      message: "Unexpected error encountered. Try again later",
+    };
 
-    return results
+    return results;
+  }
+};
+
+// get recipient information
+export const getRecipientMessage = async (data: any) => {
+  try {
+    const res = await axios.post("/api/recipient", data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const results = res.data;
+
+    return results;
+  } catch (error: any) {
+    console.log({ error });
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+    };
+
+    return results;
   }
 };
