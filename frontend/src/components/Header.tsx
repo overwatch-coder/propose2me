@@ -18,6 +18,14 @@ const Header = () => {
           PTM
         </Link>
 
+        {auth?.email && (
+          <div className="text-base">
+            <p className="capitalize text-white">
+              {auth?.username}&apos;s corner
+            </p>
+          </div>
+        )}
+
         {/* Hamburger Menu */}
         <div className="cursor-pointer md:hidden">
           {isOpen ? (
@@ -114,14 +122,14 @@ const Header = () => {
         {!auth?.email ? (
           <Link
             href={"/login"}
-            className="px-5 py-2 text-black bg-white rounded-full hover:text-primary"
+            className="px-5 py-2 text-black bg-white rounded hover:text-primary text-center"
           >
             Account
           </Link>
         ) : (
           <button
             onClick={logout}
-            className="px-5 py-2 text-black bg-white rounded-full hover:text-primary uppercase"
+            className="px-5 py-2 text-black bg-white rounded hover:text-primary uppercase text-center"
           >
             Logout
           </button>

@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 
 // Context Providers
 import AppContextProvider from "@/context/AppContext";
+import Script from "next/script";
 
 export const metadata: Metadata = {
   title: "PTM - Home of everlasting happiness",
@@ -21,6 +22,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <link rel="icon" type="image/png" href="/favicon.png" />
+      <Script
+        src={`https://cdn.tiny.cloud/1/${process.env.TINY_MCE_API_KEY}/tinymce/6/tinymce.min.js`}
+        referrerPolicy="origin"
+      ></Script>
+
       <body
         suppressHydrationWarning={true}
         className="overflow-x-hidden scrollbar-hide"
