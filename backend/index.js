@@ -34,19 +34,23 @@ app.use(
   })
 );
 
-// middleware for file upload (check if the temp folder exists or create one first)
-const uploadDirectoryExists = fs.existsSync(path.join(__dirname, 'ptm-uploads'));
-if(!uploadDirectoryExists){
-  fs.mkdirSync(path.join(__dirname, 'ptm-uploads'));
-}
+if(process.env.NODE_ENV === 'development'){
+  // middleware for file upload (check if the temp folder exists or create one first)
+  const uploadDirectoryExists = fs.existsSync(path.join(__dirname, 'ptm-uploads'));
+  if(!uploadDirectoryExists){
+    fs.mkdirSync(path.join(__dirname, 'ptm-uploads'));
+  }
 
-app.use(
-  fileUploads({
-    useTempFiles: true,
-    tempFileDir: path.join(__dirname, "ptm-uploads"),
-    createParentPath: true,
-  })
-);
+  app.use(
+    fileUploads({
+      useTempFiles: true,
+      tempFileDir: path.join(__dirname, "ptm-uploads"),
+      createParentPath: true,
+    })
+  );
+}else{
+  app.use(fileUploads());
+}
 
 //connect to database and listen to app
 const port = process.env.PORT || 8000;
