@@ -165,7 +165,7 @@ const createPost = async (req, res) => {
   } catch (error) {
     res
       .status(500)
-      .json({ success: false, message: "An unexpected error has occurred!" });
+      .json({ success: false, message: "An unexpected error has occurred!", stack: error });
   }
 };
 
