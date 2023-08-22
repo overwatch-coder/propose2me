@@ -96,9 +96,7 @@ const getSinglePost = async (req, res) => {
 // POST - Create a new post
 const createPost = async (req, res) => {
   const { title, message, senderEmail, senderName, recipientName } = req.body;
-  console.log({ body: req.body, files: req.files });
   try {
-    console.log({ try: "Inside try" });
     const user = req.user;
     if (!user)
       return res
@@ -172,13 +170,11 @@ const createPost = async (req, res) => {
     });
   } catch (error) {
     console.log({ error });
-    res
-      .status(500)
-      .json({
-        success: false,
-        message: "An unexpected error has occurred!",
-        stack: error,
-      });
+    res.status(500).json({
+      success: false,
+      message: "An unexpected error has occurred!",
+      stack: error,
+    });
   }
 };
 
