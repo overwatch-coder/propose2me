@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 // Upload
-const uploadFile = async (res, file, folderName) => {
+const uploadFile = async (file, folderName) => {
   let fileToUpload = file === undefined || file === "" ? undefined : file;
 
   if (fileToUpload !== undefined) {
@@ -32,16 +32,11 @@ const uploadFile = async (res, file, folderName) => {
       //return the url of the uploaded file
       return response.secure_url;
     } catch (error) {
-      return res.status(500).json({
-        success: false,
-        message: "Error uploading file. Try again later!",
-      });
+        console.log({upload: {error}})
+        throw new Error(error?.message);
     }
   } else {
-    return res.status(500).json({
-      success: false,
-      message: "Error uploading file. Try again later!",
-    });
+    throw new Error("Error uploading file. Try again later!");
   }
 };
 
