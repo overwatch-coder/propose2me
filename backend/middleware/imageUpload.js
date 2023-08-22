@@ -10,32 +10,33 @@ cloudinary.config({
 });
 
 // Upload
-const uploadFile = async (file, folderName) => {
+const uploadFile = async (res, file, folderName) => {
   let fileToUpload =
-    file === undefined || file === "" ? undefined : file?.tempFilePath;
+    file === undefined || file === "" ? undefined : file;
 
   if (fileToUpload !== undefined) {
     try {
-      const res = await cloudinary.uploader.upload(fileToUpload, {
+      const response = await cloudinary.uploader.upload(fileToUpload, {
         folder: folderName,
         resource_type: "auto",
       });
 
-      if (!res.public_id)
-        throw Error({ success: false, message: "Error uploading file" });
+      if (!response.public_id) {
+        return res.status(500).json({success: false, message: `There was an error uploading the file: ${file}`})
+      }
 
       //delete file from temp folder (ptm-uploads) :: DEV MODE
-      process.env.NODE_ENV === 'development' && fs.rmSync(fileToUpload);
+      if(process.env.NODE_ENV === "development"){
+        fs.rmSync(fileToUpload);
+      }
 
       //return the url of the uploaded file
-      return res.secure_url;
+      return response.secure_url;
     } catch (error) {
-      res
-        .status(500)
-        .json({
-          success: false,
-          message: "Error uploading file. Try again later!",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Error uploading file. Try again later!",
+      });
     }
   } else {
     return "";

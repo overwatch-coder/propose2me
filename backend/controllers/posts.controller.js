@@ -96,9 +96,9 @@ const getSinglePost = async (req, res) => {
 // POST - Create a new post
 const createPost = async (req, res) => {
   const { title, message, senderEmail, senderName, recipientName } = req.body;
-  console.log({body: req.body, files: req.files});
+  console.log({ body: req.body, files: req.files });
   try {
-    console.log({try: 'Inside try'});
+    console.log({ try: "Inside try" });
     const user = req.user;
     if (!user)
       return res
@@ -122,16 +122,23 @@ const createPost = async (req, res) => {
           ? user.email
           : senderEmail,
       user: user._id,
-      senderPhoto: await uploadFile(req?.files?.senderPhoto, "ptm/ptm-photos"),
+      senderPhoto: await uploadFile(
+        res,
+        req?.files?.senderPhoto,
+        "ptm/ptm-photos"
+      ),
       recipientPhoto: await uploadFile(
+        res,
         req?.files?.recipientPhoto,
         "ptm/ptm-photos"
       ),
       acceptanceMusic: await uploadFile(
+        res,
         req?.files?.acceptanceMusic,
         "ptm/ptm-music"
       ),
       backgroundImage: await uploadFile(
+        res,
         req?.files?.backgroundImage,
         "ptm/ptm-bg-photos"
       ),
@@ -164,10 +171,14 @@ const createPost = async (req, res) => {
       message: "Post creation successful!",
     });
   } catch (error) {
-    console.log({error})
+    console.log({ error });
     res
       .status(500)
-      .json({ success: false, message: "An unexpected error has occurred!", stack: error });
+      .json({
+        success: false,
+        message: "An unexpected error has occurred!",
+        stack: error,
+      });
   }
 };
 
@@ -189,18 +200,22 @@ const updatePost = async (req, res) => {
     });
 
     let newSenderPhoto = await uploadFile(
+      res,
       req?.files?.senderPhoto,
       "ptm/ptm-photos"
     );
     let newRecipientPhoto = await uploadFile(
+      res,
       req?.files?.recipientPhoto,
       "ptm/ptm-photos"
     );
     let newAcceptanceMusic = await uploadFile(
+      res,
       req?.files?.acceptanceMusic,
       "ptm/ptm-music"
     );
     let newBackgroundImage = await uploadFile(
+      res,
       req?.files?.backgroundImage,
       "ptm/ptm-bg-photos"
     );
