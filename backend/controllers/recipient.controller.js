@@ -7,7 +7,7 @@ const retrieveMessage = async (req, res) => {
       .status(400)
       .json({
         success: false,
-        message: "Cannot retrieve message without a query param",
+        message: "Cannot retrieve message without the appropriate data",
       });
 
   try {
