@@ -35,18 +35,15 @@ app.use(
 );
 
 // middleware for file upload (check if the temp folder exists or create one first)
-const uploadDirectoryExists = fs.existsSync(
-  path.join(__dirname, "ptm-uploads")
-);
-if (!uploadDirectoryExists) {
-  fs.mkdirSync(path.join(__dirname, "ptm-uploads"));
-}
+const temporaryDirectory =
+  process.env.NODE_ENV === "development"
+    ? path.join(__dirname, "ptm-uploads")
+    : path.join("/tmp");
 
 app.use(
   fileUploads({
     useTempFiles: true,
-    tempFileDir: path.join(__dirname, "ptm-uploads"),
-    createParentPath: true,
+    tempFileDir: temporaryDirectory
   })
 );
 
