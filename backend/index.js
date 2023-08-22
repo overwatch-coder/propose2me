@@ -1,5 +1,5 @@
 require("dotenv").config();
-const fs = require('fs');
+const fs = require("fs");
 
 //import dependancies
 const express = require("express");
@@ -21,7 +21,7 @@ const recipientRoutes = require("./routes/recipient.routes");
 const app = express();
 
 //middleware
-app.use(express.json({ limit: "50mb"}));
+app.use(express.json({ limit: "50mb" }));
 app.use(
   express.urlencoded({ extended: true, limit: "50mb", parameterLimit: 50000 })
 );
@@ -34,23 +34,21 @@ app.use(
   })
 );
 
-if(process.env.NODE_ENV === 'development'){
-  // middleware for file upload (check if the temp folder exists or create one first)
-  const uploadDirectoryExists = fs.existsSync(path.join(__dirname, 'ptm-uploads'));
-  if(!uploadDirectoryExists){
-    fs.mkdirSync(path.join(__dirname, 'ptm-uploads'));
-  }
-
-  app.use(
-    fileUploads({
-      useTempFiles: true,
-      tempFileDir: path.join(__dirname, "ptm-uploads"),
-      createParentPath: true,
-    })
-  );
-}else{
-  app.use(fileUploads({useTempFiles: true, createParentPath: true}));
+// middleware for file upload (check if the temp folder exists or create one first)
+const uploadDirectoryExists = fs.existsSync(
+  path.join(__dirname, "ptm-uploads")
+);
+if (!uploadDirectoryExists) {
+  fs.mkdirSync(path.join(__dirname, "ptm-uploads"));
 }
+
+app.use(
+  fileUploads({
+    useTempFiles: true,
+    tempFileDir: path.join(__dirname, "ptm-uploads"),
+    createParentPath: true,
+  })
+);
 
 //connect to database and listen to app
 const port = process.env.PORT || 8000;

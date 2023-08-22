@@ -25,12 +25,8 @@ const uploadFile = async (file, folderName) => {
         throw new Error(`There was an error uploading the file: ${file}`);
       }
 
-      //delete file from temp folder (ptm-uploads) :: DEV MODE
-      if (process.env.NODE_ENV === "development") {
-        fs.rmSync(fileToUpload);
-      }else{
-        fs.rmSync(fileToUpload);
-      }
+      //delete file from temp folder (ptm-uploads)
+      fs.rmSync(fileToUpload);
 
       //return the url of the uploaded file
       return response.secure_url;
