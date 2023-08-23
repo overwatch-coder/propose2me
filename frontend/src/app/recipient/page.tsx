@@ -39,7 +39,7 @@ const RecipientPage = () => {
   return (
     <div>
       {!requestMessage?.title ? (
-        <div>{notFound()}</div>
+        <div></div>
       ) : (
         <>
           <Helmet>
