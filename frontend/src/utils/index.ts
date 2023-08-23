@@ -1,4 +1,3 @@
-import { toast } from "react-toastify";
 import { IAccount } from "../../types";
 import axios from "axios";
 
@@ -22,10 +21,10 @@ export const loginOrRegisterAccount = async (
 
     return results;
   } catch (error: any) {
-    console.log(error);
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
     };
 
     return results;
@@ -47,10 +46,10 @@ export const verifyAccount = async (verification: string, email: string) => {
 
     return results;
   } catch (error: any) {
-    console.log(error);
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
     };
 
     return results;
@@ -71,10 +70,10 @@ export const createRequest = async (data: any, token: string) => {
 
     return results;
   } catch (error: any) {
-    console.log({ error });
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
     };
 
     return results;
@@ -94,12 +93,26 @@ export const getRecipientMessage = async (data: any) => {
 
     return results;
   } catch (error: any) {
-    console.log({ error });
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
     };
 
     return results;
   }
+};
+
+// Save Items to local storage
+export const saveUrlsToStorage = (data: any) => {
+  let existingItems = JSON.parse(localStorage.getItem("user_urls") as string);
+  if (existingItems === null) {
+    existingItems = [];
+  }
+
+  existingItems.push(data);
+
+  localStorage.setItem("user_urls", JSON.stringify(existingItems));
+
+  return existingItems;
 };

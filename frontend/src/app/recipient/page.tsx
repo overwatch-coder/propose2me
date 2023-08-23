@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import { IRequestMessage, IRequestMessageData } from "../../../types";
+import Image from "next/image";
 
 const RecipientPage = () => {
   const [requestMessage, setRequestMessage] =
@@ -14,7 +15,7 @@ const RecipientPage = () => {
 
   useEffect(() => {
     if (!searchParams.has("p") || !searchParams.has("u")) {
-      return redirect("/");
+      notFound();
     }
 
     const retrieveMessage = async () => {
@@ -39,7 +40,13 @@ const RecipientPage = () => {
   return (
     <div>
       {!requestMessage?.title ? (
-        <div></div>
+        <section
+          className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}
+        >
+          <h3 className="text-xl font-semibold">Retrieving message</h3>
+          <p>Please wait while we retrieive your message</p>
+          <p>Retrieving...</p>
+        </section>
       ) : (
         <>
           <Helmet>
@@ -50,10 +57,43 @@ const RecipientPage = () => {
               content="Reply to your proposal and receive notification in an instant"
             />
           </Helmet>
-          <section>
-            <div className="mx-auto max-w-2xl text-center flex flex-col min-h-screen w-full items-center">
+
+          <section className="relative">
+            <div className="mx-auto max-w-full text-center flex flex-col min-h-screen w-full items-center">
+              <div className="absolute max-w-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-screen h-screen -z-20">
+                {/* Overlay Image One */}
+                {requestMessage.senderPhoto && (
+                  <div className="absolute top-20 left-20 border-t-[15px] border-r-[15px] border-l-[15px] border-b-[60px] border-white rotate-[-30deg] w-[300px] -z-[100] ">
+                    <Image
+                      src={requestMessage?.senderPhoto}
+                      alt={requestMessage.senderName}
+                      width={700}
+                      height={700}
+                      quality={100}
+                      loading="lazy"
+                      className="flex-shrink-0 w-full object-cover bg-white"
+                    />
+                  </div>
+                )}
+
+                {/* Overlay Image Two */}
+                {requestMessage.recipientPhoto && (
+                  <div className="absolute bottom-32 right-12 border-t-[15px] border-r-[15px] border-l-[15px] border-b-[60px] border-white rotate-[25deg] w-[300px] -z-[100]">
+                    <Image
+                      src={requestMessage?.recipientPhoto}
+                      alt={requestMessage.recipientName}
+                      width={700}
+                      height={700}
+                      quality={100}
+                      loading="lazy"
+                      className="flex-shrink-0 w-full object-cover bg-white"
+                    />
+                  </div>
+                )}
+              </div>
+
               <form
-                className="flex flex-col space-y-5 mx-auto text-center items-center"
+                className="flex flex-col space-y-5 mx-auto text-center items-center w-full h-full relative bg-gray-300 mix-blend-screen"
                 method="POST"
               >
                 <h2 className="text-xl font-bold uppercase mb-2 font-pacifico text-primary">
@@ -67,7 +107,7 @@ const RecipientPage = () => {
                   <span className="animate-pulse">💕</span>
                 </h1>
 
-                <section className="text-lg text-center">
+                <section className="text-lg max-w-2xl">
                   <span className="animate-ping">💞💖</span>
                   <div
                     dangerouslySetInnerHTML={{

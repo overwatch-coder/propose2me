@@ -29,6 +29,7 @@ export interface IRequestMessage {
 }
 
 export interface IRequestMessageData {
+  _id: string;
   acceptanceMusic: string;
   message:         string;
   recipientName:   string;
@@ -40,3 +41,8 @@ export interface IRequestMessageData {
   backgroundImage?: string
 }
 
+export interface IUserUrls {
+  email: string,
+  url: string,
+  responded?: boolean
+}

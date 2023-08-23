@@ -2,9 +2,9 @@
 
 import { redirect, usePathname } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { IAccount, IAuth } from "../../types";
+import { IAccount, IAuth, IUserUrls } from "../../types";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 
 type AppContextProps = {
   isOpen: boolean;
@@ -15,6 +15,8 @@ type AppContextProps = {
   setUserData: React.Dispatch<React.SetStateAction<IAccount>>;
   auth: IAuth | null;
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
+  urls: IUserUrls[] | null;
+  setUrls: React.Dispatch<React.SetStateAction<IUserUrls[] | null>>;
 };
 
 const initialValues = {
@@ -30,6 +32,8 @@ const initialValues = {
   setUserData: () => {},
   auth: null,
   setAuth: () => {},
+  urls: null,
+  setUrls: () => [],
 };
 
 export const AppContext = createContext<AppContextProps>(initialValues);
@@ -43,6 +47,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     password: "",
   });
   const [auth, setAuth] = useState<IAuth | null>(null);
+  const [urls, setUrls] = useState<IUserUrls[] | null>(null);
 
   const pathname = usePathname();
 
@@ -51,15 +56,24 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, [pathname]);
 
   useEffect(() => {
-    if(!localStorage){
-      return
+    if (!localStorage) {
+      return;
     }
-    const localItem = localStorage?.getItem('auth') ?? "";
-    const user = localItem !== "" ? JSON.parse(localItem) : "";
-    if(user !== ""){
+    const localAuthItem = localStorage?.getItem("auth") ?? "";
+    const user = localAuthItem !== "" ? JSON.parse(localAuthItem) : "";
+    if (user !== "") {
       setAuth(user);
     }
-  }, [])
+
+    let localUrlItems = JSON.parse(
+      localStorage?.getItem("user_urls") as string
+    );
+    if (localUrlItems === null) {
+      setUrls(null);
+    } else {
+      setUrls(localUrlItems);
+    }
+  }, []);
 
   const values = {
     isOpen,
@@ -69,7 +83,9 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     showSentEmail,
     setShowSentEmail,
     auth,
-    setAuth
+    setAuth,
+    urls,
+    setUrls,
   };
 
   return (
@@ -91,18 +107,20 @@ export const useAppContext = () => {
     showSentEmail,
     setShowSentEmail,
     auth,
-    setAuth
+    setAuth,
+    urls,
+    setUrls,
   } = useContext(AppContext);
 
   const toggleNavbar = () => {
     setIsOpen((prev) => !prev);
   };
 
-   const logout = () => {
+  const logout = () => {
     localStorage.removeItem("auth");
-    setAuth(null)
-    redirect('/login')
-  }
+    setAuth(null);
+    return redirect("/login");
+  };
 
   return {
     isOpen,
@@ -114,7 +132,9 @@ export const useAppContext = () => {
     setShowSentEmail,
     auth,
     setAuth,
-    logout
+    logout,
+    urls,
+    setUrls,
   };
 };
 

@@ -2,8 +2,6 @@ import Image from "next/image";
 import React from "react";
 import aboutHero from "@/assets/about-hero.png";
 import { contactDetails, coreValues } from "@/constants";
-import { BsTwitter } from "react-icons/bs";
-import { IconType } from "react-icons";
 
 export const metadata = {
   title: "About PTM",

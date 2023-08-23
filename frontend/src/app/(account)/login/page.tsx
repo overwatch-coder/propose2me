@@ -51,7 +51,7 @@ const LoginPage = () => {
         localStorage.setItem("auth", JSON.stringify({ ...authValue }));
         setAuth({ ...authValue });
         toast.success(results.message);
-        return redirect('/request')
+        redirect('/request')
       }
 
       setUserData({

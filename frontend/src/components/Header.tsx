@@ -1,14 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import { VscClose, VscMenu } from "react-icons/vsc";
+import {
+  VscClose,
+  VscMenu,
+  VscChevronDown,
+  VscChevronUp,
+} from "react-icons/vsc";
 import { useAppContext } from "@/context/AppContext";
+import copy from "copy-to-clipboard";
 
 const Header = () => {
   const pathname = usePathname();
-  const { toggleNavbar, isOpen, auth, logout } = useAppContext();
+  const { toggleNavbar, isOpen, auth, logout, urls } = useAppContext();
+  const [displayUrls, setDisplayUrls] = useState(false);
+  const [success, setSuccess] = useState({
+    status: false,
+    url: "",
+    copied: false,
+  });
+
+  // copy url to clipboard
+  const copyToClipboard = (value: string) => {
+    copy(value, {
+      message: "Link copied",
+      format: "text/plain",
+      onCopy(clipboardData) {
+        setSuccess((prev) => ({ ...prev, copied: true, url: value }));
+      },
+    });
+
+    setTimeout(() => {
+      setSuccess((prev) => ({ ...prev, copied: false, url: "" }));
+    }, 2000);
+  };
 
   return (
     <header className="sticky top-0 z-[100] w-screen">
@@ -19,19 +46,43 @@ const Header = () => {
         </Link>
 
         {auth?.email && (
-          <div className="text-base">
-            <p className="capitalize text-white">
+          <div className="text-base flex flex-row items-center space-x-1">
+            <p
+              onClick={() => {
+                setDisplayUrls((prev) => !prev);
+              }}
+              className="capitalize text-white cursor-pointer"
+            >
               {auth?.username}&apos;s corner
             </p>
+            {!displayUrls ? (
+              <VscChevronDown size={20} className="text-white" />
+            ) : (
+              <VscChevronUp size={20} className="text-white" />
+            )}
           </div>
         )}
 
         {/* Hamburger Menu */}
         <div className="cursor-pointer md:hidden">
           {isOpen ? (
-            <VscClose onClick={toggleNavbar} size={30} className="text-white" />
+            <VscClose
+              onClick={() => {
+                toggleNavbar();
+                setDisplayUrls(false);
+              }}
+              size={30}
+              className="text-white"
+            />
           ) : (
-            <VscMenu onClick={toggleNavbar} size={30} className="text-white" />
+            <VscMenu
+              onClick={() => {
+                toggleNavbar();
+                setDisplayUrls(false);
+              }}
+              size={30}
+              className="text-white"
+            />
           )}
         </div>
 
@@ -135,6 +186,53 @@ const Header = () => {
           </button>
         )}
       </nav>
+
+      {/* All User Urls Available */}
+      {auth?.email && (
+        <div
+          className={`absolute top-16 right-0 px-10 py-4 w-fit duration-700 bg-primary text-white ${
+            displayUrls
+              ? "translate-y-0 transition"
+              : "transition -translate-y-[9999px]"
+          }`}
+        >
+          <h3 className="pb-2 underline font-semibold text-base flex flex-row items-center justify-between">
+            <span>All Generated Links</span>
+            <VscClose
+              onClick={() => {
+                setDisplayUrls(false);
+              }}
+              size={22}
+              className="text-primary w-5 h-5 rounded-full bg-white border-white border cursor-pointer hover:text-white hover:bg-transparent"
+            />
+          </h3>
+
+          <small className="text-xs pb-5 block">
+            NB: Each link expires 5 days after being generated
+          </small>
+
+          {urls && urls?.length > 0 ? (
+            <div className="flex flex-col space-y-3">
+              {urls?.map((url, idx) => (
+                <p
+                  key={idx}
+                  onClick={() => copyToClipboard(url.url)}
+                  className="flex items-center space-x-1 cursor-pointer text-sm"
+                >
+                  <span>{idx + 1}.</span>
+                  <span className="hover:underline">
+                    {success.copied && url.url === success.url
+                      ? "Copied"
+                      : url.url}
+                  </span>
+                </p>
+              ))}
+            </div>
+          ) : (
+            <h4>No links available</h4>
+          )}
+        </div>
+      )}
     </header>
   );
 };

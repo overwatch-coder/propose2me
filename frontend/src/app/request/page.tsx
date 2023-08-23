@@ -5,15 +5,14 @@ import { redirect } from "next/navigation";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import RequestForms from "./RequestForms";
-import { IRequestData } from "../../../types";
+import { IRequestData, IUserUrls } from "../../../types";
 import { initialRequestData } from "@/constants";
-import { createRequest } from "@/utils";
+import { createRequest, saveUrlsToStorage } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
-import Link from "next/link";
 
 const RequestPage = () => {
-  const { auth } = useAppContext();
+  const { auth, setUrls} = useAppContext();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState({
@@ -56,6 +55,7 @@ const RequestPage = () => {
     }, 2000);
   };
 
+  // submit request and obtain composed message link
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
@@ -74,6 +74,15 @@ const RequestPage = () => {
       setSuccess({ status: true, url: results.url, copied: false });
       toast.success(results.message);
       setError("");
+
+      // put the current user's data into local storage
+      const savedUrls = saveUrlsToStorage({
+        email: auth.email,
+        url: results.url,
+        responded: false
+      });
+      setUrls(savedUrls);
+
       setRequestData(initialRequestData);
     } else {
       setSuccess({ status: false, url: "", copied: false });

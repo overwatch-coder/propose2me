@@ -44,7 +44,7 @@ const VerifyEmail = () => {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Verify Email | PTM</title>
+        <title>Verifying Email... | PTM</title>
         <meta name="description" content="Verify your PTM account" />
       </Helmet>
 
@@ -71,13 +71,8 @@ const VerifyEmail = () => {
           className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}
         >
           <h3 className="text-xl font-semibold">Account Not Verified</h3>
-          <p>Link expired or is invalid. Login to generate a new link</p>
-          <Link
-            href="/login"
-            className="w-fit px-5 py-2 bg-primary text-white rounded hover:bg-primary/80 block mx-auto"
-          >
-            Login
-          </Link>
+          <p>Please wait while we verify your account</p>
+          <p>Verifying account...</p>
         </section>
       )}
     </>
