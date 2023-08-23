@@ -40,9 +40,3 @@ export interface IRequestMessageData {
   title:           string;
   backgroundImage?: string
 }
-
-export interface IUserUrls {
-  email: string,
-  url: string,
-  responded?: boolean
-}

@@ -190,7 +190,7 @@ const Header = () => {
       {/* All User Urls Available */}
       {auth?.email && (
         <div
-          className={`absolute top-16 right-0 px-10 py-4 w-fit duration-700 bg-primary text-white ${
+          className={`absolute md:top-16 right-0 px-5 py-4 w-full md:w-fit duration-700 bg-primary text-white ${
             displayUrls
               ? "translate-y-0 transition"
               : "transition -translate-y-[9999px]"
@@ -213,7 +213,7 @@ const Header = () => {
 
           {urls && urls?.length > 0 ? (
             <div className="flex flex-col space-y-3">
-              {urls?.map((url, idx) => (
+              {urls?.map((url: any, idx: number) => (
                 <p
                   key={idx}
                   onClick={() => copyToClipboard(url.url)}

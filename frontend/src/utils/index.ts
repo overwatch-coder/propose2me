@@ -103,16 +103,50 @@ export const getRecipientMessage = async (data: any) => {
   }
 };
 
-// Save Items to local storage
-export const saveUrlsToStorage = (data: any) => {
-  let existingItems = JSON.parse(localStorage.getItem("user_urls") as string);
-  if (existingItems === null) {
-    existingItems = [];
+// get saved urls
+export const getSavedUrls = async (token: string) => {
+  try {
+    const res = await axios.get("/api/urls", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const results = res.data;
+
+    return results;
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return results;
   }
+};
 
-  existingItems.push(data);
+// save url to database
+export const saveUrlToDB = async (data: string, token: string) => {
+  try {
+    const res = await axios.post("/api/urls", data, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-  localStorage.setItem("user_urls", JSON.stringify(existingItems));
+    const results = res.data;
 
-  return existingItems;
+    return results;
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return results;
+  }
 };

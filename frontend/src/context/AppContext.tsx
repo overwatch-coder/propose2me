@@ -2,9 +2,10 @@
 
 import { redirect, usePathname } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { IAccount, IAuth, IUserUrls } from "../../types";
+import { IAccount, IAuth } from "../../types";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getSavedUrls } from "@/utils";
 
 type AppContextProps = {
   isOpen: boolean;
@@ -15,8 +16,8 @@ type AppContextProps = {
   setUserData: React.Dispatch<React.SetStateAction<IAccount>>;
   auth: IAuth | null;
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
-  urls: IUserUrls[] | null;
-  setUrls: React.Dispatch<React.SetStateAction<IUserUrls[] | null>>;
+  urls: any;
+  setUrls: React.Dispatch<React.SetStateAction<any>>;
 };
 
 const initialValues = {
@@ -32,7 +33,7 @@ const initialValues = {
   setUserData: () => {},
   auth: null,
   setAuth: () => {},
-  urls: null,
+  urls: [],
   setUrls: () => [],
 };
 
@@ -47,7 +48,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     password: "",
   });
   const [auth, setAuth] = useState<IAuth | null>(null);
-  const [urls, setUrls] = useState<IUserUrls[] | null>(null);
+  const [urls, setUrls] = useState<any>([]);
 
   const pathname = usePathname();
 
@@ -65,15 +66,15 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       setAuth(user);
     }
 
-    let localUrlItems = JSON.parse(
-      localStorage?.getItem("user_urls") as string
-    );
-    if (localUrlItems === null) {
-      setUrls(null);
-    } else {
-      setUrls(localUrlItems);
+    if(auth?.token){
+      const getUrls = async () => {
+        const savedUrls = await getSavedUrls(auth?.token as string);
+        setUrls(savedUrls?.data);
+      }
+
+      getUrls();
     }
-  }, []);
+  }, [auth?.token]);
 
   const values = {
     isOpen,

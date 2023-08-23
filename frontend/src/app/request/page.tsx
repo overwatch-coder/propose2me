@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import RequestForms from "./RequestForms";
-import { IRequestData, IUserUrls } from "../../../types";
+import { IRequestData} from "../../../types";
 import { initialRequestData } from "@/constants";
-import { createRequest, saveUrlsToStorage } from "@/utils";
+import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 
@@ -75,13 +75,16 @@ const RequestPage = () => {
       toast.success(results.message);
       setError("");
 
-      // put the current user's data into local storage
-      const savedUrls = saveUrlsToStorage({
-        email: auth.email,
-        url: results.url,
-        responded: false
-      });
-      setUrls(savedUrls);
+      // save the url to the db
+      const saveNewUrl = await saveUrlToDB(results.url, auth.token);
+
+      if(saveNewUrl.success) {
+        // retrieve all urls from the database
+        const savedUrls = await getSavedUrls(auth.token);
+        if(savedUrls?.success){
+          setUrls(savedUrls?.data);
+        }
+      }
 
       setRequestData(initialRequestData);
     } else {
