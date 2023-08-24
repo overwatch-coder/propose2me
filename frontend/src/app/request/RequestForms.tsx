@@ -104,10 +104,7 @@ const RequestForms = ({
             "searchreplace",
             "visualblocks",
             "fullscreen",
-            "insertdatetime",
             "media",
-            "table",
-            "wordcount",
           ],
           toolbar: true,
           content_style:

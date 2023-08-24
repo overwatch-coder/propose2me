@@ -43,6 +43,15 @@ const RecipientPage = () => {
     retrieveMessage();
   }, [searchParams]);
 
+  const handleResponse = async (e: React.FormEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    if (e.currentTarget.name === "accepted") {
+      console.log("Yayyy, accepted");
+    } else {
+      console.log("Sorry, rejection");
+    }
+  };
+
   return (
     <div>
       {!messagesFound ? (
@@ -113,7 +122,7 @@ const RecipientPage = () => {
 
                 {/* Form content */}
                 <form
-                  className="flex flex-col space-y-7 mx-auto text-center items-center w-full h-full relative bg-gray-400 mix-blend-screen p-10"
+                  className="flex flex-col space-y-7 mx-auto text-center items-center w-full  h-full relative bg-gray-400 mix-blend-screen py-10 px-2 md:px-8"
                   method="POST"
                 >
                   <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-primary animate-pulse">
@@ -127,11 +136,12 @@ const RecipientPage = () => {
                     <span className="animate-pulse">💕</span>
                   </h1>
 
-                  <section className="text-lg max-w-5xl w-full mx-auto">
+                  <section className="text-lg max-w-4xl w-full mx-auto">
                     <span className="animate-ping absolute top-20 right-1/3 rotate-90">
                       💞💖
                     </span>
-                    <Editor
+                    <div className="">
+                      <Editor
                       init={{
                         toolbar: false,
                         menubar: false,
@@ -140,6 +150,13 @@ const RecipientPage = () => {
                       disabled={true}
                       value={requestMessage.message}
                     />
+                    </div>
+                    {/* <div
+                      className="hidden bg-white py-5 px-3 shadow-md rounded-md"
+                      dangerouslySetInnerHTML={{
+                        __html: requestMessage.message as TrustedHTML,
+                      }}
+                    /> */}
                     <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
                       💞💖
                     </span>
@@ -149,6 +166,8 @@ const RecipientPage = () => {
                     <button
                       className="text-lg py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
                       type="submit"
+                      name="accepted"
+                      onClick={handleResponse}
                     >
                       Yes, I accept ❤️
                     </button>
@@ -156,6 +175,8 @@ const RecipientPage = () => {
                     <button
                       className="text-lg py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
                       type="submit"
+                      name="rejected"
+                      onClick={handleResponse}
                     >
                       Sorry, not Interested 💔
                     </button>

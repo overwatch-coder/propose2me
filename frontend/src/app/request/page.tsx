@@ -119,7 +119,7 @@ const RequestPage = () => {
         {success?.status ? (
           <div className="text-center p-10 bg-green-200 text-green-700 flex flex-col space-y-3 rounded">
             <h3 className="text-xl animate-bounce">
-              Proposal Link Generated Successfully!
+              Link Generated Successfully. Good Luck!
             </h3>
             <small>Copy the link below and send it to the recipient</small>
             <p className="cursor-pointer">
