@@ -159,6 +159,7 @@ const createPost = async (req, res) => {
     res.status(200).json({
       success: true,
       url: recipientUrl,
+      postId: post._id,
       message: "Post creation successful!",
     });
   } catch (error) {
@@ -173,7 +174,8 @@ const createPost = async (req, res) => {
 //PATCH - Update a post
 const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, message, senderEmail, senderName, recipientName } = req.body;
+  const { title, message, senderEmail, senderName, recipientName } =
+    req.body;
 
   try {
     const user = req.user;

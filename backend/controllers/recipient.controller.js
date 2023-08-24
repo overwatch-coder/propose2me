@@ -3,12 +3,10 @@ const Post = require("../models/posts.models");
 const retrieveMessage = async (req, res) => {
   const { p: id, u: user } = req.body;
   if (!id || !user)
-    return res
-      .status(400)
-      .json({
-        success: false,
-        message: "Cannot retrieve message without the appropriate data",
-      });
+    return res.status(400).json({
+      success: false,
+      message: "Cannot retrieve message without the appropriate data",
+    });
 
   try {
     //retrieve the sender's message
@@ -21,9 +19,20 @@ const retrieveMessage = async (req, res) => {
         .status(404)
         .json({ success: false, message: "No message available!" });
 
-    res.status(200).json({ success: true, data: retrievedMessage, message: 'Available message retrieved successfully!' });
+    res
+      .status(200)
+      .json({
+        success: true,
+        data: retrievedMessage,
+        message: "Available message retrieved successfully!",
+      });
   } catch (error) {
-    res.status(500).json({ success: false, message: "There was an error retrieving the message!" });
+    res
+      .status(500)
+      .json({
+        success: false,
+        message: "There was an error retrieving the message!",
+      });
   }
 };
 

@@ -9,6 +9,11 @@ const UrlSchema = new mongoose.Schema({
     url: {
         type: String,
         required: true
+    },
+    postId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'post',
+        required: true
     }
 }, {
     timestamps: true
