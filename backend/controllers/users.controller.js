@@ -121,6 +121,15 @@ const verifyEmail = async (req, res) => {
       message: "User with this email does not exist!",
     });
 
+  // check if user is already verified
+  if(user.isEmailVerified){
+    return res.status(200).json({
+      success: true,
+      message: "Email has been successfully verified. You can log in now",
+      message_sent: messageSent,
+    });
+  }
+
   //verify the email
   const isEmailVerified = verifyHash(
     verification,
