@@ -96,7 +96,7 @@ export const getRecipientMessage = async (data: any) => {
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
-      error: process.env.NODE_ENV !== "production" ? error: "",
+      error: process.env.NODE_ENV !== "production" ? error : "",
     };
 
     return results;
@@ -151,9 +151,8 @@ export const saveUrlToDB = async (data: any, token: string) => {
   }
 };
 
-
 // remove url from database
-export const deleteUrlToDB = async (id:string, token: string) => {
+export const deleteUrlToDB = async (id: string, token: string) => {
   try {
     const res = await axios.delete(`/api/urls/${id}`, {
       headers: {

@@ -10,13 +10,6 @@ export const POST = async (req: Request) => {
       },
     });
 
-    if (res.status === 404) {
-      return NextResponse.json({
-        success: false,
-        message: "No messages available",
-      });
-    }
-
     const results = res.data;
 
     return NextResponse.json(results);

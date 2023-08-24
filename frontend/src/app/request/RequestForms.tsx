@@ -170,7 +170,7 @@ const RequestForms = ({
             </div>
 
             {/* Background Image */}
-            <div className="flex flex-col space-y-2 w-full">
+            {/* <div className="flex flex-col space-y-2 w-full">
               <label htmlFor="backgroundImage">Background Image</label>
               <input
                 className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
@@ -178,7 +178,7 @@ const RequestForms = ({
                 type="file"
                 name="backgroundImage"
               />
-            </div>
+            </div> */}
 
             {/* Acceptance Music */}
             <div className="flex flex-col space-y-2 w-full">

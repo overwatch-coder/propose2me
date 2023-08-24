@@ -5,14 +5,14 @@ import { redirect } from "next/navigation";
 import React, { useState } from "react";
 import { Helmet } from "react-helmet";
 import RequestForms from "./RequestForms";
-import { IRequestData} from "../../../types";
+import { IRequestData } from "../../../types";
 import { initialRequestData } from "@/constants";
 import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 
 const RequestPage = () => {
-  const { auth, setUrls} = useAppContext();
+  const { auth, setUrls } = useAppContext();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState({
@@ -76,12 +76,15 @@ const RequestPage = () => {
       setError("");
 
       // save the url to the db
-      const saveNewUrl = await saveUrlToDB({url: results.url}, auth.token);
+      const saveNewUrl = await saveUrlToDB(
+        { url: results.url, postId: results.postId },
+        auth.token
+      );
 
-      if(saveNewUrl.success) {
+      if (saveNewUrl.success) {
         // retrieve all urls from the database
         const savedUrls = await getSavedUrls(auth.token);
-        if(savedUrls?.success){
+        if (savedUrls?.success) {
           setUrls(savedUrls?.data);
         }
       }
