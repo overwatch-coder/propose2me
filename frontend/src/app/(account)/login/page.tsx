@@ -51,14 +51,14 @@ const LoginPage = () => {
         localStorage.setItem("auth", JSON.stringify({ ...authValue }));
         setAuth({ ...authValue });
         toast.success(results.message);
-        redirect('/request')
-      }
 
-      setUserData({
-        username: "",
-        email: "",
-        password: "",
-      });
+        setUserData({
+          username: "",
+          email: "",
+          password: "",
+        });
+        return redirect("/request");
+      }
     } else {
       setEmailMessage("");
       setError(results.message);
@@ -78,7 +78,7 @@ const LoginPage = () => {
         <title>Log into your account | PTM</title>
         <meta name="description" content="User Login Page" />
       </Helmet>
-      
+
       <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20">
         <section className="flex flex-col space-y-6">
           <h2 className="font-pacifico uppercase text-3xl text-primary text-center">
@@ -139,15 +139,23 @@ const LoginPage = () => {
               </button>
 
               {pathname === "/login" ? (
-                <small>
-                  Don't have an account yet?{" "}
-                  <Link
-                    href={"/register"}
-                    className="underline text-primary hover:font-semibold"
-                  >
-                    Register
-                  </Link>
-                </small>
+                <>
+                  <small>
+                    Don't have an account yet?{" "}
+                    <Link
+                      href={"/register"}
+                      className="underline text-primary hover:font-semibold"
+                    >
+                      Register
+                    </Link>
+                  </small>
+
+                  <div className="pt-5 flex flex-col space-y-3">
+                    <h3 className="font-semibold text-primary">Demo User Details</h3>
+                    <small>Email: demo@jrvbuildcon.com</small>
+                    <small>Password: demoUser2023@@</small>
+                  </div>
+                </>
               ) : (
                 <small>
                   Already have an account?{" "}
