@@ -96,7 +96,7 @@ export const getRecipientMessage = async (data: any) => {
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
-      error: process.env.NODE_ENV !== "production" ? error : "",
+      error: process.env.NODE_ENV !== "production" ? error: "",
     };
 
     return results;
@@ -128,11 +128,35 @@ export const getSavedUrls = async (token: string) => {
 };
 
 // save url to database
-export const saveUrlToDB = async (data: string, token: string) => {
+export const saveUrlToDB = async (data: any, token: string) => {
   try {
     const res = await axios.post("/api/urls", data, {
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const results = res.data;
+
+    return results;
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return results;
+  }
+};
+
+
+// remove url from database
+export const deleteUrlToDB = async (id:string, token: string) => {
+  try {
+    const res = await axios.delete(`/api/urls/${id}`, {
+      headers: {
         Authorization: `Bearer ${token}`,
       },
     });

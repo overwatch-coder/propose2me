@@ -1,21 +1,24 @@
 "use client";
 
 import { getRecipientMessage } from "@/utils";
-import { notFound, redirect, useSearchParams } from "next/navigation";
+import { redirect, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { toast } from "react-toastify";
 import { IRequestMessage, IRequestMessageData } from "../../../types";
 import Image from "next/image";
+import { Editor } from "@tinymce/tinymce-react";
+import Link from "next/link";
 
 const RecipientPage = () => {
   const [requestMessage, setRequestMessage] =
     useState<IRequestMessageData | null>(null);
   const searchParams = useSearchParams();
+  const [messagesFound, setMessagesFound] = useState(false);
 
   useEffect(() => {
     if (!searchParams.has("p") || !searchParams.has("u")) {
-      notFound();
+      return
     }
 
     const retrieveMessage = async () => {
@@ -27,10 +30,12 @@ const RecipientPage = () => {
         u: userId,
       });
       if (results?.success) {
+        setMessagesFound(true);
         setRequestMessage(results?.data as IRequestMessageData);
       } else {
-        toast.error(results?.message);
-        return redirect("/");
+        toast.info(results?.message);
+        setMessagesFound(false);
+        return
       }
     };
 
@@ -39,6 +44,19 @@ const RecipientPage = () => {
 
   return (
     <div>
+      {!messagesFound ? (
+        <section
+          className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}
+        >
+          <h3 className="text-xl font-semibold">No message found</h3>
+          <p>Sorry, no message is currently available for you.</p>
+          <Link href="/" className="underline text-black text-lg block"
+            >
+              Go Home
+            </Link>
+        </section>
+      ) :
+      <>
       {!requestMessage?.title ? (
         <section
           className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}
@@ -107,13 +125,22 @@ const RecipientPage = () => {
                   <span className="animate-pulse">💕</span>
                 </h1>
 
-                <section className="text-lg max-w-2xl">
+                <section className="text-lg max-w-4xl w-full mx-auto">
                   <span className="animate-ping">💞💖</span>
-                  <div
+                  <Editor
+                    init={{
+                      toolbar: false,
+                      menubar: false,
+                    }}
+                    disabled={true}
+                    value={requestMessage.message}
+                  />
+                  {/* <div
                     dangerouslySetInnerHTML={{
                       __html: requestMessage?.message as string,
                     }}
-                  />
+                    className="mx-auto text-center"
+                  /> */}
                   <span className="animate-ping">💞💖</span>
                 </section>
 
@@ -139,6 +166,8 @@ const RecipientPage = () => {
           </section>
         </>
       )}
+      </>
+    }
     </div>
   );
 };

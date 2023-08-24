@@ -1,14 +1,32 @@
-import { NextResponse } from "next/server"
-import axios from 'axios';
+import { NextResponse } from "next/server";
+import axios from "axios";
 
 export const POST = async (req: Request) => {
+  try {
     const data = await req.json();
     const res = await axios.post(`${process.env.PTM_API_URL}/recipient`, data, {
-        headers: {
-            "Content-Type": "application/json"
-        }
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
+    if (res.status === 404) {
+      return NextResponse.json({
+        success: false,
+        message: "No messages available",
+      });
+    }
+
     const results = res.data;
+
     return NextResponse.json(results);
-}
+  } catch (error) {
+    const results = {
+      success: false,
+      message: "No messages available",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return NextResponse.json(results);
+  }
+};

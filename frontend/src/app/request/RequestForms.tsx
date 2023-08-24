@@ -92,7 +92,7 @@ const RequestForms = ({
         }
         init={{
           height: 400,
-          menubar: false,
+          menubar: true,
           plugins: [
             "autolink",
             "lists",
@@ -109,10 +109,7 @@ const RequestForms = ({
             "table",
             "wordcount",
           ],
-          toolbar:
-            "undo redo | casechange blocks | bold italic backcolor | " +
-            "alignleft aligncenter alignright alignjustify | " +
-            "bullist numlist checklist outdent indent | removeformat | a11ycheck code table",
+          toolbar: true,
           content_style:
             'body { font-family: "Nunito", sans-serif; font-size:14px }',
         }}

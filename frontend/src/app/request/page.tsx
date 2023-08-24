@@ -76,7 +76,7 @@ const RequestPage = () => {
       setError("");
 
       // save the url to the db
-      const saveNewUrl = await saveUrlToDB(results.url, auth.token);
+      const saveNewUrl = await saveUrlToDB({url: results.url}, auth.token);
 
       if(saveNewUrl.success) {
         // retrieve all urls from the database
