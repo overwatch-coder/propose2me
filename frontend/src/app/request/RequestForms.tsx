@@ -175,7 +175,7 @@ const RequestForms = ({
             offHandleColor="#DC5B57"
             activeBoxShadow="undefined"
           />
-          <span className="text-secondary">Show Advanced Options</span>
+          <span className="text-secondary">{showAdvanced ? "Hide" : "Show"} Advanced Options</span>
         </div>
 
         {/* Advanced File Input Fields */}
@@ -291,32 +291,36 @@ const RequestForms = ({
 
         {/* Show Preview */}
         <div
-          className={`flex items-center space-x-4 ${
+          className={`flex items-center justify-between space-x-4 ${
             showPreview &&
             (requestData.senderPhoto || requestData.recipientPhoto)
               ? "pb-20"
               : "pb-0"
           }`}
         >
-          <ReactSwitch
-            onChange={(e) => setShowPreview(e)}
-            checked={showPreview}
-            className="border border-gray-700"
-            offColor="#fff"
-            onColor="#808080"
-            uncheckedIcon={false}
-            checkedIcon={false}
-            onHandleColor="#ffffff"
-            offHandleColor="#808080"
-            activeBoxShadow="undefined"
-          />
-          <span className="text-secondary">Show Live Preview</span>
+          <div className="flex items-center space-x-4">
+            <ReactSwitch
+              onChange={(e) => setShowPreview(e)}
+              checked={showPreview}
+              className="border border-gray-700"
+              offColor="#fff"
+              onColor="#808080"
+              uncheckedIcon={false}
+              checkedIcon={false}
+              onHandleColor="#ffffff"
+              offHandleColor="#808080"
+              activeBoxShadow="undefined"
+            />
+            <span className="text-secondary ms-auto">
+              {showPreview ? "Hide" : "Show"} Live Preview
+            </span>
+          </div>
 
           {/* Test Audio file */}
           {showPreview && requestData.acceptanceMusic && (
             <span
               onClick={playAudio}
-              className="ms-auto cursor-pointer hover:text-primary w-fit"
+              className="cursor-pointer hover:text-primary w-fit"
             >
               {audio.status ? "Pause" : "Test Audio"}
             </span>
