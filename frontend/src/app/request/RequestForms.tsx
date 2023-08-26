@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
 import { IRequestData } from "../../../types";
 import ReactSwitch from "react-switch";
+import ShowPreview from "./ShowPreview";
 
 type RequestFormsProps = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -20,6 +21,7 @@ const RequestForms = ({
 }: RequestFormsProps) => {
   const editorRef = useRef<any>(null);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
 
   return (
     <>
@@ -48,7 +50,7 @@ const RequestForms = ({
             value={requestData.recipientName}
             type="text"
             name="recipientName"
-            placeholder="e.g Jaiel"
+            placeholder="e.g Jael"
             required
           />
         </div>
@@ -189,6 +191,31 @@ const RequestForms = ({
             </div>
           </div>
         )}
+
+        {/* Show Preview */}
+        <div
+          className={`flex items-center space-x-4 ${
+            showPreview &&
+            (requestData.senderPhoto || requestData.recipientPhoto)
+              ? "pb-20"
+              : "pb-0"
+          }`}
+        >
+          <ReactSwitch
+            onChange={(e) => setShowPreview(e)}
+            checked={showPreview}
+            className="border border-gray-700"
+            offColor="#fff"
+            onColor="#808080"
+            uncheckedIcon={false}
+            checkedIcon={false}
+            onHandleColor="#ffffff"
+            offHandleColor="#808080"
+            activeBoxShadow="undefined"
+          />
+          <span className="text-secondary">Show Live Preview</span>
+        </div>
+        {showPreview && <ShowPreview requestData={requestData} />}
       </section>
     </>
   );

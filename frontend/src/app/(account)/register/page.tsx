@@ -121,7 +121,7 @@ const RegisterPage = () => {
                 disabled={loading}
                 className="text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary hover:border hover:bg-transparent hover:text-primary rounded"
               >
-                {loading ? "Registering..." : "Register"}
+                {loading ? "Please wait..." : "Register"}
               </button>
 
               {pathname === "/login" ? (

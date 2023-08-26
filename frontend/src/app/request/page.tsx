@@ -10,6 +10,7 @@ import { initialRequestData } from "@/constants";
 import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
+import ShowPreview from "./ShowPreview";
 
 const RequestPage = () => {
   const { auth, setUrls } = useAppContext();

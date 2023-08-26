@@ -46,13 +46,13 @@ const Header = () => {
         </Link>
 
         {auth?.email && (
-          <div className="text-base flex flex-row items-center space-x-1">
-            <p
-              onClick={() => {
-                setDisplayUrls((prev) => !prev);
-              }}
-              className="capitalize text-white cursor-pointer"
-            >
+          <div
+            onClick={() => {
+              setDisplayUrls((prev) => !prev);
+            }}
+            className="text-base flex flex-row items-center space-x-1 cursor-pointer"
+          >
+            <p className="capitalize text-white">
               {auth?.username}&apos;s corner
             </p>
             {!displayUrls ? (
@@ -88,6 +88,15 @@ const Header = () => {
 
         {/* Desktop Navbar */}
         <nav className="items-center justify-center hidden space-x-4 text-sm text-white uppercase md:flex">
+          <Link
+            href={"/"}
+            className={`hover:border-b-2 hover:border-white ${
+              pathname === "/" && "border-white border-b-2"
+            }`}
+          >
+            Home
+          </Link>
+
           {auth?.email && (
             <Link
               href={"/request"}
@@ -141,6 +150,15 @@ const Header = () => {
           isOpen ? "flex bg-primary" : "hidden"
         } font-medium`}
       >
+        <Link
+          href={"/"}
+          className={`w-fit hover:border-b-2 hover:border-white ${
+            pathname === "/" && "border-white border-b-2"
+          }`}
+        >
+          Home
+        </Link>
+
         {auth?.email && (
           <Link
             href={"/request"}

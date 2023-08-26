@@ -135,7 +135,7 @@ const LoginPage = () => {
                 disabled={loading}
                 className="text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary hover:border hover:bg-transparent hover:text-primary rounded"
               >
-                {loading ? "Signing in..." : "Login"}
+                {loading ? "Please wait..." : "Login"}
               </button>
 
               {pathname === "/login" ? (

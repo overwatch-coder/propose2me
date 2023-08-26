@@ -142,14 +142,14 @@ const RecipientPage = () => {
                     </span>
                     <div className="">
                       <Editor
-                      init={{
-                        toolbar: false,
-                        menubar: false,
-                        height: 600,
-                      }}
-                      disabled={true}
-                      value={requestMessage.message}
-                    />
+                        init={{
+                          toolbar: false,
+                          menubar: false,
+                          height: 600,
+                        }}
+                        disabled={true}
+                        value={requestMessage.message}
+                      />
                     </div>
                     {/* <div
                       className="hidden bg-white py-5 px-3 shadow-md rounded-md"
