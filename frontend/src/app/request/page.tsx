@@ -2,7 +2,7 @@
 
 import { useAppContext } from "@/context/AppContext";
 import { redirect } from "next/navigation";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Helmet } from "react-helmet";
 import RequestForms from "./RequestForms";
 import { IRequestData } from "../../../types";
@@ -10,11 +10,27 @@ import { initialRequestData } from "@/constants";
 import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
-import ShowPreview from "./ShowPreview";
+import { ClipLoader } from "react-spinners";
+
+export type FileType = {
+  sender: string;
+  recipient: string;
+  music: string;
+};
 
 const RequestPage = () => {
+  // useRef
+  const senderPhotoRef = useRef<any>();
+  const recipientPhotoRef = useRef<any>();
+  const acceptanceMusicRef = useRef<any>();
+
   const { auth, setUrls } = useAppContext();
   const [error, setError] = useState("");
+  const [fileError, setFileError] = useState<FileType>({
+    sender: "",
+    recipient: "",
+    music: "",
+  });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState({
     status: false,
@@ -24,19 +40,57 @@ const RequestPage = () => {
   const [requestData, setRequestData] =
     useState<IRequestData>(initialRequestData);
 
+  // redirect to login page if user is not logged in
   if (!auth?.email) {
     return redirect("/login");
   }
 
+  // set request data to its corresponding values when an input element changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setRequestData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // function to upload files
   const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const { name } = e.target;
       const file = e.target.files[0];
+
+      // check file type of audio
+      if (name === "acceptanceMusic" && file?.type?.split("/")[0] !== "audio") {
+        acceptanceMusicRef.current.value = "";
+        setFileError((prev) => ({
+          ...prev,
+          music: "Only audio file types are accepted!",
+        }));
+        return;
+      }
+
+      // check file type of photo
+      if (
+        (name === "senderPhoto" || name === "recipientPhoto") &&
+        file?.type?.split("/")[0] !== "image"
+      ) {
+        name === "recipientPhoto"
+          ? (recipientPhotoRef.current.value = "")
+          : (senderPhotoRef.current.value = "");
+
+        setFileError((prev) => ({
+          ...prev,
+          sender:
+            name === "senderPhoto"
+              ? "Only image file types are accepted!"
+              : prev.sender,
+          recipient:
+            name === "recipientPhoto"
+              ? "Only image file types are accepted!"
+              : prev.recipient,
+        }));
+        return;
+      }
+
+      setFileError({ music: "", recipient: "", sender: "" });
       setRequestData((prev) => ({ ...prev, [name]: file }));
     }
   };
@@ -62,6 +116,7 @@ const RequestPage = () => {
     setError("");
     setSuccess({ status: false, url: "", copied: false });
 
+    // change request data to a form data type
     const formData = new FormData();
     Object.entries(requestData).forEach(([key, value]: [string, any]) => {
       formData.append(key, value);
@@ -69,8 +124,10 @@ const RequestPage = () => {
 
     setLoading(true);
 
+    // send request to the server and receive the results
     const results = await createRequest(formData, auth.token);
 
+    // handle this when the request is successful
     if (results.success) {
       setSuccess({ status: true, url: results.url, copied: false });
       toast.success(results.message);
@@ -92,6 +149,7 @@ const RequestPage = () => {
 
       setRequestData(initialRequestData);
     } else {
+      //if the request isn't successful (Display error message)
       setSuccess({ status: false, url: "", copied: false });
       setError(results.message);
       toast.error(results.message);
@@ -169,6 +227,11 @@ const RequestPage = () => {
                 uploadFile={uploadFile}
                 requestData={requestData}
                 setRequestData={setRequestData}
+                fileError={fileError}
+                setFileError={setFileError}
+                senderPhotoRef={senderPhotoRef}
+                recipientPhotoRef={recipientPhotoRef}
+                acceptanceMusicRef={acceptanceMusicRef}
               />
             </section>
 
@@ -176,9 +239,20 @@ const RequestPage = () => {
             <section className="flex flex-col mx-auto w-full gap-y-3">
               <button
                 disabled={loading}
-                className="text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary hover:border hover:bg-transparent hover:text-primary rounded"
+                className={`text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary  rounded ${
+                  loading
+                    ? ""
+                    : "hover:border hover:bg-transparent hover:text-primary"
+                }`}
               >
-                {loading ? "Generating..." : "Generate Link"}
+                {loading ? (
+                  <div className="flex items-center justify-center gap-x-1">
+                    <span>Please wait</span>
+                    <ClipLoader color="#fff" size={20} loading={loading} />
+                  </div>
+                ) : (
+                  "Generate Link"
+                )}
               </button>
             </section>
           </form>

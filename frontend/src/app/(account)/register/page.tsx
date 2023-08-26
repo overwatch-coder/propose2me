@@ -8,6 +8,7 @@ import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/utils";
 import { Helmet } from "react-helmet";
+import { ClipLoader } from "react-spinners";
 
 const RegisterPage = () => {
   const pathname = usePathname();
@@ -119,9 +120,20 @@ const RegisterPage = () => {
             <section className="flex flex-col mx-auto w-full gap-y-3">
               <button
                 disabled={loading}
-                className="text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary hover:border hover:bg-transparent hover:text-primary rounded"
+                className={`text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary  rounded ${
+                  loading
+                    ? ""
+                    : "hover:border hover:bg-transparent hover:text-primary"
+                }`}
               >
-                {loading ? "Please wait..." : "Register"}
+                {loading ? (
+                  <div className="flex items-center justify-center gap-x-1">
+                    <span>Please wait</span>
+                    <ClipLoader color="#fff" size={20} loading={loading} />
+                  </div>
+                ) : (
+                  "Register"
+                )}
               </button>
 
               {pathname === "/login" ? (

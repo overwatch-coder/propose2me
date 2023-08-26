@@ -5,12 +5,19 @@ import { Editor } from "@tinymce/tinymce-react";
 import { IRequestData } from "../../../types";
 import ReactSwitch from "react-switch";
 import ShowPreview from "./ShowPreview";
+import { VscClose } from "react-icons/vsc";
+import { FileType } from "./page";
 
 type RequestFormsProps = {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   uploadFile: (e: React.ChangeEvent<HTMLInputElement>) => void;
   requestData: IRequestData;
   setRequestData: React.Dispatch<React.SetStateAction<IRequestData>>;
+  fileError: FileType;
+  setFileError: React.Dispatch<React.SetStateAction<FileType>>
+  senderPhotoRef: React.MutableRefObject<any>
+  recipientPhotoRef: React.MutableRefObject<any>
+  acceptanceMusicRef: React.MutableRefObject<any>
 };
 
 const RequestForms = ({
@@ -18,8 +25,16 @@ const RequestForms = ({
   uploadFile,
   requestData,
   setRequestData,
+  fileError,
+  setFileError,
+  senderPhotoRef,
+  recipientPhotoRef,
+  acceptanceMusicRef
 }: RequestFormsProps) => {
+  // useRef
   const editorRef = useRef<any>(null);
+
+  // useState
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
 
@@ -119,17 +134,7 @@ const RequestForms = ({
         {/* Enable Advanced Options Switch */}
         <div className="flex items-center space-x-4">
           <ReactSwitch
-            onChange={(e) => {
-              setShowAdvanced(e);
-              e === false &&
-                setRequestData((prev) => ({
-                  ...prev,
-                  recipientPhoto: "",
-                  senderPhoto: "",
-                  backgroundImage: "",
-                  acceptanceMusic: "",
-                }));
-            }}
+            onChange={(e) => setShowAdvanced(e)}
             checked={showAdvanced}
             className="border border-primary"
             offColor="#fff"
@@ -143,54 +148,115 @@ const RequestForms = ({
           <span className="text-secondary">Show Advanced Options</span>
         </div>
 
-        {showAdvanced && (
-          <div className="flex flex-col space-y-4">
-            {/* Recipient Photo */}
-            <div className="flex flex-col space-y-2 w-full">
-              <label htmlFor="recipientPhoto">Recipient Photo</label>
+        {/* Advanced File Input Fields */}
+        <div
+          className={`flex flex-col space-y-4 ${
+            showAdvanced ? "flex" : "hidden"
+          }`}
+        >
+          {/* Recipient Photo */}
+          <div className="flex flex-col space-y-2 w-full">
+            <label htmlFor="recipientPhoto">Recipient Photo</label>
+            <div className="relative">
               <input
                 className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
                 onChange={uploadFile}
                 type="file"
                 name="recipientPhoto"
+                ref={recipientPhotoRef}
               />
-            </div>
 
-            {/* Sender Photo */}
-            <div className="flex flex-col space-y-2 w-full">
-              <label htmlFor="senderPhoto">Sender Photo</label>
+              {requestData.recipientPhoto && (
+                <span
+                  className="absolute top-4 right-2 cursor-pointer"
+                  onClick={() => {
+                    setRequestData((prev) => ({
+                      ...prev,
+                      recipientPhoto: "",
+                    }));
+                    recipientPhotoRef.current.value = "";
+                    setFileError((prev) => ({...prev, recipient: ""}))
+                  }}
+                >
+                  <VscClose size={25} className="text-secondary-subtle" />
+                </span>
+              )}
+            </div>
+            {fileError.recipient && (
+              <small className="text-red-700 text-sm">
+                {fileError.recipient}
+              </small>
+            )}
+          </div>
+
+          {/* Sender Photo */}
+          <div className="flex flex-col space-y-2 w-full">
+            <label htmlFor="senderPhoto">Sender Photo</label>
+            <div className="relative">
               <input
                 className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
                 onChange={uploadFile}
                 type="file"
                 name="senderPhoto"
-                placeholder="e.g johndoe@gmail.com"
+                ref={senderPhotoRef}
               />
+              {requestData.senderPhoto && (
+                <span
+                  className="absolute top-4 right-2 cursor-pointer"
+                  onClick={() => {
+                    setRequestData((prev) => ({
+                      ...prev,
+                      senderPhoto: "",
+                    }));
+                    senderPhotoRef.current.value = "";
+                    setFileError((prev) => ({...prev, sender: ""}))
+                  }}
+                >
+                  <VscClose size={25} className="text-secondary-subtle" />
+                </span>
+              )}
             </div>
+            {fileError.sender && (
+              <small className="text-red-700 text-sm">
+                {fileError.sender}
+              </small>
+            )}
+          </div>
 
-            {/* Background Image */}
-            {/* <div className="flex flex-col space-y-2 w-full">
-              <label htmlFor="backgroundImage">Background Image</label>
-              <input
-                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
-                onChange={uploadFile}
-                type="file"
-                name="backgroundImage"
-              />
-            </div> */}
-
-            {/* Acceptance Music */}
-            <div className="flex flex-col space-y-2 w-full">
-              <label htmlFor="acceptanceMusic">Acceptance Music</label>
+          {/* Acceptance Music */}
+          <div className="flex flex-col space-y-2 w-full">
+            <label htmlFor="acceptanceMusic">Acceptance Music</label>
+            <div className="relative">
               <input
                 className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
                 onChange={uploadFile}
                 type="file"
                 name="acceptanceMusic"
+                ref={acceptanceMusicRef}
               />
+              {requestData.acceptanceMusic && (
+                <span
+                  className="absolute top-4 right-2 cursor-pointer"
+                  onClick={() => {
+                    setRequestData((prev) => ({
+                      ...prev,
+                      acceptanceMusic: "",
+                    }));
+                    acceptanceMusicRef.current.value = "";
+                    setFileError((prev) => ({...prev, music: ""}))
+                  }}
+                >
+                  <VscClose size={25} className="text-secondary-subtle" />
+                </span>
+              )}
             </div>
           </div>
-        )}
+          {fileError.music && (
+            <small className="text-red-700 text-sm">
+              {fileError.music}
+            </small>
+          )}
+        </div>
 
         {/* Show Preview */}
         <div

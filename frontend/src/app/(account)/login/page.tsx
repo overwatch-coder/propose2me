@@ -9,6 +9,7 @@ import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/utils";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet";
+import { ClipLoader } from "react-spinners";
 
 const LoginPage = () => {
   const pathname = usePathname();
@@ -133,9 +134,20 @@ const LoginPage = () => {
             <section className="flex flex-col mx-auto w-full gap-y-3">
               <button
                 disabled={loading}
-                className="text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary hover:border hover:bg-transparent hover:text-primary rounded"
+                className={`text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary  rounded ${
+                  loading
+                    ? ""
+                    : "hover:border hover:bg-transparent hover:text-primary"
+                }`}
               >
-                {loading ? "Please wait..." : "Login"}
+                {loading ? (
+                  <div className="flex items-center justify-center gap-x-1">
+                    <span>Please wait</span>
+                    <ClipLoader color="#fff" size={20} loading={loading} />
+                  </div>
+                ) : (
+                  "Login"
+                )}
               </button>
 
               {pathname === "/login" ? (
@@ -151,7 +163,9 @@ const LoginPage = () => {
                   </small>
 
                   <div className="pt-5 flex flex-col space-y-3">
-                    <h3 className="font-semibold text-primary">Demo User Details</h3>
+                    <h3 className="font-semibold text-primary">
+                      Demo User Details
+                    </h3>
                     <small>Email: demo@jrvbuildcon.com</small>
                     <small>Password: demoUser2023@@</small>
                   </div>
