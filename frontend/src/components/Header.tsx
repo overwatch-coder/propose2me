@@ -41,7 +41,7 @@ const Header = () => {
     <header className="sticky top-0 z-[100] w-screen">
       <div className="flex items-center justify-between px-5 py-3 bg-primary shadow-sm">
         {/* Logo */}
-        <Link href={"/"} className="text-2xl text-white font-pacifico md:px-16">
+        <Link href={"/"} className="text-2xl text-white font-pacifico md:px-10">
           PTM
         </Link>
 
