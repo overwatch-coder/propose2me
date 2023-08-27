@@ -128,7 +128,6 @@ const RequestForms = ({
           type="email"
           name="senderEmail"
           placeholder={`e.g ${auth?.email}`}
-          required
         />
       </div>
 
