@@ -6,6 +6,12 @@ import Link from "next/link";
 import homeHero from "@/assets/hug-hero.png";
 import signUp from "@/assets/request1.png";
 import link from "@/assets/link.png";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "PTM - Home of everlasting happiness",
+  description: "PTM Inc. Home of everlasting happiness!!",
+};
 
 const Home = () => {
   return (
