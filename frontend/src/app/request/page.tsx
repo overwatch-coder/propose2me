@@ -11,6 +11,21 @@ import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  RedditShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from "react-share";
 
 export type FileType = {
   sender: string;
@@ -146,7 +161,6 @@ const RequestPage = () => {
           setUrls(savedUrls?.data);
         }
       }
-
       setRequestData(initialRequestData);
     } else {
       //if the request isn't successful (Display error message)
@@ -181,6 +195,7 @@ const RequestPage = () => {
               Link Generated Successfully. Good Luck!
             </h3>
             <small>Copy the link below and send it to the recipient</small>
+
             <p className="cursor-pointer">
               Link:{" "}
               {!success.copied ? (
@@ -194,6 +209,49 @@ const RequestPage = () => {
                 <span>Copied</span>
               )}
             </p>
+
+            <div>
+              <h3 className="py-3">or use one of these:</h3>
+              <div className="flex items-center justify-center space-x-2">
+                <EmailShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <EmailIcon size={25} round={true} />
+                </EmailShareButton>
+                <FacebookShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <FacebookIcon size={25} round={true} />
+                </FacebookShareButton>
+                <LinkedinShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <LinkedinIcon size={25} round={true} />
+                </LinkedinShareButton>
+                <TelegramShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <TelegramIcon size={25} round={true} />
+                </TelegramShareButton>
+                <TwitterShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <TwitterIcon size={25} round={true} />
+                </TwitterShareButton>
+                <WhatsappShareButton
+                  url={success.url}
+                  title="PTM Request"
+                >
+                  <WhatsappIcon size={25} round={true} />
+                </WhatsappShareButton>
+              </div>
+            </div>
+
             <button
               onClick={() =>
                 setSuccess((prev) => ({

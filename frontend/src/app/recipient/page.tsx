@@ -1,6 +1,6 @@
 "use client";
 
-import { getRecipientMessage } from "@/utils";
+import { deleteUrlToDB, getRecipientMessage, sendRequestEmail } from "@/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet";
@@ -9,12 +9,24 @@ import { IRequestMessage, IRequestMessageData } from "../../../types";
 import Image from "next/image";
 import { Editor } from "@tinymce/tinymce-react";
 import Link from "next/link";
+import { useAppContext } from "@/context/AppContext";
+import { ClipLoader } from "react-spinners";
 
 const RecipientPage = () => {
+  const { urls, auth, setUrls } = useAppContext();
   const [requestMessage, setRequestMessage] =
     useState<IRequestMessageData | null>(null);
   const searchParams = useSearchParams();
   const [messagesFound, setMessagesFound] = useState(true);
+  const [loading, setLoading] = useState({
+    type: "",
+    status: false,
+  });
+  const [requestSent, setRequestSent] = useState(false);
+  const [optionalMessage, setOptionalMessage] = useState({
+    active: false,
+    value: "",
+  });
 
   useEffect(() => {
     if (!searchParams.has("p") || !searchParams.has("u")) {
@@ -45,16 +57,81 @@ const RecipientPage = () => {
 
   const handleResponse = async (e: React.FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
+    setRequestSent(false);
+    setLoading((prev) => ({ ...prev, status: true }));
+
+    const template_params = {
+      from_name: requestMessage?.recipientName,
+      to_name: requestMessage?.senderName,
+      response: "",
+      optional_message: optionalMessage.value,
+      ptm_response: "",
+      to_email: requestMessage?.senderEmail,
+    };
+
     if (e.currentTarget.name === "accepted") {
-      console.log("Yayyy, accepted");
+      setLoading((prev) => ({ ...prev, type: "accepted" }));
+      template_params.response = "Yes, I accept your request!";
+      template_params.ptm_response = `Hurray! Congratulations ${requestMessage?.senderName}. Best of luck on your new adventure with ${requestMessage?.recipientName}`;
     } else {
-      console.log("Sorry, rejection");
+      setLoading((prev) => ({ ...prev, type: "rejected" }));
+      template_params.response = "Sorry, I am not interested!";
+      template_params.ptm_response = `We're sorry you didn't get a positive response from ${requestMessage?.recipientName}. Best of luck!`;
     }
+
+    // get url that generated the request message
+    const currentRequestUrl = urls.filter(
+      (url: any) => url.postId === requestMessage?._id
+    )[0];
+
+    const results = await sendRequestEmail(template_params);
+    if (results.success) {
+      const deleteResults = await deleteUrlToDB(
+        currentRequestUrl?._id,
+        `${auth?.token}`
+      );
+      if (deleteResults.success) {
+        toast.success(results.message);
+        setRequestSent(true);
+        setLoading((prev) => ({ ...prev, status: false }));
+        setUrls((prev: any) =>
+          prev.filter((url: any) => url._id !== currentRequestUrl._id)
+        );
+      } else {
+        toast.error(deleteResults.message);
+        setRequestSent(false);
+        setLoading((prev) => ({ ...prev, status: false }));
+      }
+    } else {
+      toast.error(
+        "There was a problem processing your response. Please try again later!"
+      );
+      setRequestSent(false);
+      setLoading((prev) => ({ ...prev, status: false }));
+    }
+  };
+
+  // handle optional message display
+  const handleOptionalMessage = () => {
+    setOptionalMessage((prev) => ({
+      value: !prev.active ? prev.value : "",
+      active: !prev.active,
+    }));
   };
 
   return (
     <div>
-      {!messagesFound ? (
+      {requestSent ? (
+        <article className="p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg">
+          <h3 className="text-xl font-semibold">
+            Response has been successfully submitted!
+          </h3>
+          <p>Your response to the request has been successfully received.</p>
+          <Link href="/" className="underline text-black text-lg block">
+            Go Home
+          </Link>
+        </article>
+      ) : !messagesFound ? (
         <section
           className={`p-10 text-center mx-auto flex-col mt-16 items-center bg-green-200 rounded text-black space-y-5 max-w-lg`}
         >
@@ -151,16 +228,50 @@ const RecipientPage = () => {
                         value={requestMessage.message}
                       />
                     </div>
-                    {/* <div
-                      className="hidden bg-white py-5 px-3 shadow-md rounded-md"
-                      dangerouslySetInnerHTML={{
-                        __html: requestMessage.message as TrustedHTML,
-                      }}
-                    /> */}
+
                     <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
                       💞💖
                     </span>
                   </section>
+
+                  <div className="flex flex-col space-y-3">
+                    <h2>
+                      {optionalMessage.active
+                        ? "Remove optional note?"
+                        : "Attach a personal note to this response?"}
+                      <span
+                        onClick={handleOptionalMessage}
+                        className="ms-2 cursor-pointer hover:underline font-semibold"
+                      >
+                        Click here
+                      </span>
+                    </h2>
+
+                    {optionalMessage.active && (
+                      <>
+                        <label htmlFor="optional_message" className="text-sm">
+                          Type your special note to{" "}
+                          <b>{requestMessage.senderName}</b> here and it will be
+                          delivered along with your answer to the request.
+                        </label>
+
+                        <textarea
+                          name="optional_message"
+                          id="optional_message"
+                          value={optionalMessage.value}
+                          onChange={(e) =>
+                            setOptionalMessage((prev) => ({
+                              ...prev,
+                              value: e.target.value,
+                            }))
+                          }
+                          className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 w-full px-2"
+                          placeholder="I have been waiting for you to ask me for a long time!!"
+                          rows={7}
+                        />
+                      </>
+                    )}
+                  </div>
 
                   <div className="flex flex-col gap-y-5 md:flex-row md:gap-y-0 md:gap-x-5 md:items-center">
                     <button
@@ -168,8 +279,16 @@ const RecipientPage = () => {
                       type="submit"
                       name="accepted"
                       onClick={handleResponse}
+                      disabled={loading.type === "accepted" && loading.status}
                     >
-                      Yes, I accept ❤️
+                      {loading.type === "accepted" && loading.status ? (
+                        <div className="flex items-center justify-center gap-x-1">
+                          <span>Please wait</span>
+                          <ClipLoader color="#fff" size={20} />
+                        </div>
+                      ) : (
+                        "Yes, I accept ❤️"
+                      )}
                     </button>
 
                     <button
@@ -177,8 +296,16 @@ const RecipientPage = () => {
                       type="submit"
                       name="rejected"
                       onClick={handleResponse}
+                      disabled={loading.type === "rejected" && loading.status}
                     >
-                      Sorry, not Interested 💔
+                      {loading.type === "rejected" && loading.status ? (
+                        <div className="flex items-center justify-center gap-x-1">
+                          <span>Please wait</span>
+                          <ClipLoader color="#fff" size={20} />
+                        </div>
+                      ) : (
+                        "Sorry, not Interested 💔"
+                      )}
                     </button>
                   </div>
                 </form>

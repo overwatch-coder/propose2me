@@ -4,7 +4,7 @@ import Link from "next/link";
 
 // Import images
 import homeHero from "@/assets/hug-hero.png";
-import signUp from "@/assets/sign-up.png";
+import signUp from "@/assets/request1.png";
 import link from "@/assets/link.png";
 
 const Home = () => {
@@ -97,7 +97,7 @@ const Home = () => {
               src={signUp}
               width={700}
               height={700}
-              className="object-contain w-full h-full md:h-auto md:order-1"
+              className="object-contain w-full h-full md:h-auto md:order-1 border-2 border-secondary-subtle shadow-md"
               loading="lazy"
               quality={100}
             />
@@ -138,7 +138,7 @@ const Home = () => {
               src={link}
               width={700}
               height={700}
-              className="object-contain w-full h-full md:h-auto"
+              className="object-contain w-full h-full md:h-auto border-2 border-secondary-subtle shadow-md"
               loading="lazy"
               quality={100}
             />

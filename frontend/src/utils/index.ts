@@ -173,3 +173,29 @@ export const deleteUrlToDB = async (id: string, token: string) => {
     return results;
   }
 };
+
+// send request email
+export const sendRequestEmail = async (template_params: any) => {
+  try {
+    const res = await axios.post("/api/email", template_params, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = res.data;
+    const results = {
+      success: data === "OK" ? true : false,
+      message: "Your response has been successfully sent!",
+    };
+    return results;
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return results;
+  }
+};
