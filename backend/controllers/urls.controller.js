@@ -68,19 +68,18 @@ const saveUserUrls = async (req, res) => {
 
 // update url responded status
 const deletedRespondedUrl = async (req, res) => {
-  const { id: postId } = req.params;
-  const { user } = req.query;
+  const { userId, postId } = req.query;
 
   try {
-    if (!id || !user) {
+    if (!userId || !postId) {
       return res.status(400).json({
-        message: "Either link id or user id is invalid",
+        message: "Either post id or user id is invalid",
         success: false,
       });
     }
 
     const deletedUrl = await Url.findOneAndDelete({
-      $and: [{ user }, { postId }],
+      $and: [{ user: userId }, { postId: postId }],
     });
 
     if (!deletedUrl) {
@@ -92,7 +91,7 @@ const deletedRespondedUrl = async (req, res) => {
 
     // delete post that created the url
     const deletedPost = await Post.findOneAndDelete({
-      $and: [{ user: user }, { _id: deletedUrl.postId }],
+      $and: [{ user: deletedUrl.user}, { _id: deletedUrl.postId }],
     });
 
     if (!deletedPost) {
