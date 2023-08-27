@@ -6,20 +6,10 @@ import Link from "next/link";
 import homeHero from "@/assets/hug-hero.png";
 import signUp from "@/assets/request1.png";
 import link from "@/assets/link.png";
-import { Helmet } from "react-helmet";
 
 const Home = () => {
   return (
     <>
-    <Helmet>
-        <meta charSet="utf-8" />
-        <title>PTM - Home of everlasting happiness</title>
-        <meta
-          name="description"
-          content="PTM Inc. Home of everlasting happiness!!"
-        />
-      </Helmet>
-
     <main className="flex flex-col space-y-5">
       {/* Hero Section */}
       <section className="grid grid-cols-1 md:grid-cols-2 place-items-center">
