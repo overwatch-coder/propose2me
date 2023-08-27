@@ -4,10 +4,11 @@ const { authenticateUser } = require('../middleware/userAuth');
 
 const router = express.Router();
 
+router.delete('/:id', deletedRespondedUrl)
+
 router.use(authenticateUser);
 
 router.get('/', getUserUrls);
 router.post('/', saveUserUrls);
-router.delete('/:id', deletedRespondedUrl)
 
 module.exports = router;
