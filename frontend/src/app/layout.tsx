@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 import AppContextProvider from "@/context/AppContext";
 import Script from "next/script";
 
+export const revalidate = 60;
+
 export const metadata: Metadata = {
   title: "PTM - Home of everlasting happiness",
   description: "PTM Inc. Home of everlasting happiness!!",
@@ -27,9 +29,7 @@ export default function RootLayout({
         referrerPolicy="origin"
       ></Script>
 
-      <body
-        className="overflow-x-hidden scrollbar-hide"
-      >
+      <body className="overflow-x-hidden scrollbar-hide">
         <AppContextProvider>
           <div className="flex flex-col min-h-screen">
             <Header />

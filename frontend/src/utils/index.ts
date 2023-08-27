@@ -106,14 +106,16 @@ export const getRecipientMessage = async (data: any) => {
 // get saved urls
 export const getSavedUrls = async (token: string) => {
   try {
-    const res = await axios.get("/api/urls", {
+    const res = await fetch("/api/urls", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    });
+    },
+    )
 
-    const results = res.data;
+    const results = await res.json();
 
     return results;
   } catch (error: any) {
