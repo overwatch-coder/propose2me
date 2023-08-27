@@ -13,7 +13,7 @@ import { useAppContext } from "@/context/AppContext";
 import { ClipLoader } from "react-spinners";
 
 const RecipientPage = () => {
-  const { urls, auth, setUrls } = useAppContext();
+  const {auth, setUrls } = useAppContext();
   const [requestMessage, setRequestMessage] =
     useState<IRequestMessageData | null>(null);
   const searchParams = useSearchParams();
@@ -64,7 +64,7 @@ const RecipientPage = () => {
       from_name: requestMessage?.recipientName,
       to_name: requestMessage?.senderName,
       response: "",
-      optional_message: optionalMessage.value,
+      optional_message: optionalMessage.value ? optionalMessage.value : `From PTM: ${requestMessage?.recipientName} did not leave any optional message for you.`,
       ptm_response: "",
       to_email: requestMessage?.senderEmail,
     };
@@ -79,25 +79,34 @@ const RecipientPage = () => {
       template_params.ptm_response = `We're sorry you didn't get a positive response from ${requestMessage?.recipientName}. Best of luck!`;
     }
 
-    // get url that generated the request message
-    const currentRequestUrl = urls.filter(
-      (url: any) => url.postId === requestMessage?._id
-    )[0];
+    // get paramters from query
+    const postId = searchParams.get("p") as string;
+    const userId = searchParams.get("u") as string;
 
+    // send request response through email and delete the request on email sent 
     const results = await sendRequestEmail(template_params);
     if (results.success) {
       const deleteResults = await deleteUrlToDB(
-        currentRequestUrl?._id,
-        `${auth?.token}`
+        postId,
+        userId
       );
       if (deleteResults.success) {
         toast.success(results.message);
         setRequestSent(true);
         setLoading((prev) => ({ ...prev, status: false }));
-        setUrls((prev: any) =>
-          prev.filter((url: any) => url._id !== currentRequestUrl._id)
-        );
-      } else {
+        if(auth?.token){
+          setUrls((prev: any) =>
+            prev.filter((url: any) => url.postId !== postId)
+          );
+        }
+        searchParams.delete();
+      } else if(!deleteResults.success && deleteResults.message === "No messages available"){
+        toast.info(deleteResults.message);
+        setRequestSent(true);
+        setLoading((prev) => ({ ...prev, status: false }));
+        searchParams.delete();
+      }
+      else {
         toast.error(deleteResults.message);
         setRequestSent(false);
         setLoading((prev) => ({ ...prev, status: false }));

@@ -152,16 +152,14 @@ export const saveUrlToDB = async (data: any, token: string) => {
 };
 
 // remove url from database
-export const deleteUrlToDB = async (id: string, token: string) => {
+export const deleteUrlToDB = async (postId: string, userId: string) => {
   try {
-    const res = await axios.delete(`/api/urls/${id}`, {
+    const res = await axios.delete(`/api/urls/${postId}?user=${userId}`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     });
-
     const results = res.data;
-
     return results;
   } catch (error: any) {
     const results = {

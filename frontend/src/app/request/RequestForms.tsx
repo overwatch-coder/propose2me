@@ -7,6 +7,7 @@ import ReactSwitch from "react-switch";
 import ShowPreview from "./ShowPreview";
 import { VscClose } from "react-icons/vsc";
 import { FileType } from "./page";
+import { useAppContext } from "@/context/AppContext";
 
 type AudioFileType = {
   status: boolean;
@@ -38,6 +39,7 @@ const RequestForms = ({
 }: RequestFormsProps) => {
   // useRef
   const editorRef = useRef<any>(null);
+  const {auth} = useAppContext();
 
   // useState
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -110,7 +112,7 @@ const RequestForms = ({
           value={requestData.title}
           type="text"
           name="title"
-          placeholder="e.g  Will you be my girlfriend?"
+          placeholder="e.g  Will you do me the honors of being my girlfriend?"
           required
         />
       </div>
@@ -118,13 +120,14 @@ const RequestForms = ({
       {/* Email Address */}
       <div className="flex flex-col space-y-2 w-full">
         <label htmlFor="senderEmail">Sender Email Address</label>
+        <small>Leave it blank to use your acccount email</small>
         <input
           className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
           onChange={handleChange}
           value={requestData.senderEmail}
           type="email"
           name="senderEmail"
-          placeholder="e.g johndoe@gmail.com"
+          placeholder={`e.g ${auth?.email}`}
           required
         />
       </div>

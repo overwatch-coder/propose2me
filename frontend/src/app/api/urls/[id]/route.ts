@@ -5,18 +5,15 @@ export const DELETE = async (
   req: Request,
   { params: { id } }: { params: { id: string } }
 ) => {
-  try {
-    //   get the token from the request headers
-    const authorization = req.headers.has("Authorization")
-      ? req.headers.get("Authorization")
-      : undefined;
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get("user");
 
+  try {
     const res = await axios.delete(
-      `${process.env.PTM_API_URL}/user/urls/${id}`,
+      `${process.env.PTM_API_URL}/user/urls?postId=${id}&userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `${authorization}`,
         },
       }
     );

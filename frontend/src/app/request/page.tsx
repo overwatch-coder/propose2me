@@ -18,7 +18,6 @@ import {
   FacebookShareButton,
   LinkedinIcon,
   LinkedinShareButton,
-  RedditShareButton,
   TelegramIcon,
   TelegramShareButton,
   TwitterIcon,
@@ -134,7 +133,13 @@ const RequestPage = () => {
     // change request data to a form data type
     const formData = new FormData();
     Object.entries(requestData).forEach(([key, value]: [string, any]) => {
-      formData.append(key, value);
+      if (key === "senderEmail") {
+        formData.append(key, value ? value : auth.email);
+      }
+
+      if (key !== "senderEmail") {
+        formData.append(key, value);
+      }
     });
 
     setLoading(true);
@@ -213,40 +218,22 @@ const RequestPage = () => {
             <div>
               <h3 className="py-3">or use one of these:</h3>
               <div className="flex items-center justify-center space-x-2">
-                <EmailShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <EmailShareButton url={success.url} title="PTM Request">
                   <EmailIcon size={25} round={true} />
                 </EmailShareButton>
-                <FacebookShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <FacebookShareButton url={success.url} title="PTM Request">
                   <FacebookIcon size={25} round={true} />
                 </FacebookShareButton>
-                <LinkedinShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <LinkedinShareButton url={success.url} title="PTM Request">
                   <LinkedinIcon size={25} round={true} />
                 </LinkedinShareButton>
-                <TelegramShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <TelegramShareButton url={success.url} title="PTM Request">
                   <TelegramIcon size={25} round={true} />
                 </TelegramShareButton>
-                <TwitterShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <TwitterShareButton url={success.url} title="PTM Request">
                   <TwitterIcon size={25} round={true} />
                 </TwitterShareButton>
-                <WhatsappShareButton
-                  url={success.url}
-                  title="PTM Request"
-                >
+                <WhatsappShareButton url={success.url} title="PTM Request">
                   <WhatsappIcon size={25} round={true} />
                 </WhatsappShareButton>
               </div>
