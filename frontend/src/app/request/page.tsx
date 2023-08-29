@@ -153,14 +153,16 @@ const RequestPage = () => {
 
       if (name === "video") {
         setVideoFile((prev) => ({ ...prev, file: file }));
+        setFileError((prev) => ({...prev, video: ""}));
         setVideoUploaded(true);
         const results = await uploadVideoFile(file);
 
         if (!results?.success) {
           videoRef.current.value = "";
+          setVideoUploaded(false);
           setFileError((prev) => ({
             ...prev,
-            video: "There was a problem uploading this file",
+            video: "An unexpected error has occurred. Please try again later",
           }));
           return;
         }

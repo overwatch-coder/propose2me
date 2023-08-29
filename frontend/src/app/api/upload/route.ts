@@ -1,15 +1,17 @@
+import axios from "axios";
 import { NextResponse } from "next/server";
 
 export const POST = async (req: Request) => {
   try {
     const data = await req.formData();
     const url = `https://api.cloudinary.com/v1_1/${process.env.CLOUDINARY_NAME}/auto/upload`;
-    const res = await fetch(url, {
-      method: "POST",
-      body: data,
-    });
+    const res = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    })
 
-    const results = await res.json();
+    const results = res.data;
     return NextResponse.json(results);
   } catch (error: any) {
     const results = {

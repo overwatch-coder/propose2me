@@ -28,7 +28,7 @@ type RequestFormsProps = {
   videoFile: VideoFile;
   setVideoFile: React.Dispatch<React.SetStateAction<VideoFile>>;
   videoUploaded: boolean;
-  setVideoUploaded: (value: React.SetStateAction<boolean>) => void
+  setVideoUploaded: (value: React.SetStateAction<boolean>) => void;
 };
 
 const RequestForms = ({
@@ -45,7 +45,7 @@ const RequestForms = ({
   videoFile,
   setVideoFile,
   videoUploaded,
-  setVideoUploaded
+  setVideoUploaded,
 }: RequestFormsProps) => {
   // useRef
   const editorRef = useRef<any>(null);
@@ -150,8 +150,8 @@ const RequestForms = ({
         <ReactSwitch
           onChange={(e) => {
             setShowVideo(e);
-            if(e === false){
-              setFileError((prev) => ({...prev, video: ""}));
+            if (e === false) {
+              setFileError((prev) => ({ ...prev, video: "" }));
               setVideoFile({ size: 0, file: "" });
               setVideoUploaded(false);
             }
@@ -184,7 +184,9 @@ const RequestForms = ({
               <span>Video uploaded successfully</span>
             )}
 
-            {videoFile.file && videoUploaded && <span>Uploading. Please wait...</span>}
+            {videoFile.file && videoUploaded && (
+              <span>Uploading. Please wait...</span>
+            )}
 
             {requestData.video && (
               <div className="flex flex-row justify-between w-full pt-2">
@@ -203,6 +205,8 @@ const RequestForms = ({
                   }));
                   videoRef.current.value = "";
                   setFileError((prev) => ({ ...prev, video: "" }));
+                  setVideoFile({ size: 0, file: "" });
+                  setVideoUploaded(false);
                 }}
               >
                 <VscClose size={25} className="text-secondary-subtle" />
