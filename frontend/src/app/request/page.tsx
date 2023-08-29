@@ -159,6 +159,7 @@ const RequestPage = () => {
 
         if (!results?.success) {
           videoRef.current.value = "";
+          setVideoFile({ size: 0, file: "" });
           setVideoUploaded(false);
           setFileError((prev) => ({
             ...prev,
