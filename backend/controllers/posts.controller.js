@@ -95,7 +95,7 @@ const getSinglePost = async (req, res) => {
 
 // POST - Create a new post
 const createPost = async (req, res) => {
-  const { title, message, senderEmail, senderName, recipientName } = req.body;
+  const { title, message, senderEmail, senderName, recipientName, video } = req.body;
   try {
     const user = req.user;
     if (!user)
@@ -129,7 +129,7 @@ const createPost = async (req, res) => {
         req?.files?.acceptanceMusic,
         "ptm/ptm-music"
       ),
-      video: await uploadFile(req?.files?.video, "ptm/ptm-videos"),
+      video: await uploadFile(video, "ptm/ptm-videos"),
     });
 
     const post = await postCreated.save();
