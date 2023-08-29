@@ -7,7 +7,12 @@ import { Helmet } from "react-helmet";
 import RequestForms from "./RequestForms";
 import { IRequestData } from "../../../types";
 import { initialRequestData } from "@/constants";
-import { createRequest, getSavedUrls, saveUrlToDB } from "@/utils";
+import {
+  createRequest,
+  getSavedUrls,
+  saveUrlToDB,
+  uploadVideoFile,
+} from "@/utils";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
@@ -30,6 +35,12 @@ export type FileType = {
   sender: string;
   recipient: string;
   music: string;
+  video: string;
+};
+
+export type VideoFile = {
+  size: number;
+  file: File | string;
 };
 
 const RequestPage = () => {
@@ -37,13 +48,22 @@ const RequestPage = () => {
   const senderPhotoRef = useRef<any>();
   const recipientPhotoRef = useRef<any>();
   const acceptanceMusicRef = useRef<any>();
+  const videoRef = useRef<any>();
 
   const { auth, setUrls } = useAppContext();
+
+  // useState
   const [error, setError] = useState("");
+  const [videoUploaded, setVideoUploaded] = useState(false);
+  const [videoFile, setVideoFile] = useState<VideoFile>({
+    size: 0,
+    file: "",
+  });
   const [fileError, setFileError] = useState<FileType>({
     sender: "",
     recipient: "",
     music: "",
+    video: "",
   });
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState({
@@ -66,7 +86,7 @@ const RequestPage = () => {
   };
 
   // function to upload files
-  const uploadFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const uploadFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const { name } = e.target;
       const file = e.target.files[0];
@@ -104,8 +124,55 @@ const RequestPage = () => {
         return;
       }
 
-      setFileError({ music: "", recipient: "", sender: "" });
-      setRequestData((prev) => ({ ...prev, [name]: file }));
+      // check for video file types
+      if (name === "video" && file?.type?.split("/")[0] !== "video") {
+        videoRef.current.value = "";
+        setFileError((prev) => ({
+          ...prev,
+          video: "Only video file types are accepted!",
+        }));
+        return;
+      }
+
+      // check video file size
+      const max_video_size = 51200; // in KB (= 30 MB)
+      const uploaded_video_size = file.size / 1024; // in KB
+      setVideoFile((prev) => ({
+        ...prev,
+        size: parseFloat((uploaded_video_size / 1024).toFixed(1)),
+      })); // file size in MB;
+
+      if (name === "video" && uploaded_video_size > max_video_size) {
+        videoRef.current.value = "";
+        setFileError((prev) => ({
+          ...prev,
+          video: "Video file size is greater than the maximum limit (50MB)",
+        }));
+        return;
+      }
+
+      if (name === "video") {
+        setVideoFile((prev) => ({ ...prev, file: file }));
+        setVideoUploaded(true);
+        const results = await uploadVideoFile(file);
+
+        if (!results?.success) {
+          videoRef.current.value = "";
+          setFileError((prev) => ({
+            ...prev,
+            video: "There was a problem uploading this file",
+          }));
+          return;
+        }
+
+        setVideoUploaded(false);
+        setRequestData((prev) => ({ ...prev, video: results.secure_url }));
+      }
+
+      setFileError({ music: "", recipient: "", sender: "", video: "" });
+      if (name !== "video") {
+        setRequestData((prev) => ({ ...prev, [name]: file }));
+      }
     }
   };
 
@@ -128,6 +195,7 @@ const RequestPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError("");
+    setVideoUploaded(false);
     setSuccess({ status: false, url: "", copied: false });
 
     // change request data to a form data type
@@ -277,6 +345,11 @@ const RequestPage = () => {
                 senderPhotoRef={senderPhotoRef}
                 recipientPhotoRef={recipientPhotoRef}
                 acceptanceMusicRef={acceptanceMusicRef}
+                videoRef={videoRef}
+                videoFile={videoFile}
+                setVideoFile={setVideoFile}
+                videoUploaded={videoUploaded}
+                setVideoUploaded={setVideoUploaded}
               />
             </section>
 

@@ -112,8 +112,10 @@ export const getSavedUrls = async (token: string) => {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-    },
-    )
+      next: {
+        revalidate: 60,
+      },
+    });
 
     const results = await res.json();
 
@@ -193,6 +195,30 @@ export const sendRequestEmail = async (template_params: any) => {
     const results = {
       success: false,
       message: "Unexpected error encountered. Try again later",
+      error: process.env.NODE_ENV !== "production" ? error : "",
+    };
+
+    return results;
+  }
+};
+
+export const uploadVideoFile = async (file: File) => {
+  const data = new FormData();
+  data.append("file", file);
+  data.append("upload_preset", "unsigned");
+  data.append('folder', "ptm/ptm-videos")
+
+  try {
+    const res = await axios.post("/api/upload", data);
+    const results = res.data;
+    return {
+      success: results?.secure_url ? true : false,
+      ...results
+    };
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "There was an error uploading the file. Try again later",
       error: process.env.NODE_ENV !== "production" ? error : "",
     };
 

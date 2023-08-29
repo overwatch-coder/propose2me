@@ -9,8 +9,6 @@ import Footer from "@/components/Footer";
 import AppContextProvider from "@/context/AppContext";
 import Script from "next/script";
 
-export const revalidate = 60;
-
 export const metadata: Metadata = {
   title: "PTM - Home of everlasting happiness",
   description: "PTM Inc. Home of everlasting happiness!!",
@@ -22,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth" suppressHydrationWarning={true}>
+    <html lang="en" className="scroll-smooth">
       <link rel="icon" type="image/png" href="/favicon.png" />
       <Script
         src={`https://cdn.tiny.cloud/1/${process.env.TINY_MCE_API_KEY}/tinymce/6/tinymce.min.js`}

@@ -64,6 +64,6 @@ export const initialRequestData: IRequestData = {
   message: "",
   senderPhoto: "",
   recipientPhoto: "",
-  backgroundImage: "",
+  video: "",
   acceptanceMusic: "",
 };

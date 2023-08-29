@@ -1,12 +1,23 @@
 import { IRequestData } from "../../../types";
 import Image from "next/image";
 import { Editor } from "@tinymce/tinymce-react";
+import ReactPlayer from "react-player/lazy";
+import thumbnail from "@/assets/thumbnail.png";
+import { VideoFile } from "./page";
 
 type ShowPreviewProps = {
   requestData: IRequestData;
+  showVideo: boolean;
+  videoPlayerRef: React.MutableRefObject<any>;
+  videoFile: VideoFile;
 };
 
-const ShowPreview = ({ requestData }: ShowPreviewProps) => {
+const ShowPreview = ({
+  requestData,
+  showVideo,
+  videoPlayerRef,
+  videoFile,
+}: ShowPreviewProps) => {
   return (
     <div>
       <section className="relative">
@@ -56,25 +67,60 @@ const ShowPreview = ({ requestData }: ShowPreviewProps) => {
             {requestData?.title} <span className="animate-pulse">💕</span>
           </h1>
 
-          <section className="text-lg max-w-4xl w-full mx-auto">
-            <span className="animate-ping absolute top-20 right-1/3 rotate-90">
-              💞💖
-            </span>
-            <div className="">
-              <Editor
-                init={{
-                  toolbar: false,
-                  menubar: false,
-                  height: 600,
-                }}
-                disabled={true}
-                value={requestData.message}
+          {!showVideo && (
+            <section className="text-lg max-w-4xl w-full mx-auto">
+              <span className="animate-ping absolute top-20 right-1/3 rotate-90">
+                💞💖
+              </span>
+
+              <div className="">
+                <Editor
+                  init={{
+                    toolbar: false,
+                    menubar: false,
+                    height: 600,
+                  }}
+                  disabled={true}
+                  value={requestData.message}
+                />
+              </div>
+
+              <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
+                💞💖
+              </span>
+            </section>
+          )}
+
+          {showVideo && videoFile?.file && (
+            <>
+              <span className="animate-ping absolute top-20 right-1/3 rotate-90">
+                💞💖
+              </span>
+
+              <h3 className="text-xl font-semibold">Play the video below</h3>
+
+              <ReactPlayer
+                url={requestData?.video}
+                width={"100%"}
+                controls={true}
+                ref={videoPlayerRef}
+                light={
+                  <Image
+                    src={thumbnail}
+                    alt="video thumbnail"
+                    width={700}
+                    height={700}
+                    quality={100}
+                    loading="lazy"
+                  />
+                }
               />
-            </div>
-            <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
-              💞💖
-            </span>
-          </section>
+
+              <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
+                💞💖
+              </span>
+            </>
+          )}
         </form>
       </section>
     </div>

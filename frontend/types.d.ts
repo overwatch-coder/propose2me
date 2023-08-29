@@ -19,7 +19,7 @@ export interface IRequestData {
   senderPhoto?: any;
   recipientPhoto?: any;
   acceptanceMusic?: any;
-  backgroundImage?: any;
+  video?: any;
 }
 
 export interface IRequestMessage {
@@ -38,5 +38,5 @@ export interface IRequestMessageData {
   senderName:      string;
   senderPhoto?:     string;
   title:           string;
-  backgroundImage?: string
+  video?: string
 }

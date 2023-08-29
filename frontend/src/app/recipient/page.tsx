@@ -11,9 +11,11 @@ import { Editor } from "@tinymce/tinymce-react";
 import Link from "next/link";
 import { useAppContext } from "@/context/AppContext";
 import { ClipLoader } from "react-spinners";
+import thumbnail from "@/assets/thumbnail.png";
+import ReactPlayer from "react-player";
 
 const RecipientPage = () => {
-  const {auth, setUrls } = useAppContext();
+  const { auth, setUrls } = useAppContext();
   const [requestMessage, setRequestMessage] =
     useState<IRequestMessageData | null>(null);
   const searchParams = useSearchParams();
@@ -64,7 +66,9 @@ const RecipientPage = () => {
       from_name: requestMessage?.recipientName,
       to_name: requestMessage?.senderName,
       response: "",
-      optional_message: optionalMessage.value ? optionalMessage.value : `From PTM: ${requestMessage?.recipientName} did not leave any optional message for you.`,
+      optional_message: optionalMessage.value
+        ? optionalMessage.value
+        : `From PTM: ${requestMessage?.recipientName} did not leave any optional message for you.`,
       ptm_response: "",
       to_email: requestMessage?.senderEmail,
     };
@@ -83,30 +87,28 @@ const RecipientPage = () => {
     const postId = searchParams.get("p") as string;
     const userId = searchParams.get("u") as string;
 
-    // send request response through email and delete the request on email sent 
+    // send request response through email and delete the request on email sent
     const results = await sendRequestEmail(template_params);
     if (results.success) {
-      const deleteResults = await deleteUrlToDB(
-        postId,
-        userId
-      );
+      const deleteResults = await deleteUrlToDB(postId, userId);
       if (deleteResults.success) {
         toast.success(results.message);
         setRequestSent(true);
         setLoading((prev) => ({ ...prev, status: false }));
-        if(auth?.token){
+        if (auth?.token) {
           setUrls((prev: any) =>
             prev.filter((url: any) => url.postId !== postId)
           );
         }
-        searchParams.delete();
-      } else if(!deleteResults.success && deleteResults.message === "No messages available"){
+      } else if (
+        !deleteResults.success &&
+        deleteResults.message === "No messages available"
+      ) {
         toast.info(deleteResults.message);
         setRequestSent(true);
         setLoading((prev) => ({ ...prev, status: false }));
         searchParams.delete();
-      }
-      else {
+      } else {
         toast.error(deleteResults.message);
         setRequestSent(false);
         setLoading((prev) => ({ ...prev, status: false }));
@@ -222,26 +224,60 @@ const RecipientPage = () => {
                     <span className="animate-pulse">💕</span>
                   </h1>
 
-                  <section className="text-lg max-w-4xl w-full mx-auto">
-                    <span className="animate-ping absolute top-20 right-1/3 rotate-90">
-                      💞💖
-                    </span>
-                    <div className="">
-                      <Editor
-                        init={{
-                          toolbar: false,
-                          menubar: false,
-                          height: 600,
-                        }}
-                        disabled={true}
-                        value={requestMessage.message}
-                      />
-                    </div>
+                  {requestMessage.message && (
+                    <section className="text-lg max-w-4xl w-full mx-auto">
+                      <span className="animate-ping absolute top-20 right-1/3 rotate-90">
+                        💞💖
+                      </span>
+                      <div className="">
+                        <Editor
+                          init={{
+                            toolbar: false,
+                            menubar: false,
+                            height: 600,
+                          }}
+                          disabled={true}
+                          value={requestMessage.message}
+                        />
+                      </div>
 
-                    <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
-                      💞💖
-                    </span>
-                  </section>
+                      <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
+                        💞💖
+                      </span>
+                    </section>
+                  )}
+
+                  {requestMessage.video && (
+                    <>
+                      <span className="animate-ping absolute top-20 right-1/3 rotate-90">
+                        💞💖
+                      </span>
+
+                      <h3 className="text-xl font-semibold">
+                        Click to play the video below
+                      </h3>
+
+                      <ReactPlayer
+                        url={requestMessage?.video}
+                        width={"100%"}
+                        controls={true}
+                        light={
+                          <Image
+                            src={thumbnail}
+                            alt="video thumbnail"
+                            width={700}
+                            height={700}
+                            quality={100}
+                            loading="lazy"
+                          />
+                        }
+                      />
+
+                      <span className="animate-ping absolute bottom-1/2 left-1/3 rotate-45">
+                        💞💖
+                      </span>
+                    </>
+                  )}
 
                   <div className="flex flex-col space-y-3">
                     <h2>

@@ -6,7 +6,7 @@ import { IRequestData } from "../../../types";
 import ReactSwitch from "react-switch";
 import ShowPreview from "./ShowPreview";
 import { VscClose } from "react-icons/vsc";
-import { FileType } from "./page";
+import { FileType, VideoFile } from "./page";
 import { useAppContext } from "@/context/AppContext";
 
 type AudioFileType = {
@@ -24,6 +24,11 @@ type RequestFormsProps = {
   senderPhotoRef: React.MutableRefObject<any>;
   recipientPhotoRef: React.MutableRefObject<any>;
   acceptanceMusicRef: React.MutableRefObject<any>;
+  videoRef: React.MutableRefObject<any>;
+  videoFile: VideoFile;
+  setVideoFile: React.Dispatch<React.SetStateAction<VideoFile>>;
+  videoUploaded: boolean;
+  setVideoUploaded: (value: React.SetStateAction<boolean>) => void
 };
 
 const RequestForms = ({
@@ -36,12 +41,21 @@ const RequestForms = ({
   senderPhotoRef,
   recipientPhotoRef,
   acceptanceMusicRef,
+  videoRef,
+  videoFile,
+  setVideoFile,
+  videoUploaded,
+  setVideoUploaded
 }: RequestFormsProps) => {
   // useRef
   const editorRef = useRef<any>(null);
-  const {auth} = useAppContext();
+  const videoPlayerRef = useRef<any>();
+
+  // context
+  const { auth } = useAppContext();
 
   // useState
+  const [showVideo, setShowVideo] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [audio, setAudio] = useState<AudioFileType>({
@@ -131,38 +145,110 @@ const RequestForms = ({
         />
       </div>
 
+      {/* Upload Video Request Instead */}
+      <div className="flex items-center space-x-4 pt-4 pb-2">
+        <ReactSwitch
+          onChange={(e) => {
+            setShowVideo(e);
+            if(e === false){
+              setFileError((prev) => ({...prev, video: ""}));
+              setVideoFile({ size: 0, file: "" });
+              setVideoUploaded(false);
+            }
+          }}
+          checked={showVideo}
+          className="border border-gray-700"
+          offColor="#fff"
+          onColor="#808080"
+          uncheckedIcon={false}
+          checkedIcon={false}
+          onHandleColor="#ffffff"
+          offHandleColor="#808080"
+          activeBoxShadow="undefined"
+        />
+        <span className="text-secondary">Upload Video Message Instead?</span>
+      </div>
+
+      {showVideo && (
+        <section className="flex flex-col space-y-2 w-full">
+          <label htmlFor="video">Upload your video (Max: 50MB)</label>
+          <div className="relative">
+            <input
+              className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
+              onChange={uploadFile}
+              type="file"
+              name="video"
+              ref={videoRef}
+            />
+            {videoFile.file && !videoUploaded && (
+              <span>Video uploaded successfully</span>
+            )}
+
+            {videoFile.file && videoUploaded && <span>Uploading. Please wait...</span>}
+
+            {requestData.video && (
+              <div className="flex flex-row justify-between w-full pt-2">
+                <span>Size: {videoFile.size} MB</span>
+                <span>Max: 50MB</span>
+              </div>
+            )}
+
+            {requestData.video && (
+              <span
+                className="absolute top-4 right-2 cursor-pointer"
+                onClick={() => {
+                  setRequestData((prev) => ({
+                    ...prev,
+                    video: "",
+                  }));
+                  videoRef.current.value = "";
+                  setFileError((prev) => ({ ...prev, video: "" }));
+                }}
+              >
+                <VscClose size={25} className="text-secondary-subtle" />
+              </span>
+            )}
+          </div>
+          {fileError.video && (
+            <small className="text-red-700 text-sm">{fileError.video}</small>
+          )}
+        </section>
+      )}
+
       {/* Message Rich Text Editor */}
-      <Editor
-        onInit={(evt, editor) => (editorRef.current = editor)}
-        textareaName="message"
-        value={requestData.message}
-        onEditorChange={(e) =>
-          setRequestData((prev) => ({ ...prev, message: e }))
-        }
-        init={{
-          height: 400,
-          menubar: true,
-          plugins: [
-            "autolink",
-            "lists",
-            "link",
-            "image",
-            "charmap",
-            "preview",
-            "anchor",
-            "searchreplace",
-            "visualblocks",
-            "fullscreen",
-            "media",
-          ],
-          toolbar: true,
-          content_style:
-            'body { font-family: "Nunito", sans-serif; font-size:14px }',
-        }}
-      />
+      {!showVideo && (
+        <Editor
+          onInit={(evt, editor) => (editorRef.current = editor)}
+          textareaName="message"
+          value={requestData.message}
+          onEditorChange={(e) =>
+            setRequestData((prev) => ({ ...prev, message: e }))
+          }
+          init={{
+            height: 400,
+            menubar: true,
+            plugins: [
+              "autolink",
+              "lists",
+              "link",
+              "image",
+              "charmap",
+              "preview",
+              "anchor",
+              "searchreplace",
+              "visualblocks",
+              "fullscreen",
+              "media",
+            ],
+            toolbar: true,
+            content_style:
+              'body { font-family: "Nunito", sans-serif; font-size:14px }',
+          }}
+        />
+      )}
 
       {/* Advanced Options */}
-      <section className="flex flex-col space-y-7 mt-10 pt-10">
+      <section className="flex flex-col space-y-7 mt-10 pt-5">
         {/* Enable Advanced Options Switch */}
         <div className="flex items-center space-x-4">
           <ReactSwitch
@@ -177,7 +263,9 @@ const RequestForms = ({
             offHandleColor="#DC5B57"
             activeBoxShadow="undefined"
           />
-          <span className="text-secondary">{showAdvanced ? "Hide" : "Show"} Advanced Options</span>
+          <span className="text-secondary">
+            {showAdvanced ? "Hide" : "Show"} Advanced Options
+          </span>
         </div>
 
         {/* Advanced File Input Fields */}
@@ -329,7 +417,14 @@ const RequestForms = ({
           )}
         </div>
 
-        {showPreview && <ShowPreview requestData={requestData} />}
+        {showPreview && (
+          <ShowPreview
+            requestData={requestData}
+            showVideo={showVideo}
+            videoFile={videoFile}
+            videoPlayerRef={videoPlayerRef}
+          />
+        )}
       </section>
     </>
   );
