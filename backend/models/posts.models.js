@@ -22,7 +22,7 @@ const postSchema = new mongoose.Schema({
     },
     senderPhoto: String,
     recipientPhoto: String,
-    backgroundImage: String,
+    video: String,
     acceptanceMusic: String,
     user: {
         type: mongoose.Schema.Types.ObjectId,

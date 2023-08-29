@@ -3,7 +3,7 @@ const Post = require("../models/posts.models");
 const { frontend_url } = require("../utils");
 
 // middleware for file uploads
-const { uploadFile } = require("../middleware/imageUpload");
+const { uploadFile } = require("../middleware/fileUpload");
 const { shortenUrl } = require("../lib");
 
 // GET all posts regardless of user
@@ -129,9 +129,9 @@ const createPost = async (req, res) => {
         req?.files?.acceptanceMusic,
         "ptm/ptm-music"
       ),
-      backgroundImage: await uploadFile(
-        req?.files?.backgroundImage,
-        "ptm/ptm-bg-photos"
+      video: await uploadFile(
+        req?.files?.video,
+        "ptm/ptm-videos"
       ),
     });
 
