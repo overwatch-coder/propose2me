@@ -103,10 +103,10 @@ const createPost = async (req, res) => {
         .status(403)
         .json({ success: false, message: "Unathorized access!" });
 
-    if (!title || !message || !senderName || !recipientName) {
+    if (!title || !senderName || !recipientName) {
       return res.status(404).json({
         success: false,
-        message: "All fields marked with * are required",
+        message: "Please fill all required fields",
       });
     }
 
@@ -129,10 +129,7 @@ const createPost = async (req, res) => {
         req?.files?.acceptanceMusic,
         "ptm/ptm-music"
       ),
-      video: await uploadFile(
-        req?.files?.video,
-        "ptm/ptm-videos"
-      ),
+      video: await uploadFile(req?.files?.video, "ptm/ptm-videos"),
     });
 
     const post = await postCreated.save();
@@ -174,8 +171,7 @@ const createPost = async (req, res) => {
 //PATCH - Update a post
 const updatePost = async (req, res) => {
   const { id } = req.params;
-  const { title, message, senderEmail, senderName, recipientName } =
-    req.body;
+  const { title, message, senderEmail, senderName, recipientName } = req.body;
 
   try {
     const user = req.user;

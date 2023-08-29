@@ -7,7 +7,6 @@ const postSchema = new mongoose.Schema({
     },
     message: {
         type: String,
-        required: true
     },
     senderEmail: {
         type: String,
