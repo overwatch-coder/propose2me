@@ -206,14 +206,22 @@ export const uploadVideoFile = async (file: File) => {
   const data = new FormData();
   data.append("file", file);
   data.append("upload_preset", "unsigned");
-  data.append('folder', "ptm/ptm-videos")
-
+  data.append("folder", "ptm/ptm-videos");
+console.log({cloud: process.env.CLOUDINARY_NAME})
   try {
-    const res = await axios.post("/api/upload", data);
+    const url = `https://api.cloudinary.com/v1_1/dmzkknizp/video/upload`;
+
+    const res = await axios.post(url, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
     const results = res.data;
+
     return {
       success: results?.secure_url ? true : false,
-      ...results
+      ...results,
     };
   } catch (error: any) {
     const results = {
