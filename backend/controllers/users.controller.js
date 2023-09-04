@@ -18,6 +18,33 @@ const { sendUserEmail } = require("../lib");
 
 // POST - Register a new User
 const register = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Register a new user and send verification email'
+
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            username: {
+                                type: "string"
+                            },
+                            email: {
+                                type: "string"
+                            },
+                            password: {
+                                type: "string",
+                            }
+                        },
+                        required: ["username", "email", "password"]
+                    }
+                }
+            } 
+        }
+    */
+
   const { username, email, password } = req.body;
   try {
     //validate user info
@@ -111,6 +138,29 @@ const register = async (req, res) => {
 
 //GET - Verify email address
 const verifyEmail = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Verify an existing user whose email is not verified'
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            verification: {
+                                type: "string"
+                            },
+                            email: {
+                                type: "string"
+                            }
+                        },
+                        required: ["verification", "email"]
+                    }
+                }
+            } 
+        }
+    */
+
   const { verification, email } = req.body;
 
   //check if the user with the email actually exists
@@ -122,7 +172,7 @@ const verifyEmail = async (req, res) => {
     });
 
   // check if user is already verified
-  if(user.isEmailVerified){
+  if (user.isEmailVerified) {
     return res.status(200).json({
       success: true,
       message: "Email has been successfully verified. You can log in now",
@@ -169,6 +219,30 @@ const verifyEmail = async (req, res) => {
 
 // POST - User Login
 const login = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Log in an existing user'
+
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            email: {
+                              type: "string"
+                            },
+                            password: {
+                              type: "string",
+                            }
+                        },
+                        required: ["email", "password"]
+                    }
+                }
+            } 
+        }
+    */
+
   //get data from req.body
   const { email, password } = req.body;
   try {
@@ -261,6 +335,9 @@ const login = async (req, res) => {
 
 //PATCH - Update the details of an existing user
 const updateUser = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Update the details of an existing user'
+
   const { id } = req.params;
 
   const { username, email, password } = req.body;
@@ -348,6 +425,9 @@ const updateUser = async (req, res) => {
 
 //DELETE - Delete a user from the database
 const deleteUser = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'remove an existing user account'
+
   const { id } = req.params;
 
   try {
@@ -387,6 +467,7 @@ const deleteUser = async (req, res) => {
 
 // POST - Logout a user
 const logout = async (req, res) => {
+  // #swagger.tags = ['Users']
   req.user = "";
   res
     .clearCookie("access_token")

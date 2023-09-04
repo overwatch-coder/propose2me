@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "swagger": "node ./docs/swagger.js"
   },
   "keywords": [],
   "author": "",
@@ -23,10 +24,12 @@
     "mongoose": "^7.1.0",
     "morgan": "^1.10.0",
     "nodemailer": "^6.9.1",
+    "swagger-ui-express": "^5.0.0",
     "tiny-url-generator": "^1.0.1",
     "validator": "^13.9.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "swagger-autogen": "^2.23.5"
   }
 }

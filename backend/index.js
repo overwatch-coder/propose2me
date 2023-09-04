@@ -8,6 +8,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const morgan = require("morgan");
 const fileUploads = require("express-fileupload");
+const swaggerUi = require("swagger-ui-express");
 const path = require("path");
 
 const { frontend_url } = require("./utils");
@@ -17,6 +18,9 @@ const userRoutes = require("./routes/users.routes");
 const postRoutes = require("./routes/posts.routes");
 const recipientRoutes = require("./routes/recipient.routes");
 const urlRoutes = require("./routes/urls.routes");
+
+// import swagger docs
+const swaggerDocs = require('./docs/docs.json')
 
 // register express app
 const app = express();
@@ -44,7 +48,7 @@ const temporaryDirectory =
 app.use(
   fileUploads({
     useTempFiles: true,
-    tempFileDir: temporaryDirectory
+    tempFileDir: temporaryDirectory,
   })
 );
 
@@ -55,7 +59,9 @@ mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
     app.listen(port, () =>
-      console.log(`connected to db and listening on port ${port}`)
+      console.log(
+        `connected to db and listening on http://localhost:${port}/docs`
+      )
     );
   })
   .catch((err) => {
@@ -66,7 +72,8 @@ mongoose
 app.use("/api/auth", userRoutes);
 app.use("/api/auth/posts", postRoutes);
 app.use("/api/recipient", recipientRoutes);
-app.use('/api/user/urls', urlRoutes);
+app.use("/api/user/urls", urlRoutes);
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 //redirect when route isn't found
 app.use("*", (req, res) => res.status(404).redirect(frontend_url));

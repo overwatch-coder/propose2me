@@ -22,6 +22,12 @@ router.post("/logout", logout);
 
 //middle to protect authenticated routes
 router.use(authenticateUser);
+router.use("*", (req, res, next) => {
+  /* #swagger.security = [{
+          "bearerAuth": []
+  }] */
+  next();
+});
 
 router.patch("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);

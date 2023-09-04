@@ -3,6 +3,9 @@ const Url = require("../models/urls.model");
 
 // get all links of a user
 const getUserUrls = async (req, res) => {
+  // #swagger.tags = ['Urls']
+
+  // #swagger.description = 'Get All Urls of a specific user'
   try {
     const user = req.user;
     const existingUrls = await Url.find({ user: user._id }).exec();
@@ -29,7 +32,31 @@ const getUserUrls = async (req, res) => {
 
 // save a new link of a user
 const saveUserUrls = async (req, res) => {
+  // #swagger.tags = ['Urls']
+  // #swagger.description = 'Save a new url that a user generates'
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            url: {
+                                type: "string"
+                            },
+                            postId: {
+                                type: "string",
+                            }
+                        },
+                        required: ["url", "postId"]
+                    }
+                }
+            } 
+        }
+    */
+
   const { url, postId } = req.body;
+
   try {
     if (!url || url === "" || !postId) {
       return res
@@ -66,8 +93,10 @@ const saveUserUrls = async (req, res) => {
   }
 };
 
-// update url responded status
+// delete url
 const deletedRespondedUrl = async (req, res) => {
+  // #swagger.tags = ['Urls']
+  // #swagger.description = 'Delete saved url and its related post when recipient has responded'
   const { userId, postId } = req.query;
 
   try {
@@ -91,7 +120,7 @@ const deletedRespondedUrl = async (req, res) => {
 
     // delete post that created the url
     const deletedPost = await Post.findOneAndDelete({
-      $and: [{ user: deletedUrl.user}, { _id: deletedUrl.postId }],
+      $and: [{ user: deletedUrl.user }, { _id: deletedUrl.postId }],
     });
 
     if (!deletedPost) {

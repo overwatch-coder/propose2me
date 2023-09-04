@@ -8,6 +8,9 @@ const { shortenUrl } = require("../lib");
 
 // GET all posts regardless of user
 const adminGetsAllPosts = async (req, res) => {
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'Only Admin can see all the requests regardless of user'
+  // #swagger.ignore = true
   const { admin } = req.body;
   try {
     if (admin !== "Overwatch") {
@@ -32,6 +35,9 @@ const adminGetsAllPosts = async (req, res) => {
 
 // GET all user posts
 const getAllUserPosts = async (req, res) => {
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'Get all requests made by a specific user'
+
   try {
     const user = req.user;
     if (!user)
@@ -61,6 +67,8 @@ const getAllUserPosts = async (req, res) => {
 
 // GET single user post
 const getSinglePost = async (req, res) => {
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'Get a single requests made by a specific user'
   const { id } = req.params;
 
   try {
@@ -95,7 +103,10 @@ const getSinglePost = async (req, res) => {
 
 // POST - Create a new post
 const createPost = async (req, res) => {
-  const { title, message, senderEmail, senderName, recipientName, video } = req.body;
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'Create and save a new request and generate a url for it'
+  const { title, message, senderEmail, senderName, recipientName, video } =
+    req.body;
   try {
     const user = req.user;
     if (!user)
@@ -170,6 +181,8 @@ const createPost = async (req, res) => {
 
 //PATCH - Update a post
 const updatePost = async (req, res) => {
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'update already saved request'
   const { id } = req.params;
   const { title, message, senderEmail, senderName, recipientName } = req.body;
 
@@ -262,6 +275,8 @@ const updatePost = async (req, res) => {
 
 //DELETE - Delete a post
 const deletePost = async (req, res) => {
+  // #swagger.tags = ['Requests']
+  // #swagger.description = 'Delete a specific request by a user'
   const { id } = req.params;
   try {
     //find the user from the request parameters
