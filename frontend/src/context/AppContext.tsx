@@ -78,9 +78,11 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    const localThemeString: any = localStorage?.getItem("ptm-theme") ?? {
-      theme: "light",
-    };
+    const localThemeString: any =
+      localStorage?.getItem("ptm-theme") ??
+      JSON.stringify({
+        theme: "light",
+      });
     const localTheme: any = JSON?.parse(localThemeString) ?? { theme: "light" };
     setTheme(localTheme.theme);
   }, [pathname]);
