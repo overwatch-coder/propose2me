@@ -68,7 +68,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (theme === "light" || theme === "dark") {
-      localStorage.setItem("ptm-theme", JSON?.stringify(theme));
+      localStorage.setItem("ptm-theme", JSON?.stringify({ theme }));
     }
   }, [theme]);
 
@@ -78,10 +78,11 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       return;
     }
 
-    const localThemeString = localStorage?.getItem("ptm-theme") ?? "light";
-    const localTheme: "light" | "dark" | null =
-      JSON?.parse(localThemeString) ?? "light";
-    setTheme(localTheme);
+    const localThemeString: any = localStorage?.getItem("ptm-theme") ?? {
+      theme: "light",
+    };
+    const localTheme: any = JSON?.parse(localThemeString) ?? { theme: "light" };
+    setTheme(localTheme.theme);
   }, [pathname]);
 
   //check theme
