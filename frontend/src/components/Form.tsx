@@ -17,7 +17,7 @@ const Form = () => {
     <>
       {pathname === "/register" && (
         <div className="flex flex-col space-y-2">
-          <label htmlFor="username">Username</label>
+          <label htmlFor="username" className="dark:text-white">Username</label>
           <input
             type="username"
             name="username"
@@ -31,7 +31,7 @@ const Form = () => {
       )}
 
       <div className="flex flex-col space-y-2">
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email" className="dark:text-white">Email</label>
         <input
           type="email"
           name="email"
@@ -44,7 +44,7 @@ const Form = () => {
       </div>
 
       <div className="flex flex-col space-y-2">
-        <label htmlFor="password">Password</label>
+        <label htmlFor="password" className="dark:text-white">Password</label>
         <input
           type="password"
           name="password"

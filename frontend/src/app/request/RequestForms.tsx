@@ -92,7 +92,7 @@ const RequestForms = ({
         <div className="flex flex-col space-y-2 w-full">
           <label htmlFor="senderName">Sender Name</label>
           <input
-            className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+            className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
             onChange={handleChange}
             value={requestData.senderName}
             type="text"
@@ -106,7 +106,7 @@ const RequestForms = ({
         <div className="flex flex-col space-y-2 w-full">
           <label htmlFor="recipientName">Recipient Name</label>
           <input
-            className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+            className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
             onChange={handleChange}
             value={requestData.recipientName}
             type="text"
@@ -121,7 +121,7 @@ const RequestForms = ({
       <div className="flex flex-col space-y-2 w-full">
         <label htmlFor="title">Message Title</label>
         <input
-          className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+          className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
           onChange={handleChange}
           value={requestData.title}
           type="text"
@@ -134,9 +134,11 @@ const RequestForms = ({
       {/* Email Address */}
       <div className="flex flex-col space-y-2 w-full">
         <label htmlFor="senderEmail">Sender Email Address</label>
-        <small>Leave it blank to use your acccount email</small>
+        <small className="dark:text-white/70">
+          Leave it blank to use your acccount email
+        </small>
         <input
-          className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+          className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
           onChange={handleChange}
           value={requestData.senderEmail}
           type="email"
@@ -150,6 +152,7 @@ const RequestForms = ({
         <ReactSwitch
           onChange={(e) => {
             setShowVideo(e);
+            e === true && setRequestData((prev) => ({ ...prev, message: "" }));
             if (e === false) {
               setFileError((prev) => ({ ...prev, video: "" }));
               setVideoFile({ size: 0, file: "" });
@@ -166,7 +169,9 @@ const RequestForms = ({
           offHandleColor="#808080"
           activeBoxShadow="undefined"
         />
-        <span className="text-secondary">Upload Video Message Instead?</span>
+        <span className="text-secondary dark:text-white">
+          Upload Video Message Instead?
+        </span>
       </div>
 
       {showVideo && (
@@ -267,7 +272,7 @@ const RequestForms = ({
             offHandleColor="#DC5B57"
             activeBoxShadow="undefined"
           />
-          <span className="text-secondary">
+          <span className="text-secondary dark:text-white">
             {showAdvanced ? "Hide" : "Show"} Advanced Options
           </span>
         </div>
@@ -405,7 +410,7 @@ const RequestForms = ({
               offHandleColor="#808080"
               activeBoxShadow="undefined"
             />
-            <span className="text-secondary ms-auto">
+            <span className="text-secondary ms-auto dark:text-white">
               {showPreview ? "Hide" : "Show"} Live Preview
             </span>
           </div>

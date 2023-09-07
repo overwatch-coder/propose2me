@@ -18,6 +18,8 @@ type AppContextProps = {
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
   urls: any;
   setUrls: React.Dispatch<React.SetStateAction<any>>;
+  theme: "light" | "dark" | null;
+  setTheme: React.Dispatch<React.SetStateAction<"light" | "dark" | null>>;
 };
 
 const initialValues = {
@@ -35,6 +37,8 @@ const initialValues = {
   setAuth: () => {},
   urls: [],
   setUrls: () => [],
+  theme: null,
+  setTheme: () => null,
 };
 
 export const AppContext = createContext<AppContextProps>(initialValues);
@@ -49,12 +53,45 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   });
   const [auth, setAuth] = useState<IAuth | null>(null);
   const [urls, setUrls] = useState<any>([]);
+  const [theme, setTheme] = useState<"light" | "dark" | null>(null);
 
   const pathname = usePathname();
 
+  //check theme
+  useEffect(() => {
+    if (window.matchMedia("(prefers-colors-theme: dark)").matches) {
+      setTheme("dark");
+    } else {
+      setTheme("light");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (theme === "light" || theme === "dark") {
+      localStorage.setItem("ptm-theme", JSON?.stringify(theme));
+    }
+  }, [theme]);
+
   useEffect(() => {
     setIsOpen(false);
+    if (!localStorage) {
+      return;
+    }
+
+    const localThemeString = localStorage?.getItem("ptm-theme") ?? "light";
+    const localTheme: "light" | "dark" | null =
+      JSON?.parse(localThemeString) ?? "light";
+    setTheme(localTheme);
   }, [pathname]);
+
+  //check theme
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
 
   useEffect(() => {
     if (!localStorage) {
@@ -66,11 +103,11 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       setAuth(user);
     }
 
-    if(auth?.token){
+    if (auth?.token) {
       const getUrls = async () => {
         const savedUrls = await getSavedUrls(auth?.token as string);
         setUrls(savedUrls?.data);
-      }
+      };
 
       getUrls();
     }
@@ -87,6 +124,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     setAuth,
     urls,
     setUrls,
+    theme,
+    setTheme,
   };
 
   return (
@@ -111,6 +150,8 @@ export const useAppContext = () => {
     setAuth,
     urls,
     setUrls,
+    theme,
+    setTheme,
   } = useContext(AppContext);
 
   const toggleNavbar = () => {
@@ -136,6 +177,8 @@ export const useAppContext = () => {
     logout,
     urls,
     setUrls,
+    theme,
+    setTheme,
   };
 };
 

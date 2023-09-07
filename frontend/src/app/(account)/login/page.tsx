@@ -80,20 +80,20 @@ const LoginPage = () => {
         <meta name="description" content="User Login Page" />
       </Helmet>
 
-      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20">
+      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
         <section className="flex flex-col space-y-6">
           <h2 className="font-pacifico uppercase text-3xl text-primary text-center">
             PTM - {pathname === "/login" ? "Login" : "Register"}{" "}
           </h2>
 
-          <div className="flex items-center justify-center w-full border border-secondary-subtle/40 shadow-md">
+          <div className="flex items-center justify-center w-full border border-secondary-subtle/40 dark:border-white/70 shadow-md">
             {/* Register */}
             <Link
               href={"/register"}
               className={`uppercase cursor-pointer text-center w-full py-3 ${
                 pathname === "/register"
                   ? "bg-primary text-white font-semibold rounded-s-none rounded-b-none rounded-r-md rounded-l-md rounded"
-                  : ""
+                  : "dark:text-white"
               }`}
             >
               Register
@@ -152,7 +152,7 @@ const LoginPage = () => {
 
               {pathname === "/login" ? (
                 <>
-                  <small>
+                  <small className="dark:text-white">
                     Don't have an account yet?{" "}
                     <Link
                       href={"/register"}
@@ -166,8 +166,8 @@ const LoginPage = () => {
                     <h3 className="font-semibold text-primary">
                       Demo User Details
                     </h3>
-                    <small>Email: demo@jrvbuildcon.com</small>
-                    <small>Password: demoUser2023@@</small>
+                    <small className="dark:text-white/80">Email: demo@jrvbuildcon.com</small>
+                    <small className="dark:text-white/80">Password: demoUser2023@@</small>
                   </div>
                 </>
               ) : (

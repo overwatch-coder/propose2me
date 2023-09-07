@@ -11,7 +11,7 @@ export const metadata = {
 const AboutPage = () => {
   return (
     <article className="flex flex-col mx-auto items-center gap-y-7">
-      <h2 className="uppercase font-bold text-2xl md:text-3xl text-black">
+      <h2 className="uppercase font-bold text-2xl md:text-3xl text-black dark:text-white">
         About PTM
       </h2>
 
@@ -20,7 +20,7 @@ const AboutPage = () => {
         {/* Content */}
         <div className="flex space-y-2 border-2 border-primary p-5 md:p-10 lg:p-16 flex-col items-center md:items-start">
           <h3 className="text-primary font-bold text-xl">Mission Statement</h3>
-          <p>
+          <p className="dark:text-white/80">
             At PTM, we aim to provide a platform that empowers individuals to
             express their love without fear or anxiety. We strive to make
             proposal planning easy and personalized, offering creative options
@@ -41,7 +41,7 @@ const AboutPage = () => {
       </div>
 
       {/* Our Vision */}
-      <h3 className="text-xl text-center mt-5 max-w-xl">
+      <h3 className="text-xl text-center mt-5 max-w-xl dark:text-white/80">
         <span className="text-primary font-bold">Our vision</span> is to be the
         go-to platform for individuals looking to create unique and
         unforgettable proposal experiences. We envision a world where love is
@@ -84,14 +84,16 @@ const AboutPage = () => {
         id="contact-us"
         className="flex items-center justify-end ms-auto mt-10 max-w-lg"
       >
-        <div className="p-3 border-primary border-2 shadow flex flex-col space-y-5">
+        <div className="p-3 border-primary border-2 shadow flex flex-col space-y-6">
           <h2 className="text-xl md:text-2xl text-primary font-bold">
             {contactDetails.title}
           </h2>
-          
-          <p className="text-sm text-secondary-subtle">{contactDetails.desc}</p>
 
-          <div className="text-black font-medium flex flex-col space-y-2">
+          <p className="text-sm text-secondary-subtle dark:text-white">
+            {contactDetails.desc}
+          </p>
+
+          <div className="text-black font-medium flex flex-col space-y-2 dark:text-white/70">
             <p>Email: {contactDetails.email}</p>
             <p>Phone: {contactDetails.phone}</p>
             <p>Address: {contactDetails.address}</p>
@@ -99,7 +101,11 @@ const AboutPage = () => {
 
           <div className="flex items-center space-x-5">
             {contactDetails.socials.map((Social, index) => (
-              <Social key={index} size={20} className="hover:scale-110 hover:text-primary cursor-pointer" />
+              <Social
+                key={index}
+                size={20}
+                className="hover:scale-110 hover:text-primary dark:hover:text-primary cursor-pointer dark:text-white"
+              />
             ))}
           </div>
         </div>

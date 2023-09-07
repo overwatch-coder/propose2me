@@ -66,13 +66,13 @@ const RegisterPage = () => {
         <meta name="description" content="User Registration Page" />
       </Helmet>
 
-      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20">
+      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
         <section className="flex flex-col space-y-6">
           <h2 className="font-pacifico uppercase text-3xl text-primary text-center">
             PTM - {pathname === "/login" ? "Login" : "Register"}{" "}
           </h2>
 
-          <div className="flex items-center justify-center w-full border border-secondary-subtle/40 shadow-md">
+          <div className="flex items-center justify-center w-full border border-secondary-subtle/40 dark:border-white/70 shadow-md">
             {/* Register */}
             <Link
               href={"/register"}
@@ -91,7 +91,7 @@ const RegisterPage = () => {
               className={`uppercase text-center cursor-pointer w-full py-3 ${
                 pathname === "/login"
                   ? "bg-primary text-white font-semibold rounded-s-md rounded-b-md rounded-r-none rounded-l-none rounded"
-                  : ""
+                  : "dark:text-white"
               }`}
             >
               Login
@@ -147,7 +147,7 @@ const RegisterPage = () => {
                   </Link>
                 </small>
               ) : (
-                <small>
+                <small className="dark:text-white">
                   Already have an account?{" "}
                   <Link
                     href={"/login"}

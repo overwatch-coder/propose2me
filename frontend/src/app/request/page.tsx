@@ -258,7 +258,7 @@ const RequestPage = () => {
           content="Design your perfect proposal request"
         />
       </Helmet>
-      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20">
+      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
         <section className="flex flex-col space-y-6 my-7">
           <h2 className="font-pacifico uppercase text-3xl text-primary text-center">
             PTM - Request
@@ -331,9 +331,9 @@ const RequestPage = () => {
             encType="multipart/form-data"
           >
             {/* Form Fields */}
-            <section className="my-4 flex flex-col space-y-4">
+            <section className="my-4 flex flex-col space-y-4 dark:text-white">
               {error && (
-                <small className="p-4 rounded bg-red-300/70 text-red-700 text-sm">
+                <small className="p-4 rounded bg-red-200/80 text-red-700 text-sm">
                   {error}
                 </small>
               )}

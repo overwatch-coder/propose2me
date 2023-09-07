@@ -27,7 +27,7 @@ export default function RootLayout({
         referrerPolicy="origin"
       ></Script>
 
-      <body className="overflow-x-hidden scrollbar-hide">
+      <body className="overflow-x-hidden scrollbar-hide bg-white dark:bg-black/[0.85]">
         <AppContextProvider>
           <div className="flex flex-col min-h-screen">
             <Header />

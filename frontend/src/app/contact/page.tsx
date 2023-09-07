@@ -17,9 +17,9 @@ const ContactPage = () => {
           PTM {contactDetails.title}
         </h2>
 
-        <p className="text-sm text-secondary-subtle">{contactDetails.desc}</p>
+        <p className="text-sm text-secondary-subtle dark:text-white/60">{contactDetails.desc}</p>
 
-        <div className="text-black font-medium flex flex-col space-y-2">
+        <div className="text-black font-medium flex flex-col space-y-2 dark:text-white/70">
           <p>Email: {contactDetails.email}</p>
           <p>Phone: {contactDetails.phone}</p>
           <p>Address: {contactDetails.address}</p>
@@ -30,7 +30,7 @@ const ContactPage = () => {
             <Social
               key={index}
               size={20}
-              className="hover:scale-110 hover:text-primary cursor-pointer"
+              className="hover:scale-110 hover:text-primary cursor-pointer dark:text-white dark:hover:text-primary"
             />
           ))}
         </div>

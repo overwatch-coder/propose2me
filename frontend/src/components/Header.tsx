@@ -9,12 +9,14 @@ import {
   VscChevronDown,
   VscChevronUp,
 } from "react-icons/vsc";
+import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
 import { useAppContext } from "@/context/AppContext";
 import copy from "copy-to-clipboard";
 
 const Header = () => {
   const pathname = usePathname();
-  const { toggleNavbar, isOpen, auth, logout, urls } = useAppContext();
+  const { toggleNavbar, isOpen, auth, logout, urls, theme, setTheme } =
+    useAppContext();
   const [displayUrls, setDisplayUrls] = useState(false);
   const [success, setSuccess] = useState({
     status: false,
@@ -64,7 +66,20 @@ const Header = () => {
         )}
 
         {/* Hamburger Menu */}
-        <div className="cursor-pointer md:hidden">
+        <div className="md:hidden flex items-center space-x-5">
+          <span
+            className="cursor-pointer"
+            onClick={() =>
+              setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+            }
+          >
+            {theme === "light" ? (
+              <BsFillMoonStarsFill size={20} className="text-white" />
+            ) : (
+              <BsFillSunFill size={20} className="text-white" />
+            )}
+          </span>
+
           {isOpen ? (
             <VscClose
               onClick={() => {
@@ -72,7 +87,7 @@ const Header = () => {
                 setDisplayUrls(false);
               }}
               size={30}
-              className="text-white"
+              className="text-white cursor-pointer "
             />
           ) : (
             <VscMenu
@@ -81,13 +96,26 @@ const Header = () => {
                 setDisplayUrls(false);
               }}
               size={30}
-              className="text-white"
+              className="text-white cursor-pointer "
             />
           )}
         </div>
 
         {/* Desktop Navbar */}
         <nav className="items-center justify-center hidden space-x-4 text-sm text-white uppercase md:flex">
+          <span
+            className="hidden md:block mx-3 cursor-pointer"
+            onClick={() =>
+              setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+            }
+          >
+            {theme === "light" ? (
+              <BsFillMoonStarsFill size={25} className="text-white" />
+            ) : (
+              <BsFillSunFill size={25} className="text-white" />
+            )}
+          </span>
+
           <Link
             href={"/"}
             className={`hover:border-b-2 hover:border-white ${
