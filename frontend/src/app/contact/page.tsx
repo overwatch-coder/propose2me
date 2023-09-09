@@ -17,7 +17,9 @@ const ContactPage = () => {
           PTM {contactDetails.title}
         </h2>
 
-        <p className="text-sm text-secondary-subtle dark:text-white/60">{contactDetails.desc}</p>
+        <p className="text-sm text-secondary-subtle dark:text-white/60">
+          {contactDetails.desc}
+        </p>
 
         <div className="text-black font-medium flex flex-col space-y-2 dark:text-white/70">
           <p>Email: {contactDetails.email}</p>
