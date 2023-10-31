@@ -52,16 +52,18 @@ app.use(
 );
 
 //connect to database and listen to app
-const port = process.env.PORT || 8000;
+const PORT = process.env.PORT || 8000;
 
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
-    app.listen(port, () => {
+    app.listen(PORT, () => {
       if (process.env.NODE_ENV === "development") {
         console.log(
-          `connected to db and listening on http://localhost:${port}/docs`
+          `connected to db and listening on http://localhost:${PORT}/docs`
         );
+      }else{
+        console.log(`Connected to db and listening on PORT: ${PORT}`)
       }
     });
   })
@@ -69,12 +71,19 @@ mongoose
     console.log({ error: err });
   });
 
+const SWAGGER_UI_CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.1.0/swagger-ui.min.css";
+
 // api custom middleware
 app.use("/api/auth", userRoutes);
 app.use("/api/auth/posts", postRoutes);
 app.use("/api/recipient", recipientRoutes);
 app.use("/api/user/urls", urlRoutes);
-app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
+app.use(
+  "/docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocs, { customCssUrl: SWAGGER_UI_CSS_URL })
+);
 
 //redirect to swagger docs when you hit an undefined route
 app.use("*", (req, res) => res.status(301).redirect("/docs"));
