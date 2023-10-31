@@ -1,7 +1,7 @@
 {
-  "name": "ptm",
+  "name": "ptm-backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is the backend of the ptm web application",
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index.js",
@@ -9,7 +9,7 @@
     "swagger": "node ./docs/swagger.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Overwatch Coder",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",

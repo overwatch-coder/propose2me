@@ -1,5 +1,4 @@
 require("dotenv").config();
-const fs = require("fs");
 
 //import dependancies
 const express = require("express");
@@ -20,7 +19,7 @@ const recipientRoutes = require("./routes/recipient.routes");
 const urlRoutes = require("./routes/urls.routes");
 
 // import swagger docs
-const swaggerDocs = require('./docs/docs.json')
+const swaggerDocs = require("./docs/docs.json");
 
 // register express app
 const app = express();
@@ -58,14 +57,16 @@ const port = process.env.PORT || 8000;
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
-    app.listen(port, () =>
-      console.log(
-        `connected to db and listening on http://localhost:${port}/docs`
-      )
-    );
+    app.listen(port, () => {
+      if (process.env.NODE_ENV === "development") {
+        console.log(
+          `connected to db and listening on http://localhost:${port}/docs`
+        );
+      }
+    });
   })
   .catch((err) => {
-    console.log(err);
+    console.log({ error: err });
   });
 
 // api custom middleware
@@ -75,5 +76,5 @@ app.use("/api/recipient", recipientRoutes);
 app.use("/api/user/urls", urlRoutes);
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
-//redirect when route isn't found
-app.use("*", (req, res) => res.status(404).redirect(frontend_url));
+//redirect to swagger docs when you hit an undefined route
+app.use("*", (req, res) => res.status(301).redirect("/docs"));
