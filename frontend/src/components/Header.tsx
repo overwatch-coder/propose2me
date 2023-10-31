@@ -253,8 +253,9 @@ const Header = () => {
             />
           </h3>
 
-          <small className="text-xs pb-5 block">
-            NB: Each link expires 5 days after being generated
+          <small className="text-xs pb-5 flex flex-col space-y-1">
+            <p>Click on a link to copy it</p>
+            <p>NB: Each link is deleted after the recipient has responded.</p>
           </small>
 
           {urls && urls?.length > 0 ? (
