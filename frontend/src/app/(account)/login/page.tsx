@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client";
 
 import Link from "next/link";
@@ -58,6 +57,7 @@ const LoginPage = () => {
           email: "",
           password: "",
         });
+
         return redirect("/request");
       }
     } else {
@@ -166,8 +166,12 @@ const LoginPage = () => {
                     <h3 className="font-semibold text-primary">
                       Demo User Details
                     </h3>
-                    <small className="dark:text-white/80">Email: demo@jrvbuildcon.com</small>
-                    <small className="dark:text-white/80">Password: demoUser2023@@</small>
+                    <small className="dark:text-white/80">
+                      Email: demo@jrvbuildcon.com
+                    </small>
+                    <small className="dark:text-white/80">
+                      Password: demoUser2023@@
+                    </small>
                   </div>
                 </>
               ) : (

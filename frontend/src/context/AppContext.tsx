@@ -6,6 +6,7 @@ import { IAccount, IAuth } from "../../types";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getSavedUrls } from "@/utils";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 
 type AppContextProps = {
   isOpen: boolean;
@@ -134,6 +135,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   return (
     <AppContext.Provider value={values}>
       <>
+        <GoogleAnalytics trackPageViews={true} strategy="lazyOnload" />
         {children}
         <ToastContainer />
       </>

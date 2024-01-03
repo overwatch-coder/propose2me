@@ -351,7 +351,7 @@ const RequestForms = ({
           </div>
 
           {/* Acceptance Music */}
-          <div className="flex flex-col space-y-2 w-full">
+          <div className="flex-col space-y-2 w-full hidden">
             <label htmlFor="acceptanceMusic">Acceptance Music</label>
             <div className="relative">
               <input
@@ -384,7 +384,7 @@ const RequestForms = ({
             </div>
           </div>
           {fileError.music && (
-            <small className="text-red-700 text-sm">{fileError.music}</small>
+            <small className="text-red-700 text-sm hidden">{fileError.music}</small>
           )}
         </div>
 
@@ -419,7 +419,7 @@ const RequestForms = ({
           {showPreview && requestData.acceptanceMusic && (
             <span
               onClick={playAudio}
-              className="cursor-pointer hover:text-primary w-fit"
+              className="cursor-pointer hover:text-primary w-fit hidden"
             >
               {audio.status ? "Pause" : "Test Audio"}
             </span>
