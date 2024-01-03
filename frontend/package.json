@@ -20,6 +20,7 @@
     "eslint-config-next": "13.4.19",
     "fireworks": "^2.2.7",
     "next": "13.4.19",
+    "nextjs-google-analytics": "^2.3.3",
     "postcss": "8.4.28",
     "react": "18.2.0",
     "react-content-loader": "^6.2.1",
