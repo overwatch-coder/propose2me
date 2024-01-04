@@ -2,12 +2,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const validator = require("validator");
-const {
-  generateVerificationHash,
-  verifyHash,
-} = require("dbless-email-verification");
-
-const { frontend_url } = require("../utils");
 
 //model imports
 const User = require("../models/users.models");
@@ -15,6 +9,7 @@ const Post = require("../models/posts.models");
 
 //library imports
 const { sendUserEmail } = require("../lib");
+const { sendEmailVerification, verifyEmailAddress } = require("../lib/email");
 
 // POST - Register a new User
 const register = async (req, res) => {
@@ -92,27 +87,7 @@ const register = async (req, res) => {
         .json({ success: false, message: "Account creation not successful!" });
 
     //add email verification hash to response
-    const verifyEmailHash = generateVerificationHash(
-      user.email,
-      process.env.JWT_SECRET_KEY,
-      30
-    );
-
-    //generate a verification url and send email to client
-    const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
-
-    const emailContent = `
-            <p>Hello, ${user.username},</p>
-            <p>Please click on the link below to verify your PTM account</p>
-            <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
-            <p>or copy and paste this link into your browser: ${verificationURL}</p>
-            `;
-
-    const messageSent = await sendUserEmail(
-      user.email,
-      "Verify your account",
-      emailContent
-    );
+    const { messageSent, verificationURL } = await sendEmailVerification(user);
 
     if (messageSent === "" || !messageSent)
       return res.status(500).json({
@@ -175,43 +150,18 @@ const verifyEmail = async (req, res) => {
   if (user.isEmailVerified) {
     return res.status(200).json({
       success: true,
-      message: "Email has been successfully verified. You can log in now",
-      message_sent: messageSent,
+      message: "Email is already verified. Continue to login",
     });
   }
 
-  //verify the email
-  const isEmailVerified = verifyHash(
+  const { messageSent, success } = await verifyEmailAddress(
     verification,
     email,
-    process.env.JWT_SECRET_KEY
-  );
-
-  if (!isEmailVerified)
-    return res
-      .status(400)
-      .json({ success: false, message: "Email verification failed!" });
-
-  await User.findOneAndUpdate(
-    { email },
-    { isEmailVerified: true },
-    { new: true }
-  );
-
-  const emailContent = `
-    <p>Hello, ${user.username},</p>
-    <p>Your PTM account has been verified successfully!</p>
-    <p>You can now log in using the link: <a href="${frontend_url}/login">Login</a></p>
-    `;
-
-  const messageSent = await sendUserEmail(
-    user.email,
-    "Account Status Confirmation",
-    emailContent
+    user
   );
 
   res.status(200).json({
-    success: true,
+    success,
     message: "Email has been successfully verified. You can log in now",
     message_sent: messageSent,
   });
@@ -275,26 +225,8 @@ const login = async (req, res) => {
     //check if the user is already verified
     if (user.isEmailVerified === false) {
       //add email verification hash to response
-      const verifyEmailHash = generateVerificationHash(
-        user.email,
-        process.env.JWT_SECRET_KEY,
-        30
-      );
-
-      //generate a verification url and send email to client
-      const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
-
-      const emailContent = `
-            <p>Hello, ${user.username},</p>
-            <p>Please click on the link below to verify your PTM account</p>
-            <p>Verification link: <a href='${verificationURL}'>Verify Account</a></p>
-            <p>or copy and paste this link into your browser: ${verificationURL}</p>
-            `;
-
-      const messageSent = await sendUserEmail(
-        user.email,
-        "Verify your account",
-        emailContent
+      const { messageSent, verificationURL } = await sendEmailVerification(
+        user
       );
 
       // set a new cookie and return success message
@@ -321,6 +253,7 @@ const login = async (req, res) => {
           user: {
             username: user.username,
             email: user.email,
+            id: user._id,
           },
         });
     }
@@ -340,7 +273,7 @@ const updateUser = async (req, res) => {
 
   const { id } = req.params;
 
-  const { username, email, password } = req.body;
+  const { username, password, dob, firstName, lastName, gender } = req.body;
 
   try {
     const user = req.user;
@@ -348,7 +281,7 @@ const updateUser = async (req, res) => {
     if (!(id === user._id.toString()))
       return res.status(403).json({
         success: false,
-        message: "You are not authorized to access this user's data",
+        message: "You are not authorized to access this page",
       });
 
     //verify password and respond with error if it's the same
@@ -360,12 +293,6 @@ const updateUser = async (req, res) => {
       });
 
     //compare details to saved data in the database
-    if (email !== undefined && email === user.email)
-      return res.status(400).json({
-        success: false,
-        message: "New email must be different from the previous one!",
-      });
-
     if (username !== undefined && username === user.username)
       return res.status(400).json({
         success: false,
@@ -381,13 +308,7 @@ const updateUser = async (req, res) => {
         message: "Password cannot the same as previous one!",
       });
 
-    //verify validity and strongness of email and password
-    if (email !== undefined && !validator.isEmail(email)) {
-      return res
-        .status(400)
-        .json({ success: false, message: "Enter a valid email address!" });
-    }
-
+    //verify validity and strongness of the password
     if (password !== undefined && !validator.isStrongPassword(password)) {
       return res
         .status(400)
@@ -405,15 +326,23 @@ const updateUser = async (req, res) => {
     //update user based on new information
     const userToSave = {
       username,
-      email,
+      email: savedUser.email,
       password: password !== undefined ? hashedPassword : savedUser.password,
+      dob: dob ? dob : "",
+      firstName: firstName ? firstName : "",
+      lastName: lastName ? lastName : "",
+      gender: gender ? gender : "",
     };
-    await User.findOneAndUpdate({ _id: id }, userToSave, { new: true });
+    const saved = await User.findOneAndUpdate({ _id: id }, userToSave, {
+      new: true,
+    });
 
     //send response to browser
-    res
-      .status(200)
-      .json({ success: true, message: "Account updated successfully" });
+    res.status(200).json({
+      success: true,
+      message: "Account updated successfully",
+      user: saved,
+    });
   } catch (error) {
     res.status(500).json({
       stack: process.env.NODE_ENV !== "production" ? error : "",
