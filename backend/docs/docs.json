@@ -182,7 +182,10 @@
     },
     "/api/auth/profile": {
       "patch": {
-        "description": "",
+        "tags": [
+          "Users"
+        ],
+        "description": "Update the profile picture of a user",
         "responses": {
           "200": {
             "description": "OK"
@@ -204,7 +207,26 @@
           {
             "bearerAuth": []
           }
-        ]
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "profilePicture": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": [
+                  "profilePicture"
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "/api/auth/users/{id}": {

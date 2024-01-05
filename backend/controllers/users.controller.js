@@ -294,16 +294,10 @@ const updateUser = async (req, res) => {
       });
 
     //compare details to saved data in the database
-    if (username !== undefined && username === user.username)
-      return res.status(400).json({
-        success: false,
-        message: "Username has to be different from the previous one!",
-      });
-
     if (password && bcrypt.compareSync(password, savedUser.password))
       return res.status(400).json({
         success: false,
-        message: "Password cannot the same as previous one!",
+        message: "Cannot use previously used password!",
       });
 
     //verify validity and strongness of the password
@@ -323,7 +317,7 @@ const updateUser = async (req, res) => {
 
     //update user based on new information
     const userToSave = {
-      username: savedUser.username,
+      username: username ? username : savedUser.username,
       email: savedUser.email,
       password: password !== undefined ? hashedPassword : savedUser.password,
       dob: dob ? dob : savedUser.dob,
@@ -408,6 +402,28 @@ const logout = async (req, res) => {
 
 // UPDATE - update user profile picture
 const updateProfilePicture = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Update the profile picture of a user'
+
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "multipart/form-data": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            profilePicture: {
+                              type: "string",
+                              format: "binary"
+                            },
+                        },
+                        required: ["profilePicture"]
+                    }
+                }
+            } 
+        }
+    */
+
   try {
     const user = req.user;
 
