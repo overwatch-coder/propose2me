@@ -7,8 +7,9 @@ import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/utils";
 import { toast } from "react-toastify";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
+import { initialAuthData } from "@/constants";
 
 const LoginPage = () => {
   const pathname = usePathname();
@@ -52,11 +53,7 @@ const LoginPage = () => {
         setAuth({ ...authValue });
         toast.success(results.message);
 
-        setUserData({
-          username: "",
-          email: "",
-          password: "",
-        });
+        setUserData(initialAuthData);
 
         return redirect("/request");
       }
@@ -69,7 +66,7 @@ const LoginPage = () => {
   };
 
   if (auth?.email) {
-    return redirect("/request");
+    redirect("/request");
   }
 
   return (

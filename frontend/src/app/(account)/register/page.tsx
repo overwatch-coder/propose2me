@@ -7,7 +7,7 @@ import React, { useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/utils";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
 
 const RegisterPage = () => {
@@ -45,6 +45,7 @@ const RegisterPage = () => {
         username: "",
         email: "",
         password: "",
+        profilePicture: ""
       });
     } else {
       setError(results.message);

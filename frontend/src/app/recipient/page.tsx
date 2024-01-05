@@ -3,7 +3,7 @@
 import { deleteUrlToDB, getRecipientMessage, sendRequestEmail } from "@/utils";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { IRequestMessage, IRequestMessageData } from "../../../types";
 import Image from "next/image";

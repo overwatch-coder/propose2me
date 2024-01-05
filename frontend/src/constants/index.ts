@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 import { BsFacebook, BsInstagram, BsTwitter, BsTiktok } from "react-icons/bs";
-import { IRequestData } from "../../types";
+import { IAccount, IRequestData, IUserProfileData } from "../../types";
 
 export const coreValues = [
   {
@@ -66,4 +66,26 @@ export const initialRequestData: IRequestData = {
   recipientPhoto: "",
   video: "",
   acceptanceMusic: "",
+};
+
+export const initialUserProfileData: IUserProfileData = {
+  _id: "",
+  username: "",
+  email: "",
+  isEmailVerified: false,
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  __v: 0,
+  dob: "",
+  firstName: "",
+  gender: "",
+  lastName: "",
+  profilePicture: "",
+};
+
+export const initialAuthData: IAccount = {
+  username: "",
+  email: "",
+  password: "",
+  profilePicture: "",
 };

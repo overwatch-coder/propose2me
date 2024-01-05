@@ -10,8 +10,10 @@ import {
   VscChevronUp,
 } from "react-icons/vsc";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
+import { FaUserCircle } from "react-icons/fa";
 import { useAppContext } from "@/context/AppContext";
 import copy from "copy-to-clipboard";
+import Image from "next/image";
 
 const Header = () => {
   const pathname = usePathname();
@@ -54,9 +56,7 @@ const Header = () => {
             }}
             className="text-base flex flex-row items-center space-x-1 cursor-pointer"
           >
-            <p className="capitalize text-white">
-              {auth?.username}&apos;s corner
-            </p>
+            <p className="capitalize text-white">{auth?.username}'s corner</p>
             {!displayUrls ? (
               <VscChevronDown size={20} className="text-white" />
             ) : (
@@ -162,12 +162,22 @@ const Header = () => {
               Account
             </Link>
           ) : (
-            <button
-              onClick={logout}
-              className="px-5 py-2 text-black bg-white rounded-full hover:text-primary uppercase"
+            <Link
+              href="/dashboard/profile"
+              className="px-2 py-2 text-black hover:text-primary uppercase"
             >
-              Logout
-            </button>
+              {auth?.profilePicture ? (
+                <Image
+                  src={auth.profilePicture}
+                  alt="profile picture"
+                  width={500}
+                  height={500}
+                  className="border border-secondary object-cover w-8 h-8 rounded-full"
+                />
+              ) : (
+                <FaUserCircle size={25} color="white" />
+              )}
+            </Link>
           )}
         </nav>
       </div>
@@ -224,12 +234,12 @@ const Header = () => {
             Account
           </Link>
         ) : (
-          <button
-            onClick={logout}
-            className="px-5 py-2 text-black bg-white rounded hover:text-primary uppercase text-center"
+          <Link
+            href="/dashboard/profile"
+            className="px-5 py-2 text-black bg-white rounded hover:text-primary text-center"
           >
-            Logout
-          </button>
+            Account
+          </Link>
         )}
       </nav>
 

@@ -5,7 +5,7 @@ import { verifyAccount } from "@/utils";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 
 const VerifyEmail = () => {

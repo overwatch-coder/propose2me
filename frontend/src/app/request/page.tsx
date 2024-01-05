@@ -3,7 +3,7 @@
 import { useAppContext } from "@/context/AppContext";
 import { redirect } from "next/navigation";
 import React, { useRef, useState } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 import RequestForms from "./RequestForms";
 import { IRequestData } from "../../../types";
 import { initialRequestData } from "@/constants";
@@ -153,7 +153,7 @@ const RequestPage = () => {
 
       if (name === "video") {
         setVideoFile((prev) => ({ ...prev, file: file }));
-        setFileError((prev) => ({...prev, video: ""}));
+        setFileError((prev) => ({ ...prev, video: "" }));
         setVideoUploaded(true);
         const results = await uploadVideoFile(file);
 
