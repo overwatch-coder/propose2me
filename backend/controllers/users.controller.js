@@ -8,7 +8,6 @@ const User = require("../models/users.models");
 const Post = require("../models/posts.models");
 
 //library imports
-const { sendUserEmail } = require("../lib");
 const { sendEmailVerification, verifyEmailAddress } = require("../lib/email");
 const { uploadFile } = require("../middleware/fileUpload");
 
@@ -275,10 +274,10 @@ const updateUser = async (req, res) => {
 
   const { id } = req.params;
 
-  const { username, password, dob, firstName, lastName, gender } = req.body;
-
   try {
     const user = req.user;
+
+    const { username, password, dob, firstName, lastName, gender } = req.body;
 
     if (!(id === user._id.toString()))
       return res.status(403).json({
@@ -301,10 +300,7 @@ const updateUser = async (req, res) => {
         message: "Username has to be different from the previous one!",
       });
 
-    if (
-      password !== undefined &&
-      bcrypt.compareSync(password, savedUser.password)
-    )
+    if (password && bcrypt.compareSync(password, savedUser.password))
       return res.status(400).json({
         success: false,
         message: "Password cannot the same as previous one!",
@@ -327,17 +323,20 @@ const updateUser = async (req, res) => {
 
     //update user based on new information
     const userToSave = {
-      username,
+      username: savedUser.username,
       email: savedUser.email,
       password: password !== undefined ? hashedPassword : savedUser.password,
-      dob: dob ? dob : "",
-      firstName: firstName ? firstName : "",
-      lastName: lastName ? lastName : "",
-      gender: gender ? gender : "",
+      dob: dob ? dob : savedUser.dob,
+      firstName: firstName ? firstName : savedUser.firstName,
+      lastName: lastName ? lastName : savedUser.lastName,
+      gender: gender ? gender : savedUser.gender,
     };
     const saved = await User.findOneAndUpdate({ _id: id }, userToSave, {
       new: true,
-    });
+    })
+      .select("-password")
+      .lean()
+      .exec();
 
     //send response to browser
     res.status(200).json({
@@ -346,6 +345,7 @@ const updateUser = async (req, res) => {
       user: saved,
     });
   } catch (error) {
+    console.log({ error });
     res.status(500).json({
       stack: process.env.NODE_ENV !== "production" ? error : "",
       success: false,
