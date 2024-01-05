@@ -10,6 +10,7 @@ const Post = require("../models/posts.models");
 //library imports
 const { sendUserEmail } = require("../lib");
 const { sendEmailVerification, verifyEmailAddress } = require("../lib/email");
+const { uploadFile } = require("../middleware/fileUpload");
 
 // POST - Register a new User
 const register = async (req, res) => {
@@ -404,6 +405,67 @@ const logout = async (req, res) => {
     .json({ success: true, message: "You've successfully logged out!" });
 };
 
+// UPDATE - update user profile picture
+const updateProfilePicture = async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (!req?.files?.profilePicture) {
+      return res.status(404).json({
+        success: false,
+        message: "Please add image to be uploaded!",
+      });
+    }
+
+    const profilePicture = await uploadFile(
+      req.files.profilePicture,
+      "ptm/ptm-user-profile"
+    );
+
+    await User.findOneAndUpdate(
+      { email: user.email },
+      { profilePicture },
+      { new: true }
+    );
+
+    res.status(200).json({
+      success: true,
+      message: "Profile picture updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      stack: process.env.NODE_ENV !== "production" ? error : "",
+      success: false,
+      message: "There was a problem changing your profile picture",
+    });
+  }
+};
+
+// Get User specific details
+const getSpecificUserDetails = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Get a single requests made by a specific user'
+  const user = req.user;
+  try {
+    const userDetails = await User.findOne({ email: user.email })
+      .select("-password")
+      .lean()
+      .exec();
+
+    res.status(200).json({
+      success: true,
+      message: "User details retrieved successfully",
+      user: userDetails,
+    });
+  } catch (error) {
+    res.status(500).json({
+      stack: process.env.NODE_ENV !== "production" ? error : "",
+      success: false,
+      message: "There was a problem retrieving user details",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -411,4 +473,6 @@ module.exports = {
   deleteUser,
   logout,
   verifyEmail,
+  updateProfilePicture,
+  getSpecificUserDetails,
 };
