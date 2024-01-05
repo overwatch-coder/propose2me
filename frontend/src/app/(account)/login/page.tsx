@@ -9,7 +9,7 @@ import { loginOrRegisterAccount } from "@/utils";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
-import { initialAuthData } from "@/constants";
+import { initialUserData } from "@/constants";
 
 const LoginPage = () => {
   const pathname = usePathname();
@@ -53,7 +53,7 @@ const LoginPage = () => {
         setAuth({ ...authValue });
         toast.success(results.message);
 
-        setUserData(initialAuthData);
+        setUserData(initialUserData);
 
         return redirect("/request");
       }

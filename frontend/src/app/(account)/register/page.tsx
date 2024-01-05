@@ -9,6 +9,8 @@ import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/utils";
 import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
+import PasswordChecklist from "react-password-checklist";
+import { initialUserData } from "@/constants";
 
 const RegisterPage = () => {
   const pathname = usePathname();
@@ -24,6 +26,16 @@ const RegisterPage = () => {
     setError("");
     setEmailMessage("");
     setLoading(true);
+
+    if (
+      pathname === "/register" &&
+      userData.password !== userData.confirmPassword
+    ) {
+      setError("Passwords do not match");
+      setUserData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
+      setLoading(false);
+      return;
+    }
 
     const results = await loginOrRegisterAccount(pathname, userData);
 
@@ -41,12 +53,7 @@ const RegisterPage = () => {
         setEmailMessage("");
         return redirect("/request");
       }
-      setUserData({
-        username: "",
-        email: "",
-        password: "",
-        profilePicture: ""
-      });
+      setUserData(initialUserData);
     } else {
       setError(results.message);
       setShowSentEmail(false);
@@ -107,7 +114,7 @@ const RegisterPage = () => {
             className="flex flex-col gap-y-3"
           >
             {/* Form Fields */}
-            <section className="my-4 flex flex-col space-y-4">
+            <section className="my-4 flex flex-col space-y-5">
               {error && (
                 <small className="p-4 rounded bg-red-300/70 text-red-700 text-sm">
                   {error}
@@ -115,6 +122,23 @@ const RegisterPage = () => {
               )}
 
               <Form />
+
+              {userData.password.length > 0 && (
+                <div className="mt-5">
+                  <PasswordChecklist
+                    rules={[
+                      "minLength",
+                      "specialChar",
+                      "number",
+                      "capital",
+                      "match",
+                    ]}
+                    minLength={8}
+                    value={userData.password}
+                    valueAgain={userData.confirmPassword}
+                  />
+                </div>
+              )}
             </section>
 
             {/* Buttons */}

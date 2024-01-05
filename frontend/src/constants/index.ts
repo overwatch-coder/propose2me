@@ -83,9 +83,9 @@ export const initialUserProfileData: IUserProfileData = {
   profilePicture: "",
 };
 
-export const initialAuthData: IAccount = {
+export const initialUserData: IAccount = {
   username: "",
   email: "",
   password: "",
-  profilePicture: "",
+  confirmPassword: "",
 };

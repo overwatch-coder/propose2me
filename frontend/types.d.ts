@@ -2,7 +2,7 @@ export interface IAccount {
   username: string | "";
   email: string;
   password: string;
-  profilePicture: string | "";
+  confirmPassword: string | "";
 }
 
 export interface IAuth {

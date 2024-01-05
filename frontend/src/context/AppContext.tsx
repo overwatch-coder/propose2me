@@ -7,7 +7,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getSavedUrls } from "@/utils";
 import { GoogleAnalytics } from "nextjs-google-analytics";
-import { initialAuthData } from "@/constants";
+import { initialUserData } from "@/constants";
 import { HelmetProvider } from "react-helmet-async";
 
 type AppContextProps = {
@@ -30,7 +30,7 @@ const initialValues = {
   setIsOpen: () => false,
   showSentEmail: false,
   setShowSentEmail: () => false,
-  userData: initialAuthData,
+  userData: initialUserData,
   setUserData: () => {},
   auth: null,
   setAuth: () => {},
@@ -45,7 +45,7 @@ export const AppContext = createContext<AppContextProps>(initialValues);
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSentEmail, setShowSentEmail] = useState(false);
-  const [userData, setUserData] = useState<IAccount>(initialAuthData);
+  const [userData, setUserData] = useState<IAccount>(initialUserData);
   const [auth, setAuth] = useState<IAuth | null>(null);
   const [urls, setUrls] = useState<any>([]);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
