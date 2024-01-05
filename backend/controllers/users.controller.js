@@ -422,7 +422,7 @@ const updateProfilePicture = async (req, res) => {
       "ptm/ptm-user-profile"
     );
 
-    const updatedUser = await User.findOneAndUpdate(
+    await User.findOneAndUpdate(
       { email: user.email },
       { profilePicture },
       { new: true }
@@ -431,7 +431,7 @@ const updateProfilePicture = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Profile picture updated successfully",
-      profilePicture: updatedUser.profilePicture,
+      profilePicture,
     });
   } catch (error) {
     res.status(500).json({
