@@ -335,7 +335,7 @@ const updateUser = async (req, res) => {
     //update user based on new information
     const userToSave = {
       username: username ? username : savedUser.username,
-      email: savedUser.email,
+      email: email ? email : savedUser.email,
       password: password !== undefined ? hashedPassword : savedUser.password,
       dob: dob ? dob : savedUser.dob,
       firstName: firstName ? firstName : savedUser.firstName,
