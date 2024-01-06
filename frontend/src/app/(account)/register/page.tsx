@@ -124,7 +124,7 @@ const RegisterPage = () => {
               <Form />
 
               {userData.password.length > 0 && (
-                <div className="mt-5">
+                <div className="mt-5 dark:text-white">
                   <PasswordChecklist
                     rules={[
                       "minLength",
