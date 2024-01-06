@@ -4,8 +4,8 @@ import Link from "next/link";
 
 // Import images
 import homeHero from "@/assets/hug-hero.png";
-import signUp from "@/assets/request1.png";
-import link from "@/assets/link.png";
+import signUp from "@/assets/request-dark.png";
+import link from "@/assets/link-real.png";
 
 const Home = () => {
   return (

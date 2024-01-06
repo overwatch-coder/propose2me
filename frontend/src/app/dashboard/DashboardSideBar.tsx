@@ -29,7 +29,7 @@ const DashboardSideBar = ({ pathname, sidebarLinks, logout }: SidebarProps) => {
           ) : (
             <button
               key={index}
-              className="items-center hidden md:flex px-2 md:py-3 py-2 dark:bg-secondary bg-primary absolute bottom-0 border-t-2 border-t-secondary md:bottom-0 w-fit md:w-full left-0 md:left-auto"
+              className="items-center hidden md:flex px-2 md:py-3 py-2 bg-primary absolute bottom-0 border-t-2 border-t-secondary md:bottom-0 w-fit md:w-full left-0 md:left-auto"
               onClick={logout}
             >
               <sbLink.icon color={"white"} size={22} />
