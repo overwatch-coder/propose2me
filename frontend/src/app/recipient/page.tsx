@@ -207,7 +207,7 @@ const RecipientPage = () => {
 
                 <section className="relative">
                   {/* Overlaying div */}
-                  <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
+                  <div className="absolute top-0 left-0 w-full h-full bg-black/40"></div>
 
                   {/* Images */}
                   {requestMessage.senderPhoto && (
@@ -245,7 +245,7 @@ const RecipientPage = () => {
                     className="flex flex-col space-y-7 mx-auto text-center items-center w-full  h-full relative bg-gray-400 mix-blend-screen py-10 px-2 md:px-8"
                     method="POST"
                   >
-                    <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-primary animate-pulse">
+                    <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-black tracking-wider">
                       A message from <span>{requestMessage?.senderName}</span>{" "}
                       to <span>{requestMessage?.recipientName}</span>
                     </h2>
