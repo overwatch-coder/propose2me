@@ -331,7 +331,7 @@ const RequestPage = () => {
             encType="multipart/form-data"
           >
             {/* Form Fields */}
-            <section className="my-4 flex flex-col space-y-4 dark:text-white">
+            <section className="my-4 flex flex-col space-y-6 dark:text-white">
               {error && (
                 <small className="p-4 rounded bg-red-200/80 text-red-700 text-sm">
                   {error}
@@ -368,7 +368,7 @@ const RequestPage = () => {
               >
                 {loading ? (
                   <div className="flex items-center justify-center gap-x-1">
-                    <span>Please wait</span>
+                    <span>Generating...</span>
                     <ClipLoader color="#fff" size={20} loading={loading} />
                   </div>
                 ) : (

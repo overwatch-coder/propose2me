@@ -87,7 +87,7 @@ const RequestForms = ({
   return (
     <>
       {/* Sender and Recipient Name Group */}
-      <section className="flex flex-col space-y-4 md:flex-row md:space-y-0 md:justify-between md:items-center md:space-x-5">
+      <section className="flex flex-col space-y-5 md:flex-row md:space-y-0 md:justify-between md:items-center md:space-x-5">
         {/* Sender Name */}
         <div className="flex flex-col space-y-2 w-full">
           <label htmlFor="senderName">Sender Name</label>
@@ -118,7 +118,7 @@ const RequestForms = ({
       </section>
 
       {/* Request title */}
-      <div className="flex flex-col space-y-2 w-full">
+      <div className="flex flex-col space-y-3 w-full">
         <label htmlFor="title">Message Title</label>
         <input
           className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
@@ -129,6 +129,47 @@ const RequestForms = ({
           placeholder="e.g  Will you do me the honors of being my girlfriend?"
           required
         />
+      </div>
+
+      {/* Custom Yes and No Response Group */}
+      <div className="flex flex-col space-y-2">
+        <h2 className="text-sm dark:text-white/70">
+          Provide text for the buttons that appear on recipient's request
+        </h2>
+
+        <section className="flex flex-col space-y-5 md:flex-row md:space-y-0 md:justify-between md:items-center md:space-x-5">
+          {/* Sender Name */}
+          <div className="flex flex-col space-y-2 w-full">
+            <label htmlFor="customYesResponse">Accepted Button Text</label>
+            <input
+              className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+              onChange={handleChange}
+              value={requestData.customYesResponse}
+              type="text"
+              name="customYesResponse"
+              placeholder="YES, I ACCEPT ❤️"
+            />
+            <small className="dark:text-white/70">
+              Leave it blank to use default button text
+            </small>
+          </div>
+
+          {/* Recipient Name */}
+          <div className="flex flex-col space-y-2 w-full">
+            <label htmlFor="customNoResponse">Not Accepted Button Text</label>
+            <input
+              className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
+              onChange={handleChange}
+              value={requestData.customNoResponse}
+              type="text"
+              name="customNoResponse"
+              placeholder="SORRY, NOT INTERESTED 💔"
+            />
+            <small className="dark:text-white/70">
+              Leave it blank to use default button text
+            </small>
+          </div>
+        </section>
       </div>
 
       {/* Email Address */}
@@ -265,11 +306,11 @@ const RequestForms = ({
             checked={showAdvanced}
             className="border border-primary"
             offColor="#fff"
-            onColor="#DC5B57"
+            onColor="#F6638E"
             uncheckedIcon={false}
             checkedIcon={false}
             onHandleColor="#ffffff"
-            offHandleColor="#DC5B57"
+            offHandleColor="#F6638E"
             activeBoxShadow="undefined"
           />
           <span className="text-secondary dark:text-white">
@@ -384,7 +425,9 @@ const RequestForms = ({
             </div>
           </div>
           {fileError.music && (
-            <small className="text-red-700 text-sm hidden">{fileError.music}</small>
+            <small className="text-red-700 text-sm hidden">
+              {fileError.music}
+            </small>
           )}
         </div>
 

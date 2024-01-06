@@ -44,8 +44,8 @@ export interface IRequestMessageData {
   senderPhoto?: string;
   title: string;
   video?: string;
-  customYesResponse?: string;
-  customNoResponse?: string;
+  customYesResponse: string;
+  customNoResponse: string;
 }
 
 export interface IUserProfileData {

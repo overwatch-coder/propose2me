@@ -286,7 +286,8 @@ const RecipientPage = () => {
                         </span>
 
                         <h3 className="text-xl font-semibold">
-                          Click to play the video below
+                          {requestMessage.senderName} sent a video. <br />
+                          Click on the video to play it.
                         </h3>
 
                         <ReactPlayer
@@ -352,7 +353,7 @@ const RecipientPage = () => {
 
                     <div className="flex flex-col gap-y-5 md:flex-row md:gap-y-0 md:gap-x-5 md:items-center">
                       <button
-                        className="text-lg py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+                        className="text-base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
                         type="submit"
                         name="accepted"
                         onClick={handleResponse}
@@ -360,16 +361,16 @@ const RecipientPage = () => {
                       >
                         {loading.type === "accepted" && loading.status ? (
                           <div className="flex items-center justify-center gap-x-1">
-                            <span>Please wait</span>
+                            <span>Sending...</span>
                             <ClipLoader color="#fff" size={20} />
                           </div>
                         ) : (
-                          "Yes, I accept ❤️"
+                          requestMessage.customYesResponse
                         )}
                       </button>
 
                       <button
-                        className="text-lg py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+                        className="text-base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
                         type="submit"
                         name="rejected"
                         onClick={handleResponse}
@@ -377,11 +378,11 @@ const RecipientPage = () => {
                       >
                         {loading.type === "rejected" && loading.status ? (
                           <div className="flex items-center justify-center gap-x-1">
-                            <span>Please wait</span>
+                            <span>Sending...</span>
                             <ClipLoader color="#fff" size={20} />
                           </div>
                         ) : (
-                          "Sorry, not Interested 💔"
+                          requestMessage.customNoResponse
                         )}
                       </button>
                     </div>

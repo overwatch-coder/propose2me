@@ -22,7 +22,7 @@ const ShowPreview = ({
     <div>
       <section className="relative">
         {/* Overlaying div */}
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
+        <div className="absolute top-0 left-0 w-full h-full bg-black/40"></div>
 
         {/* Images */}
         {requestData.senderPhoto && (
@@ -57,7 +57,7 @@ const ShowPreview = ({
 
         {/* Form content */}
         <form className="flex flex-col space-y-7 mx-auto text-center items-center w-full  h-full relative bg-gray-400 mix-blend-screen py-10 px-2 md:px-8">
-          <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-primary animate-pulse">
+          <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-black tracking-wider">
             A message from <span>{requestData?.senderName}</span> to{" "}
             <span>{requestData?.recipientName}</span>
           </h2>
@@ -97,7 +97,10 @@ const ShowPreview = ({
                 💞💖
               </span>
 
-              <h3 className="text-xl font-semibold">Play the video below</h3>
+              <h3 className="text-xl font-semibold">
+                {requestData.senderName} sent a video. <br />
+                Click on the video to play it.
+              </h3>
 
               <ReactPlayer
                 url={requestData?.video}
@@ -121,6 +124,26 @@ const ShowPreview = ({
               </span>
             </>
           )}
+
+          <div className="flex flex-col gap-y-5 md:flex-row md:gap-y-0 md:gap-x-5 md:items-center">
+            <button
+              disabled={true}
+              className="base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+            >
+              {requestData.customYesResponse
+                ? requestData.customYesResponse
+                : "YES, I ACCEPT ❤️"}
+            </button>
+
+            <button
+              disabled={true}
+              className="base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+            >
+              {requestData.customNoResponse
+                ? requestData.customNoResponse
+                : "SORRY, NOT INTERESTED 💔"}
+            </button>
+          </div>
         </form>
       </section>
     </div>
