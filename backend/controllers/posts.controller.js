@@ -13,7 +13,7 @@ const adminGetsAllPosts = async (req, res) => {
   // #swagger.ignore = true
   const { admin } = req.body;
   try {
-    if (admin !== "Overwatch") {
+    if (admin !== process.env.PTM_ADMIN) {
       return res.status(403).json({ success: false, message: "Forbidden!" });
     }
 
