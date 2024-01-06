@@ -10,6 +10,7 @@ const {
   verifyEmail,
   getSpecificUserDetails,
   updateProfilePicture,
+  sendCustomEmailVerificationLink,
 } = require("../controllers/users.controller");
 
 //middleware imports
@@ -32,6 +33,7 @@ router.use("*", (req, res, next) => {
 });
 
 router.get("/users/user", getSpecificUserDetails);
+router.post("/users/verify-email", sendCustomEmailVerificationLink);
 router.patch("/profile", updateProfilePicture);
 router.patch("/users/:id", updateUser);
 router.delete("/users/:id", deleteUser);

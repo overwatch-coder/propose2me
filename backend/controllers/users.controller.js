@@ -277,7 +277,8 @@ const updateUser = async (req, res) => {
   try {
     const user = req.user;
 
-    const { username, password, dob, firstName, lastName, gender } = req.body;
+    const { username, password, dob, firstName, lastName, gender, email } =
+      req.body;
 
     if (!(id === user._id.toString()))
       return res.status(403).json({
@@ -287,24 +288,40 @@ const updateUser = async (req, res) => {
 
     //verify password and respond with error if it's the same
     const savedUser = await User.findOne({ email: user.email });
-    if (!savedUser)
+    if (!savedUser) {
       return res.status(404).json({
         success: false,
         message: "User with this email does not exist",
       });
+    }
 
     //compare details to saved data in the database
-    if (password && bcrypt.compareSync(password, savedUser.password))
+    if (email && email === user.email) {
       return res.status(400).json({
         success: false,
-        message: "Cannot use previously used password!",
+        message: "Email cannot be the same as previously used email",
       });
+    }
 
-    //verify validity and strongness of the password
+    if (password && bcrypt.compareSync(password, savedUser.password)) {
+      return res.status(400).json({
+        success: false,
+        message: "Cannot use a previously used password!",
+      });
+    }
+
+    //verify validity and strongness of the password and email
     if (password !== undefined && !validator.isStrongPassword(password)) {
       return res
         .status(400)
         .json({ success: false, message: "Password is not strong enough!" });
+    }
+
+    if (email && !validator.isEmail(email)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please enter a valid email address",
+      });
     }
 
     //encrypt password if different from previous one
@@ -324,7 +341,9 @@ const updateUser = async (req, res) => {
       firstName: firstName ? firstName : savedUser.firstName,
       lastName: lastName ? lastName : savedUser.lastName,
       gender: gender ? gender : savedUser.gender,
+      isEmailVerified: email ? false : savedUser.isEmailVerified,
     };
+
     const saved = await User.findOneAndUpdate({ _id: id }, userToSave, {
       new: true,
     })
@@ -484,6 +503,37 @@ const getSpecificUserDetails = async (req, res) => {
   }
 };
 
+const sendCustomEmailVerificationLink = async (req, res) => {
+  const user = req.user;
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Send verification email from already logged in user account'
+  try {
+    // check if user is already verified
+    if (user.isEmailVerified) {
+      return res.status(200).json({
+        success: true,
+        message: "Email already verified.",
+      });
+    }
+
+    const { messageSent, verificationURL } = await sendEmailVerification(user);
+
+    // set a new cookie and return success message
+    res.status(200).json({
+      success: true,
+      message: "Verification details generated!",
+      verification: verificationURL,
+      message_sent: messageSent,
+    });
+  } catch (error) {
+    res.status(500).json({
+      stack: process.env.NODE_ENV !== "production" ? error : "",
+      success: false,
+      message: "There was a problem sending the verification email",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -493,4 +543,5 @@ module.exports = {
   verifyEmail,
   updateProfilePicture,
   getSpecificUserDetails,
+  sendCustomEmailVerificationLink,
 };
