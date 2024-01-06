@@ -105,8 +105,16 @@ const getSinglePost = async (req, res) => {
 const createPost = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Create and save a new request and generate a url for it'
-  const { title, message, senderEmail, senderName, recipientName, video } =
-    req.body;
+  const {
+    title,
+    message,
+    senderEmail,
+    senderName,
+    recipientName,
+    video,
+    customYesResponse,
+    customNoResponse,
+  } = req.body;
   try {
     const user = req.user;
     if (!user)
@@ -141,6 +149,8 @@ const createPost = async (req, res) => {
         "ptm/ptm-music"
       ),
       video,
+      customYesResponse,
+      customNoResponse,
     });
 
     const post = await postCreated.save();
@@ -184,7 +194,15 @@ const updatePost = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'update already saved request'
   const { id } = req.params;
-  const { title, message, senderEmail, senderName, recipientName } = req.body;
+  const {
+    title,
+    message,
+    senderEmail,
+    senderName,
+    recipientName,
+    customYesResponse,
+    customNoResponse,
+  } = req.body;
 
   try {
     const user = req.user;
@@ -217,6 +235,12 @@ const updatePost = async (req, res) => {
 
     //create an object for the data to update
     const locallyUpdatedInfo = {
+      customYesResponse: customYesResponse
+        ? customYesResponse
+        : originalPost.customYesResponse,
+      customNoResponse: customNoResponse
+        ? customNoResponse
+        : originalPost.customNoResponse,
       title: title === undefined || title === "" ? originalPost.title : title,
       message:
         message === undefined || message === ""
