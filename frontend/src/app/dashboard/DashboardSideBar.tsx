@@ -10,16 +10,16 @@ type SidebarProps = {
 
 const DashboardSideBar = ({ pathname, sidebarLinks, logout }: SidebarProps) => {
   return (
-    <section className="md:relative w-fit mx-auto md:w-44 md:h-screen bg-secondary dark:bg-primary flex md:flex-col shadow-xl rounded">
+    <section className="md:relative w-fit mx-auto md:w-44 md:h-screen bg-secondary flex md:flex-col shadow-xl rounded">
       {sidebarLinks.map((sbLink, index: number) => (
         <div key={index}>
           {sbLink.name !== "Logout" ? (
             <Link
               key={index}
               href={sbLink.path}
-              className={`md:py-4 py-2 px-2 hover:bg-primary hover:text-white dark:hover:bg-secondary dark:hover:text-white border dark:border-secondary flex items-center ${
+              className={`md:py-4 py-2 px-2 hover:bg-primary hover:text-white border border-secondary flex items-center ${
                 sbLink.path === pathname
-                  ? "dark:bg-secondary bg-primary dark:text-white text-white"
+                  ? "bg-primary text-white"
                   : "text-white"
               }`}
             >

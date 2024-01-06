@@ -14,6 +14,8 @@ import { FaUserCircle } from "react-icons/fa";
 import { useAppContext } from "@/context/AppContext";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
+import DisplayUrls from "./DisplayUrls";
+import AccountDropdown from "./AccountDropdown";
 
 const Header = () => {
   const pathname = usePathname();
@@ -25,6 +27,7 @@ const Header = () => {
     url: "",
     copied: false,
   });
+  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
 
   // copy url to clipboard
   const copyToClipboard = (value: string) => {
@@ -53,6 +56,7 @@ const Header = () => {
           <div
             onClick={() => {
               setDisplayUrls((prev) => !prev);
+              !displayUrls && setShowAccountDropdown(false);
             }}
             className="text-base flex flex-row items-center space-x-1 cursor-pointer"
           >
@@ -85,6 +89,7 @@ const Header = () => {
               onClick={() => {
                 toggleNavbar();
                 setDisplayUrls(false);
+                setShowAccountDropdown(false);
               }}
               size={30}
               className="text-white cursor-pointer "
@@ -94,6 +99,7 @@ const Header = () => {
               onClick={() => {
                 toggleNavbar();
                 setDisplayUrls(false);
+                setShowAccountDropdown(false);
               }}
               size={30}
               className="text-white cursor-pointer "
@@ -162,8 +168,11 @@ const Header = () => {
               Account
             </Link>
           ) : (
-            <Link
-              href="/dashboard/profile"
+            <button
+              onClick={() => {
+                setShowAccountDropdown((prev) => !prev);
+                !showAccountDropdown && setDisplayUrls(false);
+              }}
               className="px-2 py-2 text-black hover:text-primary uppercase"
             >
               {auth?.profilePicture ? (
@@ -177,7 +186,7 @@ const Header = () => {
               ) : (
                 <FaUserCircle size={25} color="white" />
               )}
-            </Link>
+            </button>
           )}
         </nav>
       </div>
@@ -234,61 +243,40 @@ const Header = () => {
             Account
           </Link>
         ) : (
-          <Link
-            href="/dashboard/profile"
+          <button
+            onClick={() => {
+              setShowAccountDropdown((prev) => !prev);
+              toggleNavbar();
+              !showAccountDropdown && setDisplayUrls(false);
+            }}
             className="px-5 py-2 text-black bg-white rounded hover:text-primary text-center"
           >
             Account
-          </Link>
+          </button>
         )}
       </nav>
 
       {/* All User Urls Available */}
       {auth?.email && (
-        <div
-          className={`absolute md:top-16 right-0 px-5 py-4 w-full md:w-fit duration-700 bg-primary text-white ${
-            displayUrls
-              ? "translate-y-0 transition"
-              : "transition -translate-y-[9999px]"
-          }`}
-        >
-          <h3 className="pb-2 underline font-semibold text-base flex flex-row items-center justify-between">
-            <span>All Generated Links</span>
-            <VscClose
-              onClick={() => {
-                setDisplayUrls(false);
-              }}
-              size={22}
-              className="text-primary w-5 h-5 rounded-full bg-white border-white border cursor-pointer hover:text-white hover:bg-transparent"
+        <>
+          {displayUrls && (
+            <DisplayUrls
+              setDisplayUrls={setDisplayUrls}
+              urls={urls}
+              success={success}
+              displayUrls={displayUrls}
+              copyToClipboard={copyToClipboard}
             />
-          </h3>
-
-          <small className="text-xs pb-5 flex flex-col space-y-1">
-            <p>Click on a link to copy it</p>
-            <p>NB: Each link is deleted after the recipient has responded.</p>
-          </small>
-
-          {urls && urls?.length > 0 ? (
-            <div className="flex flex-col space-y-3">
-              {urls?.map((url: any, idx: number) => (
-                <p
-                  key={idx}
-                  onClick={() => copyToClipboard(url.url)}
-                  className="flex items-center space-x-1 cursor-pointer text-sm"
-                >
-                  <span>{idx + 1}.</span>
-                  <span className="hover:underline">
-                    {success.copied && url.url === success.url
-                      ? "Copied"
-                      : url.url}
-                  </span>
-                </p>
-              ))}
-            </div>
-          ) : (
-            <h4>No links available</h4>
           )}
-        </div>
+
+          {showAccountDropdown && (
+            <AccountDropdown
+              showAccountDropdown={showAccountDropdown}
+              setShowAccountDropdown={setShowAccountDropdown}
+              logout={logout}
+            />
+          )}
+        </>
       )}
     </header>
   );

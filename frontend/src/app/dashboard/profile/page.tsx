@@ -6,10 +6,9 @@ import { IUserProfileData } from "../../../../types";
 import { initialUserProfileData } from "@/constants";
 import DisplayUserInfo from "./DisplayUserInfo";
 import UpdateUserForm from "./UpdateUserForm";
-import { CiLogout } from "react-icons/ci";
 
 const ProfilePage = () => {
-  const { auth, setAuth, logout } = useAppContext();
+  const { auth, setAuth } = useAppContext();
   const [userData, setUserData] = useState<IUserProfileData>(
     initialUserProfileData
   );
@@ -17,14 +16,6 @@ const ProfilePage = () => {
 
   return (
     <section className="flex flex-col space-y-7">
-      <button
-        className="items-center flex px-2 md:py-3 py-2 bg-primary w-fit md:hidden"
-        onClick={logout}
-      >
-        <CiLogout color={"white"} size={22} />
-        <span className="mx-2 text-white font-medium">{"Logout"}</span>
-      </button>
-
       <DisplayUserInfo
         setAuth={setAuth}
         auth={auth}

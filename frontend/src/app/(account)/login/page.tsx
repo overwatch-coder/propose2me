@@ -55,7 +55,7 @@ const LoginPage = () => {
 
         setUserData(initialUserData);
 
-        return redirect("/request");
+        redirect("/request");
       }
     } else {
       setEmailMessage("");

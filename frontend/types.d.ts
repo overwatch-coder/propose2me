@@ -23,6 +23,8 @@ export interface IRequestData {
   recipientPhoto?: any;
   acceptanceMusic?: any;
   video?: any;
+  customYesResponse?: string;
+  customNoResponse?: string;
 }
 
 export interface IRequestMessage {
@@ -42,6 +44,8 @@ export interface IRequestMessageData {
   senderPhoto?: string;
   title: string;
   video?: string;
+  customYesResponse?: string;
+  customNoResponse?: string;
 }
 
 export interface IUserProfileData {
