@@ -190,9 +190,11 @@ const RegisterPage = () => {
             <p>{emailMessage}</p>
             <button
               className="w-fit px-5 py-2 bg-primary text-white rounded hover:bg-primary/80"
-              onClick={() => setShowSentEmail(false)}
+              onClick={() => {
+                setShowSentEmail(false);
+              }}
             >
-              Go Home
+              Close
             </button>
           </div>
         )}

@@ -50,8 +50,8 @@ export interface IRequestMessageData {
 
 export interface IUserProfileData {
   _id: string;
-  username: string;
-  email: string;
+  username?: string;
+  email?: string;
   isEmailVerified: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -61,4 +61,5 @@ export interface IUserProfileData {
   gender?: string;
   lastName?: string;
   profilePicture?: string;
+  password?: string;
 }

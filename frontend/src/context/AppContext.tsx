@@ -13,6 +13,8 @@ import { HelmetProvider } from "react-helmet-async";
 type AppContextProps = {
   isOpen: boolean;
   setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  showAccountDropdown: boolean;
+  setShowAccountDropdown: React.Dispatch<React.SetStateAction<boolean>>;
   showSentEmail: boolean;
   setShowSentEmail: React.Dispatch<React.SetStateAction<boolean>>;
   userData: IAccount;
@@ -38,6 +40,8 @@ const initialValues = {
   setUrls: () => [],
   theme: null,
   setTheme: () => null,
+  setShowAccountDropdown: () => false,
+  showAccountDropdown: false,
 };
 
 export const AppContext = createContext<AppContextProps>(initialValues);
@@ -49,6 +53,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [auth, setAuth] = useState<IAuth | null>(null);
   const [urls, setUrls] = useState<any>([]);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
+  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
 
   const pathname = usePathname();
 
@@ -68,7 +73,6 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   }, [theme]);
 
   useEffect(() => {
-    setIsOpen(false);
     if (!localStorage) {
       return;
     }
@@ -80,7 +84,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
       });
     const localTheme: any = JSON?.parse(localThemeString) ?? { theme: "light" };
     setTheme(localTheme.theme);
-  }, [pathname]);
+  }, []);
 
   //check theme
   useEffect(() => {
@@ -95,6 +99,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     if (!localStorage) {
       return;
     }
+
     const localAuthItem = localStorage?.getItem("auth") ?? "";
     const user = localAuthItem !== "" ? JSON.parse(localAuthItem) : "";
     if (user !== "") {
@@ -111,6 +116,11 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     }
   }, [auth?.token]);
 
+  useEffect(() => {
+    setIsOpen(false);
+    setShowAccountDropdown(false);
+  }, [pathname]);
+
   const values = {
     isOpen,
     setIsOpen,
@@ -124,6 +134,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     setUrls,
     theme,
     setTheme,
+    showAccountDropdown,
+    setShowAccountDropdown,
   };
 
   return (
@@ -151,6 +163,8 @@ export const useAppContext = () => {
     setUrls,
     theme,
     setTheme,
+    showAccountDropdown,
+    setShowAccountDropdown,
   } = useContext(AppContext);
 
   const toggleNavbar = () => {
@@ -178,6 +192,8 @@ export const useAppContext = () => {
     setUrls,
     theme,
     setTheme,
+    showAccountDropdown,
+    setShowAccountDropdown,
   };
 };
 

@@ -7,6 +7,7 @@ import noProfileImage from "@/assets/no-profile-picture.png";
 import dobToAge from "dob-to-age";
 import {
   getProfileData,
+  sendEmailVerificationLink,
   updateUserProfilePicture,
 } from "@/app/actions/user-data";
 import { toast } from "react-toastify";
@@ -29,6 +30,7 @@ const DisplayUserInfo = ({
   setAuth,
 }: DisplayUserInfoProps) => {
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
+  const [emailSent, setEmailSent] = useState(false);
   const profilePictureRef = useRef<any>();
 
   useEffect(() => {
@@ -79,6 +81,31 @@ const DisplayUserInfo = ({
   const changeProfilePicture = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setProfilePicture(e.target.files[0]);
+    }
+  };
+
+  // send email verification link
+  const sendEmailVerification = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const data: any = await sendEmailVerificationLink(auth?.token!);
+
+      if (!data?.success) {
+        setEmailSent(false);
+        toast.error(data.message);
+        return;
+      }
+
+      setUserData((prev) => ({ ...prev, ...data.user }));
+      setEmailSent(true);
+
+      setTimeout(() => {
+        setEmailSent(false);
+      }, 7000);
+    } catch (error: any) {
+      console.log({ error });
+      setEmailSent(false);
+      toast.error("An error has occurred. Please try again later");
     }
   };
 
@@ -151,10 +178,32 @@ const DisplayUserInfo = ({
             <span className="font-semibold">Gender:</span> {userData.gender}
           </p>
 
-          <p>
-            <span className="font-semibold">Verified Email:</span>{" "}
-            {userData.isEmailVerified ? "Yes" : "No"}
-          </p>
+          <div className="flex items-center space-x-3 flex-row justify-between w-full">
+            <p>
+              <span className="font-semibold">Verified Email:</span>{" "}
+              {userData.isEmailVerified ? "Yes" : "No"}
+            </p>
+
+            {!userData.isEmailVerified && (
+              <>
+                {emailSent ? (
+                  <p className="text-xs dark:text-white">
+                    An email containing the verification link has ben sent.
+                    Please check your inbox to verify
+                  </p>
+                ) : (
+                  <form method="post" onSubmit={sendEmailVerification}>
+                    <button
+                      type="submit"
+                      className="px-2 py-2 rounded w-fit bg-green-600 text-white text-sm hover:scale-105"
+                    >
+                      {"Verify Email"}
+                    </button>
+                  </form>
+                )}
+              </>
+            )}
+          </div>
 
           <p className={`${userData?.createdAt ? "" : "hidden"}`}>
             <span className="font-semibold">Created Since:</span>{" "}

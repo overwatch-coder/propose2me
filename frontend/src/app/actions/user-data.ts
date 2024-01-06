@@ -54,3 +54,35 @@ export const updateUserProfileDetails = async (
 
   return data;
 };
+
+export const deleteUserAccount = async (token: string, id: string) => {
+  const resData = await axios.delete(
+    `${process.env.PTM_API_URL}/auth/users/${id}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  const data = await resData.data;
+
+  return data;
+};
+
+export const sendEmailVerificationLink = async (token: string) => {
+  const res = await fetch(
+    `${process.env.PTM_API_URL}/auth/users/verify-email`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    }
+  );
+
+  const data = await res.json();
+
+  return data;
+};

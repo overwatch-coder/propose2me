@@ -161,13 +161,13 @@ const LoginPage = () => {
 
                   <div className="pt-5 flex flex-col space-y-3">
                     <h3 className="font-semibold text-primary">
-                      Demo User Details
+                      Guest User Details
                     </h3>
                     <small className="dark:text-white/80">
-                      Email: demo@jrvbuildcon.com
+                      Email: botmer@javdeno.site
                     </small>
                     <small className="dark:text-white/80">
-                      Password: demoUser2023@@
+                      Password: GuestUser2023@@
                     </small>
                   </div>
                 </>

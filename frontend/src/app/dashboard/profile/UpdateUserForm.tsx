@@ -61,7 +61,6 @@ const UpdateUserForm = ({
         userData._id,
         auth?.token!
       );
-      console.log({ data });
 
       if (!data?.success) {
         setLoading(false);

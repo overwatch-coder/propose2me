@@ -10,7 +10,7 @@ import {
   VscChevronUp,
 } from "react-icons/vsc";
 import { BsFillMoonStarsFill, BsFillSunFill } from "react-icons/bs";
-import { FaUserCircle } from "react-icons/fa";
+import noProfileImage from "@/assets/no-profile-picture.png";
 import { useAppContext } from "@/context/AppContext";
 import copy from "copy-to-clipboard";
 import Image from "next/image";
@@ -19,15 +19,23 @@ import AccountDropdown from "./AccountDropdown";
 
 const Header = () => {
   const pathname = usePathname();
-  const { toggleNavbar, isOpen, auth, logout, urls, theme, setTheme } =
-    useAppContext();
+  const {
+    toggleNavbar,
+    isOpen,
+    auth,
+    logout,
+    urls,
+    theme,
+    setTheme,
+    showAccountDropdown,
+    setShowAccountDropdown,
+  } = useAppContext();
   const [displayUrls, setDisplayUrls] = useState(false);
   const [success, setSuccess] = useState({
     status: false,
     url: "",
     copied: false,
   });
-  const [showAccountDropdown, setShowAccountDropdown] = useState(false);
 
   // copy url to clipboard
   const copyToClipboard = (value: string) => {
@@ -175,17 +183,15 @@ const Header = () => {
               }}
               className="px-2 py-2 text-black hover:text-primary uppercase"
             >
-              {auth?.profilePicture ? (
-                <Image
-                  src={auth.profilePicture}
-                  alt="profile picture"
-                  width={500}
-                  height={500}
-                  className="border border-secondary object-cover w-8 h-8 rounded-full"
-                />
-              ) : (
-                <FaUserCircle size={25} color="white" />
-              )}
+              <Image
+                src={
+                  auth?.profilePicture ? auth.profilePicture : noProfileImage
+                }
+                alt="profile picture"
+                width={500}
+                height={500}
+                className="border border-secondary object-cover w-8 h-8 rounded-full"
+              />
             </button>
           )}
         </nav>
