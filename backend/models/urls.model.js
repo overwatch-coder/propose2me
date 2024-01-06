@@ -1,24 +1,27 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-const UrlSchema = new mongoose.Schema({
+const UrlSchema = new mongoose.Schema(
+  {
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'user',
-        required: true
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
     url: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     postId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'post',
-        required: true
-    }
-}, {
-    timestamps: true
-});
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Post",
+      required: true,
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Url = mongoose.model('Url', UrlSchema);
+const Url = mongoose.model("Url", UrlSchema);
 
 module.exports = Url;

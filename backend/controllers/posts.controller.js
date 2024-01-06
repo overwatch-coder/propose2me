@@ -59,6 +59,7 @@ const getAllUserPosts = async (req, res) => {
       .status(200)
       .json({ success: true, posts, message: "Posts retrieved successfully" });
   } catch (error) {
+    console.log({error})
     res
       .status(500)
       .json({ success: false, message: "An unexpected error has occurred!" });
