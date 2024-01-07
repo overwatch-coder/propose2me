@@ -5,6 +5,7 @@ const { frontend_url } = require("../utils");
 // middleware for file uploads
 const { uploadFile } = require("../middleware/fileUpload");
 const { shortenUrl } = require("../lib");
+const Url = require("../models/urls.model");
 
 // GET all requests regardless of user
 const adminGetsAllRequests = async (req, res) => {
@@ -25,9 +26,11 @@ const adminGetsAllRequests = async (req, res) => {
         .json({ success: false, message: "No requests found!" });
     }
 
-    res
-      .status(200)
-      .json({ success: true, requests, message: "Requests retrieved successfully" });
+    res.status(200).json({
+      success: true,
+      requests,
+      message: "Requests retrieved successfully",
+    });
   } catch (error) {
     return res.status(403).json({ success: false, message: "Forbidden!" });
   }
@@ -55,11 +58,13 @@ const getAllUserRequests = async (req, res) => {
         .status(404)
         .json({ success: true, message: "No requests found!" });
 
-    res
-      .status(200)
-      .json({ success: true, requests, message: "Requests retrieved successfully" });
+    res.status(200).json({
+      success: true,
+      requests,
+      message: "Requests retrieved successfully",
+    });
   } catch (error) {
-    console.log({error})
+    console.log({ error });
     res
       .status(500)
       .json({ success: false, message: "An unexpected error has occurred!" });
@@ -242,7 +247,8 @@ const updateRequest = async (req, res) => {
       customNoResponse: customNoResponse
         ? customNoResponse
         : originalRequest.customNoResponse,
-      title: title === undefined || title === "" ? originalRequest.title : title,
+      title:
+        title === undefined || title === "" ? originalRequest.title : title,
       message:
         message === undefined || message === ""
           ? originalRequest.message
@@ -303,6 +309,7 @@ const deleteRequest = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Delete a specific request by a user'
   const { id } = req.params;
+
   try {
     //find the user from the request parameters
     const user = req.user;
@@ -312,11 +319,32 @@ const deleteRequest = async (req, res) => {
         .json({ success: false, message: "Unathorized access!" });
 
     //delete the user's request
-    await Request.findOneAndDelete({ _id: id });
+    const deletedRequests = await Request.findOneAndDelete({ _id: id })
+      .lean()
+      .exec();
 
-    res
-      .status(200)
-      .json({ success: true, message: `Request deleted successfully!` });
+    if (!deletedRequests) {
+      return res.status(500).json({
+        success: false,
+        message: "There was a problem deleting this request",
+      });
+    }
+
+    const deletedUrl = await Url.findOneAndDelete({
+      requestId: deletedRequests._id,
+    });
+
+    if (!deletedUrl) {
+      return res.status(500).json({
+        success: false,
+        message: "There was a problem deleting the url for this request",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Request and associated url deleted successfully!`,
+    });
   } catch (error) {
     res
       .status(500)
