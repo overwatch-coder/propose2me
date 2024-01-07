@@ -206,6 +206,7 @@ const updateRequest = async (req, res) => {
     senderEmail,
     senderName,
     recipientName,
+    video,
     customYesResponse,
     customNoResponse,
   } = req.body;
@@ -241,6 +242,7 @@ const updateRequest = async (req, res) => {
 
     //create an object for the data to update
     const locallyUpdatedInfo = {
+      video: video ? video : originalRequest.video,
       customYesResponse: customYesResponse
         ? customYesResponse
         : originalRequest.customYesResponse,
