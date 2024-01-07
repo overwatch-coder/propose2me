@@ -11,9 +11,9 @@ const UrlSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    postId: {
+    requestId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Post",
+      ref: "Request",
       required: true,
     },
   },

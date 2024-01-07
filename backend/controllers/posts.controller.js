@@ -1,13 +1,13 @@
 //module imports
-const Post = require("../models/posts.models");
+const Request = require("../models/requests.models");
 const { frontend_url } = require("../utils");
 
 // middleware for file uploads
 const { uploadFile } = require("../middleware/fileUpload");
 const { shortenUrl } = require("../lib");
 
-// GET all posts regardless of user
-const adminGetsAllPosts = async (req, res) => {
+// GET all requests regardless of user
+const adminGetsAllRequests = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Only Admin can see all the requests regardless of user'
   // #swagger.ignore = true
@@ -17,24 +17,24 @@ const adminGetsAllPosts = async (req, res) => {
       return res.status(403).json({ success: false, message: "Forbidden!" });
     }
 
-    const posts = await Post.find({}).sort({ createdAt: -1 });
+    const requests = await Request.find({}).sort({ createdAt: -1 });
 
-    if (!posts) {
+    if (!requests) {
       return res
         .status(404)
-        .json({ success: false, message: "No posts found!" });
+        .json({ success: false, message: "No requests found!" });
     }
 
     res
       .status(200)
-      .json({ success: true, posts, message: "Posts retrieved successfully" });
+      .json({ success: true, requests, message: "Requests retrieved successfully" });
   } catch (error) {
     return res.status(403).json({ success: false, message: "Forbidden!" });
   }
 };
 
-// GET all user posts
-const getAllUserPosts = async (req, res) => {
+// GET all user requests
+const getAllUserRequests = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Get all requests made by a specific user'
 
@@ -45,19 +45,19 @@ const getAllUserPosts = async (req, res) => {
         .status(403)
         .json({ success: false, message: "Unathorized access!" });
 
-    const posts = await Post.find({ user: user._id.toString() })
+    const requests = await Request.find({ user: user._id.toString() })
       .sort({ createdAt: -1 })
       .populate({ path: "user", select: "_id email" })
       .exec();
 
-    if (!posts)
+    if (!requests)
       return res
         .status(404)
-        .json({ success: true, message: "No posts found!" });
+        .json({ success: true, message: "No requests found!" });
 
     res
       .status(200)
-      .json({ success: true, posts, message: "Posts retrieved successfully" });
+      .json({ success: true, requests, message: "Requests retrieved successfully" });
   } catch (error) {
     console.log({error})
     res
@@ -66,8 +66,8 @@ const getAllUserPosts = async (req, res) => {
   }
 };
 
-// GET single user post
-const getSinglePost = async (req, res) => {
+// GET single user request
+const getSingleRequest = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Get a single requests made by a specific user'
   const { id } = req.params;
@@ -79,21 +79,21 @@ const getSinglePost = async (req, res) => {
         .status(403)
         .json({ success: false, message: "Unathorized access!" });
 
-    //retrieve user's post using user id and post id
-    const singlePost = await Post.findOne({
+    //retrieve user's request using user id and request id
+    const singleRequest = await Request.findOne({
       $and: [{ _id: id }, { user: user._id.toString() }],
     }).exec();
 
-    //return error message if post is unavailable
-    if (!singlePost)
+    //return error message if request is unavailable
+    if (!singleRequest)
       return res
         .status(404)
-        .json({ success: false, message: "No post found!" });
+        .json({ success: false, message: "No request found!" });
 
     res.status(200).json({
       success: true,
-      posts: singlePost,
-      message: "Post retrieved successfully",
+      requests: singleRequest,
+      message: "Request retrieved successfully",
     });
   } catch (error) {
     res
@@ -102,8 +102,8 @@ const getSinglePost = async (req, res) => {
   }
 };
 
-// POST - Create a new post
-const createPost = async (req, res) => {
+// REQUEST - Create a new request
+const createRequest = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Create and save a new request and generate a url for it'
   const {
@@ -130,7 +130,7 @@ const createPost = async (req, res) => {
       });
     }
 
-    const postCreated = new Post({
+    const requestCreated = new Request({
       title,
       message,
       senderName,
@@ -154,15 +154,15 @@ const createPost = async (req, res) => {
       customNoResponse,
     });
 
-    const post = await postCreated.save();
-    if (!post)
+    const request = await requestCreated.save();
+    if (!request)
       res.status(500).json({
         success: false,
-        message: "Post creation unsuccessful. Try again later!",
+        message: "Request creation unsuccessful. Try again later!",
       });
 
     //generate actual url
-    const urlToShorten = `${frontend_url}/recipient?p=${post._id.toString()}&u=${post.user.toString()}`;
+    const urlToShorten = `${frontend_url}/recipient?p=${request._id.toString()}&u=${request.user.toString()}`;
 
     //shorten the url to hide the name
     const shortenedUrl = await shortenUrl(
@@ -178,8 +178,8 @@ const createPost = async (req, res) => {
     res.status(200).json({
       success: true,
       url: recipientUrl,
-      postId: post._id,
-      message: "Post creation successful!",
+      requestId: request._id,
+      message: "Request creation successful!",
     });
   } catch (error) {
     console.log({ error });
@@ -190,8 +190,8 @@ const createPost = async (req, res) => {
   }
 };
 
-//PATCH - Update a post
-const updatePost = async (req, res) => {
+//PATCH - Update a request
+const updateRequest = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'update already saved request'
   const { id } = req.params;
@@ -212,8 +212,8 @@ const updatePost = async (req, res) => {
         .status(403)
         .json({ success: false, message: "Unathorized access!" });
 
-    //find the original post
-    const originalPost = await Post.findOne({
+    //find the original request
+    const originalRequest = await Request.findOne({
       $and: [{ _id: id }, { user: user._id.toString() }],
     });
 
@@ -238,59 +238,59 @@ const updatePost = async (req, res) => {
     const locallyUpdatedInfo = {
       customYesResponse: customYesResponse
         ? customYesResponse
-        : originalPost.customYesResponse,
+        : originalRequest.customYesResponse,
       customNoResponse: customNoResponse
         ? customNoResponse
-        : originalPost.customNoResponse,
-      title: title === undefined || title === "" ? originalPost.title : title,
+        : originalRequest.customNoResponse,
+      title: title === undefined || title === "" ? originalRequest.title : title,
       message:
         message === undefined || message === ""
-          ? originalPost.message
+          ? originalRequest.message
           : message,
       senderName:
         senderName === undefined || senderName === ""
-          ? originalPost.senderName
+          ? originalRequest.senderName
           : senderName,
       recipientName:
         recipientName === undefined || recipientName === ""
-          ? originalPost.recipientName
+          ? originalRequest.recipientName
           : recipientName,
       senderEmail:
         senderEmail === undefined || senderEmail === ""
-          ? originalPost.senderEmail
+          ? originalRequest.senderEmail
           : senderEmail,
-      user: originalPost.user,
+      user: originalRequest.user,
       senderPhoto:
-        newSenderPhoto === "" ? originalPost.senderPhoto : newSenderPhoto,
+        newSenderPhoto === "" ? originalRequest.senderPhoto : newSenderPhoto,
       recipientPhoto:
         newRecipientPhoto === ""
-          ? originalPost.recipientPhoto
+          ? originalRequest.recipientPhoto
           : newRecipientPhoto,
       acceptanceMusic:
         newAcceptanceMusic === ""
-          ? originalPost.acceptanceMusic
+          ? originalRequest.acceptanceMusic
           : newAcceptanceMusic,
       backgroundImage:
         newBackgroundImage === ""
-          ? originalPost.backgroundImage
+          ? originalRequest.backgroundImage
           : newBackgroundImage,
     };
 
-    const updatedPost = await Post.findOneAndUpdate(
+    const updatedRequest = await Request.findOneAndUpdate(
       { $and: [{ _id: id }, { user: user._id.toString() }] },
       locallyUpdatedInfo,
       { new: true }
     );
 
-    if (!updatedPost)
+    if (!updatedRequest)
       return res.status(500).json({
         success: false,
-        message: "There was an error updating this post!",
+        message: "There was an error updating this request!",
       });
 
     res
       .status(200)
-      .json({ success: true, message: `Post updated successfully!` });
+      .json({ success: true, message: `Request updated successfully!` });
   } catch (error) {
     res
       .status(500)
@@ -298,8 +298,8 @@ const updatePost = async (req, res) => {
   }
 };
 
-//DELETE - Delete a post
-const deletePost = async (req, res) => {
+//DELETE - Delete a request
+const deleteRequest = async (req, res) => {
   // #swagger.tags = ['Requests']
   // #swagger.description = 'Delete a specific request by a user'
   const { id } = req.params;
@@ -311,12 +311,12 @@ const deletePost = async (req, res) => {
         .status(403)
         .json({ success: false, message: "Unathorized access!" });
 
-    //delete the user's post
-    await Post.findOneAndDelete({ _id: id });
+    //delete the user's request
+    await Request.findOneAndDelete({ _id: id });
 
     res
       .status(200)
-      .json({ success: true, message: `Post deleted successfully!` });
+      .json({ success: true, message: `Request deleted successfully!` });
   } catch (error) {
     res
       .status(500)
@@ -325,10 +325,10 @@ const deletePost = async (req, res) => {
 };
 
 module.exports = {
-  adminGetsAllPosts,
-  getAllUserPosts,
-  getSinglePost,
-  createPost,
-  updatePost,
-  deletePost,
+  adminGetsAllRequests,
+  getAllUserRequests,
+  getSingleRequest,
+  createRequest,
+  updateRequest,
+  deleteRequest,
 };

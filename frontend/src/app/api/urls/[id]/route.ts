@@ -10,7 +10,7 @@ export const DELETE = async (
 
   try {
     const res = await axios.delete(
-      `${process.env.PTM_API_URL}/user/urls?postId=${id}&userId=${userId}`,
+      `${process.env.PTM_API_URL}/user/urls?requestId=${id}&userId=${userId}`,
       {
         headers: {
           "Content-Type": "application/json",

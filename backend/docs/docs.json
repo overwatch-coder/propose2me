@@ -330,7 +330,7 @@
         ]
       }
     },
-    "/api/auth/posts/": {
+    "/api/auth/requests/": {
       "get": {
         "tags": [
           "Requests"
@@ -417,7 +417,7 @@
         }
       }
     },
-    "/api/auth/posts/{id}": {
+    "/api/auth/requests/{id}": {
       "get": {
         "tags": [
           "Requests"
@@ -602,7 +602,7 @@
         "tags": [
           "Urls"
         ],
-        "description": "Delete saved url and its related post when recipient has responded",
+        "description": "Delete saved url and its related request when recipient has responded",
         "parameters": [
           {
             "name": "userId",
@@ -612,7 +612,7 @@
             }
           },
           {
-            "name": "postId",
+            "name": "requestId",
             "in": "query",
             "schema": {
               "type": "string"
@@ -693,13 +693,13 @@
                   "url": {
                     "type": "string"
                   },
-                  "postId": {
+                  "requestId": {
                     "type": "string"
                   }
                 },
                 "required": [
                   "url",
-                  "postId"
+                  "requestId"
                 ]
               }
             }

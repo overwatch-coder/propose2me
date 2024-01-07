@@ -1,4 +1,4 @@
-const Post = require("../models/posts.models");
+const Request = require("../models/requests.models");
 const Url = require("../models/urls.model");
 
 // get all links of a user
@@ -44,24 +44,24 @@ const saveUserUrls = async (req, res) => {
                             url: {
                                 type: "string"
                             },
-                            postId: {
+                            requestId: {
                                 type: "string",
                             }
                         },
-                        required: ["url", "postId"]
+                        required: ["url", "requestId"]
                     }
                 }
             } 
         }
     */
 
-  const { url, postId } = req.body;
+  const { url, requestId } = req.body;
 
   try {
-    if (!url || url === "" || !postId) {
+    if (!url || url === "" || !requestId) {
       return res
         .status(400)
-        .json({ message: "No url or post id was provided", success: false });
+        .json({ message: "No url or request id was provided", success: false });
     }
 
     const user = req.user;
@@ -69,7 +69,7 @@ const saveUserUrls = async (req, res) => {
     const newUrl = new Url({
       user: user._id,
       url: url,
-      postId,
+      requestId,
     });
 
     const savedUrl = await newUrl.save();
@@ -96,19 +96,19 @@ const saveUserUrls = async (req, res) => {
 // delete url
 const deletedRespondedUrl = async (req, res) => {
   // #swagger.tags = ['Urls']
-  // #swagger.description = 'Delete saved url and its related post when recipient has responded'
-  const { userId, postId } = req.query;
+  // #swagger.description = 'Delete saved url and its related request when recipient has responded'
+  const { userId, requestId } = req.query;
 
   try {
-    if (!userId || !postId) {
+    if (!userId || !requestId) {
       return res.status(400).json({
-        message: "Either post id or user id is invalid",
+        message: "Either request id or user id is invalid",
         success: false,
       });
     }
 
     const deletedUrl = await Url.findOneAndDelete({
-      $and: [{ user: userId }, { postId: postId }],
+      $and: [{ user: userId }, { requestId: requestId }],
     });
 
     if (!deletedUrl) {
@@ -118,22 +118,22 @@ const deletedRespondedUrl = async (req, res) => {
       });
     }
 
-    // delete post that created the url
-    const deletedPost = await Post.findOneAndDelete({
-      $and: [{ user: deletedUrl.user }, { _id: deletedUrl.postId }],
+    // delete request that created the url
+    const deletedRequest = await Request.findOneAndDelete({
+      $and: [{ user: deletedUrl.user }, { _id: deletedUrl.requestId }],
     });
 
-    if (!deletedPost) {
+    if (!deletedRequest) {
       return res.status(500).json({
         success: false,
-        message: "There was a problem deleting the link's post",
+        message: "There was a problem deleting the link's request",
       });
     }
 
     res.status(200).json({
       success: true,
       message:
-        "Response sent, post and link deleted successfully from database",
+        "Response sent, request and link deleted successfully from database",
     });
   } catch (error) {
     res.status(500).json({

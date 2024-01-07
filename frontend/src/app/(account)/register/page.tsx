@@ -2,21 +2,21 @@
 "use client";
 
 import Link from "next/link";
-import { redirect, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
-import { loginOrRegisterAccount } from "@/utils";
+import { loginOrRegisterAccount } from "@/lib/user";
 import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
 import PasswordChecklist from "react-password-checklist";
-import { initialUserData } from "@/constants";
+import { initialUserAccountData } from "@/constants";
 
 const RegisterPage = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const { userData, setUserData, setShowSentEmail, showSentEmail, auth } =
+  const { userAccountData, setUserAccountData, setShowSentEmail, showSentEmail, auth } =
     useAppContext();
   const [error, setError] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
@@ -30,15 +30,15 @@ const RegisterPage = () => {
 
     if (
       pathname === "/register" &&
-      userData.password !== userData.confirmPassword
+      userAccountData.password !== userAccountData.confirmPassword
     ) {
       setError("Passwords do not match");
-      setUserData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
+      setUserAccountData((prev) => ({ ...prev, password: "", confirmPassword: "" }));
       setLoading(false);
       return;
     }
 
-    const results = await loginOrRegisterAccount(pathname, userData);
+    const results = await loginOrRegisterAccount(pathname, userAccountData);
 
     setLoading(false);
 
@@ -54,12 +54,12 @@ const RegisterPage = () => {
         setEmailMessage("");
         router.push("/request");
       }
-      setUserData(initialUserData);
+      setUserAccountData(initialUserAccountData);
     } else {
       setError(results.message);
       setShowSentEmail(false);
       setEmailMessage("");
-      setUserData((prev) => ({ ...prev, password: "" }));
+      setUserAccountData((prev) => ({ ...prev, password: "" }));
     }
   };
 
@@ -124,7 +124,7 @@ const RegisterPage = () => {
 
               <Form />
 
-              {userData.password.length > 0 && (
+              {userAccountData.password.length > 0 && (
                 <div className="mt-5 dark:text-white">
                   <PasswordChecklist
                     rules={[
@@ -135,8 +135,8 @@ const RegisterPage = () => {
                       "match",
                     ]}
                     minLength={8}
-                    value={userData.password}
-                    valueAgain={userData.confirmPassword}
+                    value={userAccountData.password}
+                    valueAgain={userAccountData.confirmPassword}
                   />
                 </div>
               )}

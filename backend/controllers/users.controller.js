@@ -5,7 +5,7 @@ const validator = require("validator");
 
 //model imports
 const User = require("../models/users.models");
-const Post = require("../models/posts.models");
+const Request = require("../models/requests.models");
 
 //library imports
 const { sendEmailVerification, verifyEmailAddress } = require("../lib/email");
@@ -387,11 +387,11 @@ const deleteUser = async (req, res) => {
     //delete user from database
     const deletedUser = await User.findOneAndDelete({ _id: id });
 
-    // if user is deleted, delete the user's post as well
+    // if user is deleted, delete the user's request as well
     if (deletedUser) {
-      const postsToDelete = await Post.find({ user: user._id.toString() });
-      postsToDelete.forEach(async (post) => {
-        await Post.findOneAndDelete({ _id: post._id.toString() });
+      const requestsToDelete = await Request.find({ user: user._id.toString() });
+      requestsToDelete.forEach(async (request) => {
+        await Request.findOneAndDelete({ _id: request._id.toString() });
       });
     }
 

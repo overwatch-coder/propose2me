@@ -7,7 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Form = () => {
   const pathname = usePathname();
-  const { userData, setUserData } = useAppContext();
+  const { userAccountData, setUserAccountData } = useAppContext();
   const [viewPassword, setViewPassword] = useState({
     confirm: false,
     pass: false,
@@ -15,7 +15,7 @@ const Form = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setUserData((prev) => ({ ...prev, [name]: value }));
+    setUserAccountData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handlePasswordChange = (
@@ -42,7 +42,7 @@ const Form = () => {
             className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
             placeholder="your username"
             required
-            value={userData.username}
+            value={userAccountData.username}
             onChange={handleChange}
           />
         </div>
@@ -58,7 +58,7 @@ const Form = () => {
           className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
           placeholder="your email address"
           required
-          value={userData.email}
+          value={userAccountData.email}
           onChange={handleChange}
         />
       </div>
@@ -73,7 +73,7 @@ const Form = () => {
           className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
           placeholder="enter password"
           required
-          value={userData.password}
+          value={userAccountData.password}
           onChange={handleChange}
         />
         <button
@@ -97,7 +97,7 @@ const Form = () => {
             className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
             placeholder="confirmPassword password"
             required
-            value={userData.confirmPassword}
+            value={userAccountData.confirmPassword}
             onChange={handleChange}
           />
 

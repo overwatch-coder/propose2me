@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const postSchema = new mongoose.Schema(
+const requestschema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -45,6 +45,6 @@ const postSchema = new mongoose.Schema(
 
 mongoose.set("strictPopulate", false);
 
-const Post = mongoose.model("Post", postSchema);
+const Request = mongoose.model("Request", requestschema);
 
-module.exports = Post;
+module.exports = Request;

@@ -5,9 +5,9 @@ import React, { createContext, useState, useContext, useEffect } from "react";
 import { IAccount, IAuth } from "../../types";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getSavedUrls } from "@/utils";
+import { getSavedUrls } from "@/lib/url";
 import { GoogleAnalytics } from "nextjs-google-analytics";
-import { initialUserData } from "@/constants";
+import { initialUserAccountData } from "@/constants";
 import { HelmetProvider } from "react-helmet-async";
 
 type AppContextProps = {
@@ -17,8 +17,8 @@ type AppContextProps = {
   setShowAccountDropdown: React.Dispatch<React.SetStateAction<boolean>>;
   showSentEmail: boolean;
   setShowSentEmail: React.Dispatch<React.SetStateAction<boolean>>;
-  userData: IAccount;
-  setUserData: React.Dispatch<React.SetStateAction<IAccount>>;
+  userAccountData: IAccount;
+  setUserAccountData: React.Dispatch<React.SetStateAction<IAccount>>;
   auth: IAuth | null;
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
   urls: any;
@@ -32,8 +32,8 @@ const initialValues = {
   setIsOpen: () => false,
   showSentEmail: false,
   setShowSentEmail: () => false,
-  userData: initialUserData,
-  setUserData: () => {},
+  userAccountData: initialUserAccountData,
+  setUserAccountData: () => {},
   auth: null,
   setAuth: () => {},
   urls: [],
@@ -49,7 +49,7 @@ export const AppContext = createContext<AppContextProps>(initialValues);
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSentEmail, setShowSentEmail] = useState(false);
-  const [userData, setUserData] = useState<IAccount>(initialUserData);
+  const [userAccountData, setUserAccountData] = useState<IAccount>(initialUserAccountData);
   const [auth, setAuth] = useState<IAuth | null>(null);
   const [urls, setUrls] = useState<any>([]);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
@@ -124,8 +124,8 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const values = {
     isOpen,
     setIsOpen,
-    userData,
-    setUserData,
+    userAccountData,
+    setUserAccountData,
     showSentEmail,
     setShowSentEmail,
     auth,
@@ -153,8 +153,8 @@ export const useAppContext = () => {
   const {
     isOpen,
     setIsOpen,
-    userData,
-    setUserData,
+    userAccountData,
+    setUserAccountData,
     showSentEmail,
     setShowSentEmail,
     auth,
@@ -181,8 +181,8 @@ export const useAppContext = () => {
     isOpen,
     setIsOpen,
     toggleNavbar,
-    userData,
-    setUserData,
+    userAccountData,
+    setUserAccountData,
     showSentEmail,
     setShowSentEmail,
     auth,

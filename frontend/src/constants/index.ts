@@ -51,7 +51,7 @@ export const contactDetails = {
   title: "Contact Details",
   desc: "We look forward to hearing from you and helping you create the perfect proposal experience!",
   email: "devbrainy98@gmail.com",
-  phone: "+212 (0) 698-551-516",
+  phone: "+212 (0) 777-824-970",
   address: "Lot Jacques Philipes, Morocco",
   socials: [BsFacebook, BsInstagram, BsTwitter, BsTiktok] as IconType[],
 };
@@ -81,10 +81,10 @@ export const initialUserProfileData: IUserProfileData = {
   gender: "",
   lastName: "",
   profilePicture: "",
-  password: ""
+  password: "",
 };
 
-export const initialUserData: IAccount = {
+export const initialUserAccountData: IAccount = {
   username: "",
   email: "",
   password: "",

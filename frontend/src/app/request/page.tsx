@@ -9,10 +9,12 @@ import { IRequestData } from "../../../types";
 import { initialRequestData } from "@/constants";
 import {
   createRequest,
+  uploadRequestVideoFile,
+} from "@/lib/request";
+import {
   getSavedUrls,
   saveUrlToDB,
-  uploadVideoFile,
-} from "@/utils";
+} from "@/lib/url";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
@@ -155,7 +157,7 @@ const RequestPage = () => {
         setVideoFile((prev) => ({ ...prev, file: file }));
         setFileError((prev) => ({ ...prev, video: "" }));
         setVideoUploaded(true);
-        const results = await uploadVideoFile(file);
+        const results = await uploadRequestVideoFile(file);
 
         if (!results?.success) {
           videoRef.current.value = "";
@@ -226,7 +228,7 @@ const RequestPage = () => {
 
       // save the url to the db
       const saveNewUrl = await saveUrlToDB(
-        { url: results.url, postId: results.postId },
+        { url: results.url, requestId: results.requestId },
         auth.token
       );
 

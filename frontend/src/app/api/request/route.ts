@@ -11,7 +11,7 @@ export const POST = async (req: Request) => {
     : undefined;
 
     //   call the backend api to process the request
-    const res = await axios.post(`${process.env.PTM_API_URL}/auth/posts`, formData, {
+    const res = await axios.post(`${process.env.PTM_API_URL}/auth/requests`, formData, {
         headers: {
             "Content-Type": "mutlipart/form-data",
             Authorization: `${authorization}`

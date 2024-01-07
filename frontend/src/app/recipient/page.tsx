@@ -1,6 +1,7 @@
 "use client";
 
-import { deleteUrlToDB, getRecipientMessage, sendRequestEmail } from "@/utils";
+import { getRecipientMessage, sendRequestEmail } from "@/lib/request";
+import { deleteUrlFromDB} from "@/lib/url";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
@@ -39,11 +40,11 @@ const RecipientPage = () => {
     }
 
     const retrieveMessage = async () => {
-      const postId = searchParams.get("p");
+      const requestId = searchParams.get("p");
       const userId = searchParams.get("u");
 
       const results: IRequestMessage = await getRecipientMessage({
-        p: postId,
+        p: requestId,
         u: userId,
       });
       if (results?.success) {
@@ -89,7 +90,7 @@ const RecipientPage = () => {
     }
 
     // get paramters from query
-    const postId = searchParams.get("p") as string;
+    const requestId = searchParams.get("p") as string;
     const userId = searchParams.get("u") as string;
 
     // send request response through email and delete the request on email sent
@@ -99,13 +100,13 @@ const RecipientPage = () => {
       setLoading((prev) => ({ ...prev, status: false }));
       displayFireworks(acceptedForFireworks);
 
-      const deleteResults = await deleteUrlToDB(postId, userId);
+      const deleteResults = await deleteUrlFromDB(requestId, userId);
 
       if (deleteResults.success) {
         toast.success(results.message);
         if (auth?.token) {
           setUrls((prev: any) =>
-            prev.filter((url: any) => url.postId !== postId)
+            prev.filter((url: any) => url.requestId !== requestId)
           );
         }
       } else if (

@@ -5,22 +5,22 @@ import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
-import { loginOrRegisterAccount } from "@/utils";
+import { loginOrRegisterAccount } from "@/lib/user";
 import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
 import { ClipLoader } from "react-spinners";
-import { initialUserData } from "@/constants";
+import { initialUserAccountData } from "@/constants";
 
 const LoginPage = () => {
   const pathname = usePathname();
   const router = useRouter();
 
   const {
-    userData,
+    userAccountData,
     setShowSentEmail,
     setAuth,
     showSentEmail,
-    setUserData,
+    setUserAccountData,
     auth,
   } = useAppContext();
   const [error, setError] = useState("");
@@ -33,7 +33,7 @@ const LoginPage = () => {
     setError("");
     setLoading(true);
 
-    const results = await loginOrRegisterAccount(pathname, userData);
+    const results = await loginOrRegisterAccount(pathname, userAccountData);
 
     setLoading(false);
     if (results.success) {
@@ -54,7 +54,7 @@ const LoginPage = () => {
         setAuth({ ...authValue });
         toast.success(results.message);
 
-        setUserData(initialUserData);
+        setUserAccountData(initialUserAccountData);
 
         router.push("/request");
       }
@@ -62,7 +62,7 @@ const LoginPage = () => {
       setEmailMessage("");
       setError(results.message);
       setShowSentEmail(false);
-      setUserData((prev) => ({ ...prev, password: "" }));
+      setUserAccountData((prev) => ({ ...prev, password: "" }));
     }
   };
 

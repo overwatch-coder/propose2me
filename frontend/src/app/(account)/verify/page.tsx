@@ -1,7 +1,7 @@
 "use client";
 
 import { useAppContext } from "@/context/AppContext";
-import { verifyAccount } from "@/utils";
+import { verifyAccount } from "@/lib/user";
 import Link from "next/link";
 import { redirect, useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";

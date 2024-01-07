@@ -1,4 +1,4 @@
-const Post = require("../models/posts.models");
+const Request = require("../models/requests.models");
 
 const retrieveMessage = async (req, res) => {
   // #swagger.tags = ['Recipient']
@@ -33,7 +33,7 @@ const retrieveMessage = async (req, res) => {
 
   try {
     //retrieve the sender's message
-    const retrievedMessage = await Post.findOne({
+    const retrievedMessage = await Request.findOne({
       $and: [{ _id: id }, { user: user }],
     }).exec();
 
