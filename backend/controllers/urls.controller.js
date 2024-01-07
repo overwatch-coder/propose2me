@@ -8,7 +8,12 @@ const getUserUrls = async (req, res) => {
   // #swagger.description = 'Get All Urls of a specific user'
   try {
     const user = req.user;
-    const existingUrls = await Url.find({ user: user._id }).exec();
+    const existingUrls = await Url.find({ user: user._id })
+      .populate("requestId", '_id title')
+      .sort({ createdAt: -1 })
+      .select('-__v -updatedAt')
+      .lean()
+      .exec();
 
     if (!existingUrls) {
       return res
