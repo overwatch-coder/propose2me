@@ -11,6 +11,7 @@ export interface IAuth {
   token: string;
   id: string;
   profilePicture: string;
+  isEmailVerified: boolean;
 }
 
 export interface IRequestData {

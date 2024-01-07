@@ -353,7 +353,7 @@ const RecipientPage = () => {
 
                     <div className="flex flex-col gap-y-5 md:flex-row md:gap-y-0 md:gap-x-5 md:items-center">
                       <button
-                        className="text-base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+                        className="text-base py-3 px-5 rounded bg-primary-main text-white uppercase border hover:border-primary-main hover:bg-transparent hover:text-primary-main"
                         type="submit"
                         name="accepted"
                         onClick={handleResponse}
@@ -370,7 +370,7 @@ const RecipientPage = () => {
                       </button>
 
                       <button
-                        className="text-base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+                        className="text-base py-3 px-5 rounded bg-primary-main text-white uppercase border hover:border-primary-main hover:bg-transparent hover:text-primary-main"
                         type="submit"
                         name="rejected"
                         onClick={handleResponse}

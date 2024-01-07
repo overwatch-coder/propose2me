@@ -210,7 +210,7 @@ const RequestForms = ({
           offHandleColor="#808080"
           activeBoxShadow="undefined"
         />
-        <span className="text-secondary dark:text-white">
+        <span className="text-secondary-main dark:text-white">
           Upload Video Message Instead?
         </span>
       </div>
@@ -220,7 +220,7 @@ const RequestForms = ({
           <label htmlFor="video">Upload your video (Max: 50MB)</label>
           <div className="relative">
             <input
-              className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
+              className="rounded py-3 w-full px-2 outline-none shadow border border-secondary-main"
               onChange={uploadFile}
               type="file"
               name="video"
@@ -304,7 +304,7 @@ const RequestForms = ({
           <ReactSwitch
             onChange={(e) => setShowAdvanced(e)}
             checked={showAdvanced}
-            className="border border-primary"
+            className="border border-primary-main"
             offColor="#fff"
             onColor="#F6638E"
             uncheckedIcon={false}
@@ -313,7 +313,7 @@ const RequestForms = ({
             offHandleColor="#F6638E"
             activeBoxShadow="undefined"
           />
-          <span className="text-secondary dark:text-white">
+          <span className="text-secondary-main dark:text-white">
             {showAdvanced ? "Hide" : "Show"} Advanced Options
           </span>
         </div>
@@ -329,7 +329,7 @@ const RequestForms = ({
             <label htmlFor="recipientPhoto">Recipient Photo</label>
             <div className="relative">
               <input
-                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
+                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary-main"
                 onChange={uploadFile}
                 type="file"
                 name="recipientPhoto"
@@ -364,7 +364,7 @@ const RequestForms = ({
             <label htmlFor="senderPhoto">Sender Photo</label>
             <div className="relative">
               <input
-                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
+                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary-main"
                 onChange={uploadFile}
                 type="file"
                 name="senderPhoto"
@@ -396,7 +396,7 @@ const RequestForms = ({
             <label htmlFor="acceptanceMusic">Acceptance Music</label>
             <div className="relative">
               <input
-                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary"
+                className="rounded py-3 w-full px-2 outline-none shadow border border-secondary-main"
                 onChange={uploadFile}
                 type="file"
                 name="acceptanceMusic"
@@ -453,7 +453,7 @@ const RequestForms = ({
               offHandleColor="#808080"
               activeBoxShadow="undefined"
             />
-            <span className="text-secondary ms-auto dark:text-white">
+            <span className="text-secondary-main ms-auto dark:text-white">
               {showPreview ? "Hide" : "Show"} Live Preview
             </span>
           </div>
@@ -462,7 +462,7 @@ const RequestForms = ({
           {showPreview && requestData.acceptanceMusic && (
             <span
               onClick={playAudio}
-              className="cursor-pointer hover:text-primary w-fit hidden"
+              className="cursor-pointer hover:text-primary-main w-fit hidden"
             >
               {audio.status ? "Pause" : "Test Audio"}
             </span>

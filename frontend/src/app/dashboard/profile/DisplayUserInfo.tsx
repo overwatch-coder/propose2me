@@ -111,7 +111,7 @@ const DisplayUserInfo = ({
 
   return (
     <section className="flex flex-col space-y-5 border shadow">
-      <h2 className="font-pacifico text-center text-xl md:text-3xl font-semibold text-primary dark:text-white tracking-wider pt-5">
+      <h2 className="font-pacifico text-center text-xl md:text-3xl font-semibold text-primary-main dark:text-white tracking-wider pt-5">
         Your Profile
       </h2>
 
@@ -122,7 +122,7 @@ const DisplayUserInfo = ({
             alt="profile picture"
             width={500}
             height={500}
-            className="border-2 border-secondary object-cover w-32 h-32 rounded-full"
+            className="border-2 border-secondary-main object-cover w-32 h-32 rounded-full"
           />
 
           <form
@@ -142,7 +142,7 @@ const DisplayUserInfo = ({
             />
             <button
               type="submit"
-              className="px-4 py-2 rounded bg-primary border-0 text-white w-full"
+              className="px-4 py-2 rounded bg-primary-main border-0 text-white w-full"
               disabled={loading}
             >
               {loading ? "Updating..." : "Change"}
@@ -181,14 +181,15 @@ const DisplayUserInfo = ({
           <div className="flex items-center space-x-3 flex-row justify-between w-full">
             <p>
               <span className="font-semibold">Verified Email:</span>{" "}
-              {userData.isEmailVerified ? "Yes" : "No"}
+              {auth?.isEmailVerified ? "Yes" : "No"}
             </p>
 
-            {!userData.isEmailVerified && (
+            {!auth?.isEmailVerified && (
               <>
                 {emailSent ? (
-                  <p className="text-xs dark:text-white">
-                    An email containing the verification link has ben sent.
+                  <p className="text-[10px] dark:text-white">
+                    An email containing the verification link has ben sent.{" "}
+                    <br />
                     Please check your inbox to verify
                   </p>
                 ) : (

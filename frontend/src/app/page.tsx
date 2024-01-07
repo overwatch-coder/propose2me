@@ -28,7 +28,7 @@ const Home = () => {
             <div className="flex items-center space-x-3">
               <Link
                 href={"/request"}
-                className="px-5 py-2 text-center text-white uppercase border-2 rounded-full bg-primary border-primary hover:border-2 hover:text-primary hover:bg-transparent w-fit"
+                className="px-5 py-2 text-center text-white uppercase border-2 rounded-full bg-primary-main border-primary-main hover:border-2 hover:text-primary-main hover:bg-transparent w-fit"
               >
                 Make a move
               </Link>
@@ -56,10 +56,10 @@ const Home = () => {
 
         {/* Description Section */}
         <section className="flex flex-col pt-10 gap-y-3">
-          <h2 className="text-xl font-medium text-center text-primary md:text-2xl">
+          <h2 className="text-xl font-medium text-center text-primary-main md:text-2xl">
             Writing Your Heart's Desire: <br /> Our Effortless Method
           </h2>
-          <p className="mt-1 text-center text-secondary dark:text-white/80 mb-4">
+          <p className="mt-1 text-center text-secondary-main dark:text-white/80 mb-4">
             Let our effortless method guide you in writing your heart's desire.
           </p>
 
@@ -67,7 +67,7 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0 md:gap-x-10">
               {/* Content */}
               <div className="md:order-2">
-                <h3 className="uppercase text-primary md:text-xl mb-2">
+                <h3 className="uppercase text-primary-main md:text-xl mb-2">
                   Prepare your request
                 </h3>
                 <ul className="dark:text-white">
@@ -107,7 +107,7 @@ const Home = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0 md:gap-x-10">
               {/* Content */}
               <div>
-                <h3 className="uppercase text-primary md:text-xl mb-2">
+                <h3 className="uppercase text-primary-main md:text-xl mb-2">
                   Send the link to your would-be partner
                 </h3>
                 <ul className="dark:text-white">

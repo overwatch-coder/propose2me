@@ -128,7 +128,7 @@ const ShowPreview = ({
           <div className="flex flex-col gap-y-5 md:flex-row md:gap-y-0 md:gap-x-5 md:items-center">
             <button
               disabled={true}
-              className="base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+              className="base py-3 px-5 rounded bg-primary-main text-white uppercase border hover:border-primary-main hover:bg-transparent hover:text-primary-main"
             >
               {requestData.customYesResponse
                 ? requestData.customYesResponse
@@ -137,7 +137,7 @@ const ShowPreview = ({
 
             <button
               disabled={true}
-              className="base py-3 px-5 rounded bg-primary text-white uppercase border hover:border-primary hover:bg-transparent hover:text-primary"
+              className="base py-3 px-5 rounded bg-primary-main text-white uppercase border hover:border-primary-main hover:bg-transparent hover:text-primary-main"
             >
               {requestData.customNoResponse
                 ? requestData.customNoResponse

@@ -2,15 +2,12 @@
 
 import { deleteUserAccount } from "@/app/actions/user-data";
 import { useAppContext } from "@/context/AppContext";
-import { redirect } from "next/navigation";
 import Swal from "sweetalert2";
 
 const AccountDelete = () => {
   const { auth, logout } = useAppContext();
 
-  const handleDeleteButtonClick = (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const handleDeleteAccount = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     Swal.fire({
@@ -56,12 +53,14 @@ const AccountDelete = () => {
           </span>
         </div>
 
-        <button
-          onClick={handleDeleteButtonClick}
-          className="rounded px-4 py-2 border-red-500 border hover:bg-red-600 text-red-500 hover:text-white md:w-fit"
-        >
-          Delete this account
-        </button>
+        <form method="POST" onSubmit={handleDeleteAccount}>
+          <button
+            type="submit"
+            className="rounded px-4 py-2 border-red-500 border hover:bg-red-600 text-red-500 hover:text-white md:w-fit"
+          >
+            Delete this account
+          </button>
+        </form>
       </div>
     </section>
   );

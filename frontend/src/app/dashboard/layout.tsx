@@ -68,7 +68,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       />
 
       <button
-        className="items-center ml-2 flex px-2 py-2 bg-primary w-fit md:hidden"
+        className="items-center ml-2 flex px-2 py-2 bg-primary-main w-fit md:hidden"
         onClick={logout}
       >
         <CiLogout color={"white"} size={22} />

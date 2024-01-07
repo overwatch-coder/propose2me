@@ -81,6 +81,7 @@ export const initialUserProfileData: IUserProfileData = {
   gender: "",
   lastName: "",
   profilePicture: "",
+  password: ""
 };
 
 export const initialUserData: IAccount = {

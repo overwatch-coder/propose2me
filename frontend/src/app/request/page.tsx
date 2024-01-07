@@ -260,7 +260,7 @@ const RequestPage = () => {
       </Helmet>
       <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
         <section className="flex flex-col space-y-6 my-7">
-          <h2 className="font-pacifico uppercase text-3xl text-primary text-center">
+          <h2 className="font-pacifico uppercase text-3xl text-primary-main text-center">
             PTM - Request
           </h2>
         </section>
@@ -360,10 +360,10 @@ const RequestPage = () => {
             <section className="flex flex-col mx-auto w-full gap-y-3">
               <button
                 disabled={loading}
-                className={`text-center w-full sm:w-fit bg-primary sm:px-5 py-2 uppercase text-white border-primary  rounded ${
+                className={`text-center w-full sm:w-fit bg-primary-main sm:px-5 py-2 uppercase text-white border-primary-main  rounded ${
                   loading
                     ? ""
-                    : "hover:border hover:bg-transparent hover:text-primary"
+                    : "hover:border hover:bg-transparent hover:text-primary-main"
                 }`}
               >
                 {loading ? (

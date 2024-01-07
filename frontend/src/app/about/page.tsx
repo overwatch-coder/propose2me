@@ -18,8 +18,8 @@ const AboutPage = () => {
       {/* Mission Statement */}
       <div className="flex flex-col space-y-6 md:flex-row md:justify-between items-center md:space-y-0 md:space-x-10">
         {/* Content */}
-        <div className="flex space-y-2 border-2 border-primary p-5 md:p-10 lg:p-16 flex-col items-center md:items-start">
-          <h3 className="text-primary font-bold text-xl">Mission Statement</h3>
+        <div className="flex space-y-2 border-2 border-primary-main p-5 md:p-10 lg:p-16 flex-col items-center md:items-start">
+          <h3 className="text-primary-main font-bold text-xl">Mission Statement</h3>
           <p className="dark:text-white/80">
             At PTM, we aim to provide a platform that empowers individuals to
             express their love without fear or anxiety. We strive to make
@@ -42,7 +42,7 @@ const AboutPage = () => {
 
       {/* Our Vision */}
       <h3 className="text-xl text-center mt-5 max-w-xl dark:text-white/80">
-        <span className="text-primary font-bold">Our vision</span> is to be the
+        <span className="text-primary-main font-bold">Our vision</span> is to be the
         go-to platform for individuals looking to create unique and
         unforgettable proposal experiences. We envision a world where love is
         expressed freely and confidently, regardless of personality type or
@@ -84,8 +84,8 @@ const AboutPage = () => {
         id="contact-us"
         className="flex items-center justify-end ms-auto mt-10 max-w-lg"
       >
-        <div className="p-3 border-primary border-2 shadow flex flex-col space-y-6">
-          <h2 className="text-xl md:text-2xl text-primary font-bold">
+        <div className="p-3 border-primary-main border-2 shadow flex flex-col space-y-6">
+          <h2 className="text-xl md:text-2xl text-primary-main font-bold">
             {contactDetails.title}
           </h2>
 
@@ -104,7 +104,7 @@ const AboutPage = () => {
               <Social
                 key={index}
                 size={20}
-                className="hover:scale-110 hover:text-primary dark:hover:text-primary cursor-pointer dark:text-white"
+                className="hover:scale-110 hover:text-primary-main dark:hover:text-primary-main cursor-pointer dark:text-white"
               />
             ))}
           </div>

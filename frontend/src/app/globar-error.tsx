@@ -21,13 +21,13 @@ export default function GlobalError({ error, reset }: {
                 // Attempt to recover by trying to re-render the segment
                 () => reset()
               }
-              className="px-5 py-3 text-white rounded bg-primary hover:bg-transparent border hover:border-primary hover:text-primary"
+              className="px-5 py-3 text-white rounded bg-primary-main hover:bg-transparent border hover:border-primary-main hover:text-primary-main"
             >
               Try again
             </button>
 
             <Link href={'/'}
-              className="px-5 py-3 text-white rounded bg-primary hover:bg-transparent border hover:border-primary hover:text-primary"
+              className="px-5 py-3 text-white rounded bg-primary-main hover:bg-transparent border hover:border-primary-main hover:text-primary-main"
             >
               Go home
             </Link>

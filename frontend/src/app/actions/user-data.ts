@@ -4,16 +4,14 @@ import axios from "axios";
 import { IUserProfileData } from "../../../types";
 
 export const getProfileData = async (token: string) => {
-  const resData = await axios.get(
-    `${process.env.PTM_API_URL}/auth/users/user`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.PTM_API_URL}/auth/users/user`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-  const data = await resData.data;
+  const data = await res.json();
 
   return data;
 };
@@ -56,16 +54,15 @@ export const updateUserProfileDetails = async (
 };
 
 export const deleteUserAccount = async (token: string, id: string) => {
-  const resData = await axios.delete(
-    `${process.env.PTM_API_URL}/auth/users/${id}`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
+  const res = await fetch(`${process.env.PTM_API_URL}/auth/users/${id}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
 
-  const data = await resData.data;
+  const data = await res.json();
 
   return data;
 };

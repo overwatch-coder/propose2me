@@ -86,7 +86,7 @@ const UpdateUserForm = ({
       onSubmit={submitUserUpdateForm}
       className="flex flex-col space-y-5 border shadow justify-start p-5 mx-auto w-full"
     >
-      <h2 className="text-center tracking-wider font-pacifico text-xl md:text-3xl font-semibold text-primary dark:text-white">
+      <h2 className="text-center tracking-wider font-pacifico text-xl md:text-3xl font-semibold text-primary-main dark:text-white">
         Update your profile
       </h2>
 
@@ -180,7 +180,7 @@ const UpdateUserForm = ({
 
       <button
         type="submit"
-        className="px-4 py-2 rounded bg-primary border-0 text-white w-full text-center"
+        className="px-4 py-2 rounded bg-primary-main border-0 text-white w-full text-center"
         disabled={loading}
       >
         {loading ? "Updating..." : "Update"}

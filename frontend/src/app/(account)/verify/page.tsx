@@ -59,7 +59,7 @@ const VerifyEmail = () => {
 
           <Link
             href="/login"
-            className="w-fit px-5 py-2 bg-primary text-white rounded hover:bg-primary/80 block"
+            className="w-fit px-5 py-2 bg-primary-main text-white rounded hover:bg-primary-main/80 block"
           >
             Login
           </Link>

@@ -54,7 +54,7 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-[100] w-screen">
-      <div className="flex items-center justify-between px-5 py-3 bg-primary shadow-sm">
+      <div className="flex items-center justify-between px-5 py-3 bg-primary-main shadow-sm">
         {/* Logo */}
         <Link href={"/"} className="text-2xl text-white font-pacifico md:px-10">
           PTM
@@ -171,7 +171,7 @@ const Header = () => {
           {!auth?.email ? (
             <Link
               href={"/login"}
-              className="px-5 py-2 text-black bg-white rounded-full hover:text-primary"
+              className="px-5 py-2 text-black bg-white rounded-full hover:text-primary-main"
             >
               Account
             </Link>
@@ -181,7 +181,7 @@ const Header = () => {
                 setShowAccountDropdown((prev) => !prev);
                 !showAccountDropdown && setDisplayUrls(false);
               }}
-              className="px-2 py-2 text-black hover:text-primary uppercase"
+              className="px-2 py-2 text-black hover:text-primary-main uppercase"
             >
               <Image
                 src={
@@ -190,7 +190,7 @@ const Header = () => {
                 alt="profile picture"
                 width={500}
                 height={500}
-                className="border border-secondary object-cover w-8 h-8 rounded-full"
+                className="border border-secondary-main object-cover w-8 h-8 rounded-full"
               />
             </button>
           )}
@@ -200,7 +200,7 @@ const Header = () => {
       {/* Mobile Navbar */}
       <nav
         className={`flex-col pt-5 pb-10 space-y-5 text-sm px-5 text-white uppercase md:hidden ${
-          isOpen ? "flex bg-primary" : "hidden"
+          isOpen ? "flex bg-primary-main" : "hidden"
         } font-medium`}
       >
         <Link
@@ -244,7 +244,7 @@ const Header = () => {
         {!auth?.email ? (
           <Link
             href={"/login"}
-            className="px-5 py-2 text-black bg-white rounded hover:text-primary text-center"
+            className="px-5 py-2 text-black bg-white rounded hover:text-primary-main text-center"
           >
             Account
           </Link>
@@ -255,7 +255,7 @@ const Header = () => {
               toggleNavbar();
               !showAccountDropdown && setDisplayUrls(false);
             }}
-            className="px-5 py-2 text-black bg-white rounded hover:text-primary text-center"
+            className="px-5 py-2 text-black bg-white rounded hover:text-primary-main text-center"
           >
             Account
           </button>

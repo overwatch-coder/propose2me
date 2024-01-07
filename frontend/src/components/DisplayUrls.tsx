@@ -22,7 +22,7 @@ const DisplayUrls = ({
 }: DisplayUrlsProps) => {
   return (
     <div
-      className={`absolute md:top-16 right-0 px-5 py-4 w-full md:w-fit duration-700 bg-primary text-white ${
+      className={`absolute md:top-16 right-0 px-5 py-4 w-full md:w-fit duration-700 bg-primary-main text-white ${
         displayUrls
           ? "translate-y-0 transition"
           : "transition -translate-y-[9999px]"
@@ -35,7 +35,7 @@ const DisplayUrls = ({
             setDisplayUrls(false);
           }}
           size={22}
-          className="text-primary w-5 h-5 rounded-full bg-white border-white border cursor-pointer hover:text-white hover:bg-transparent"
+          className="text-primary-main w-5 h-5 rounded-full bg-white border-white border cursor-pointer hover:text-white hover:bg-transparent"
         />
       </h3>
 

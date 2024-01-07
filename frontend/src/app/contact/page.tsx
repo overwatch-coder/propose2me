@@ -12,8 +12,8 @@ const ContactPage = () => {
       id="contact-us"
       className="flex items-center justify-center mx-auto mt-16 max-w-lg"
     >
-      <div className="p-3 border-primary border-2 shadow flex flex-col space-y-5">
-        <h2 className="text-xl md:text-2xl text-primary font-bold">
+      <div className="p-3 border-primary-main border-2 shadow flex flex-col space-y-5">
+        <h2 className="text-xl md:text-2xl text-primary-main font-bold">
           PTM {contactDetails.title}
         </h2>
 
@@ -32,7 +32,7 @@ const ContactPage = () => {
             <Social
               key={index}
               size={20}
-              className="hover:scale-110 hover:text-primary cursor-pointer dark:text-white dark:hover:text-primary"
+              className="hover:scale-110 hover:text-primary-main cursor-pointer dark:text-white dark:hover:text-primary-main"
             />
           ))}
         </div>
