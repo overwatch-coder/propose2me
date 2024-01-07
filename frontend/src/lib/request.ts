@@ -24,6 +24,29 @@ export const createRequest = async (data: any, token: string) => {
   }
 };
 
+// remove url from database
+export const deleteRequest = async (id: string, token: string) => {
+
+  try {
+    const res = await axios.delete(`/api/request/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const data: { success: boolean; message: string } = res.data;
+    return data;
+  } catch (error: any) {
+    const data: { success: boolean; message: string } = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+    };
+
+    return data;
+  }
+};
+
 // get recipient information
 export const getRecipientMessage = async (data: any) => {
   try {

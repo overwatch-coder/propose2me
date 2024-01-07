@@ -103,7 +103,6 @@ const DisplayUserInfo = ({
         setEmailSent(false);
       }, 7000);
     } catch (error: any) {
-      console.log({ error });
       setEmailSent(false);
       toast.error("An error has occurred. Please try again later");
     }

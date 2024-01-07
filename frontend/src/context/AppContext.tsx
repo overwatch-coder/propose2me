@@ -2,7 +2,7 @@
 
 import { redirect, usePathname } from "next/navigation";
 import React, { createContext, useState, useContext, useEffect } from "react";
-import { IAccount, IAuth } from "../../types";
+import { IAccount, IAuth, IUrls } from "../../types";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getSavedUrls } from "@/lib/url";
@@ -21,8 +21,8 @@ type AppContextProps = {
   setUserAccountData: React.Dispatch<React.SetStateAction<IAccount>>;
   auth: IAuth | null;
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
-  urls: any;
-  setUrls: React.Dispatch<React.SetStateAction<any>>;
+  urls: IUrls[];
+  setUrls: React.Dispatch<React.SetStateAction<IUrls[]>>;
   theme: "light" | "dark" | null;
   setTheme: React.Dispatch<React.SetStateAction<"light" | "dark" | null>>;
 };
@@ -49,9 +49,11 @@ export const AppContext = createContext<AppContextProps>(initialValues);
 const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showSentEmail, setShowSentEmail] = useState(false);
-  const [userAccountData, setUserAccountData] = useState<IAccount>(initialUserAccountData);
+  const [userAccountData, setUserAccountData] = useState<IAccount>(
+    initialUserAccountData
+  );
   const [auth, setAuth] = useState<IAuth | null>(null);
-  const [urls, setUrls] = useState<any>([]);
+  const [urls, setUrls] = useState<IUrls[]>([]);
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
 

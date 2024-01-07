@@ -1,12 +1,12 @@
 "use client";
 
 import { getRecipientMessage, sendRequestEmail } from "@/lib/request";
-import { deleteUrlFromDB} from "@/lib/url";
+import { deleteUrlFromDB } from "@/lib/url";
 import { useSearchParams } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
-import { IRequestMessage, IRequestMessageData } from "../../../types";
+import { IRequestMessage, IRequestData } from "../../../types";
 import Image from "next/image";
 import { Editor } from "@tinymce/tinymce-react";
 import Link from "next/link";
@@ -19,7 +19,7 @@ import FireWorks from "./FireWorks";
 const RecipientPage = () => {
   const { auth, setUrls } = useAppContext();
   const [requestMessage, setRequestMessage] =
-    useState<IRequestMessageData | null>(null);
+    useState<IRequestData | null>(null);
   const searchParams = useSearchParams();
   const [messagesFound, setMessagesFound] = useState(true);
   const [loading, setLoading] = useState({
@@ -49,7 +49,7 @@ const RecipientPage = () => {
       });
       if (results?.success) {
         setMessagesFound(true);
-        setRequestMessage(results?.data as IRequestMessageData);
+        setRequestMessage(results?.data as IRequestData);
       } else {
         toast.info(results?.message);
         setMessagesFound(false);

@@ -21,7 +21,7 @@ export type SidebarLinksType = {
   icon: IconType;
 };
 
-const sidebarLinks: SidebarLinksType[] = [
+export const sidebarLinks: SidebarLinksType[] = [
   {
     name: "Profile",
     path: "/dashboard/profile",

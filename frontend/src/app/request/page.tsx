@@ -7,14 +7,8 @@ import { Helmet } from "react-helmet-async";
 import RequestForms from "./RequestForms";
 import { IRequestData } from "../../../types";
 import { initialRequestData } from "@/constants";
-import {
-  createRequest,
-  uploadRequestVideoFile,
-} from "@/lib/request";
-import {
-  getSavedUrls,
-  saveUrlToDB,
-} from "@/lib/url";
+import { createRequest, uploadRequestVideoFile } from "@/lib/request";
+import { getSavedUrls, saveUrlToDB } from "@/lib/url";
 import { toast } from "react-toastify";
 import copy from "copy-to-clipboard";
 import { ClipLoader } from "react-spinners";
@@ -222,19 +216,20 @@ const RequestPage = () => {
 
     // handle this when the request is successful
     if (results.success) {
+      setError("");
+      setLoading(false);
       setSuccess({ status: true, url: results.url, copied: false });
       toast.success(results.message);
-      setError("");
 
       // save the url to the db
       const saveNewUrl = await saveUrlToDB(
         { url: results.url, requestId: results.requestId },
-        auth.token
+        auth?.token
       );
 
       if (saveNewUrl.success) {
         // retrieve all urls from the database
-        const savedUrls = await getSavedUrls(auth.token);
+        const savedUrls = await getSavedUrls(auth?.token);
         if (savedUrls?.success) {
           setUrls(savedUrls?.data);
         }

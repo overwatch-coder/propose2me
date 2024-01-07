@@ -26,27 +26,14 @@ export interface IRequestData {
   video?: any;
   customYesResponse?: string;
   customNoResponse?: string;
+  _id?: string;
 }
 
 export interface IRequestMessage {
-  data?: IRequestMessageData;
+  data?: IRequestData;
   message: string;
   success: boolean;
-}
-
-export interface IRequestMessageData {
-  _id: string;
-  acceptanceMusic: string;
-  message: string;
-  recipientName: string;
-  recipientPhoto?: string;
-  senderEmail: string;
-  senderName: string;
-  senderPhoto?: string;
-  title: string;
-  video?: string;
-  customYesResponse: string;
-  customNoResponse: string;
+  requests?: IRequestData
 }
 
 export interface IUserProfileData {
@@ -63,4 +50,17 @@ export interface IUserProfileData {
   lastName?: string;
   profilePicture?: string;
   password?: string;
+}
+
+export interface IUrls {
+  _id: string;
+  user: string;
+  url: string;
+  requestId: RequestID;
+  createdAt: Date;
+}
+
+export interface RequestID {
+  _id: string;
+  title: string;
 }

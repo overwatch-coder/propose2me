@@ -1,3 +1,4 @@
+import { sidebarLinks } from "@/app/dashboard/layout";
 import Link from "next/link";
 import React from "react";
 import { CiLogout } from "react-icons/ci";
@@ -17,7 +18,7 @@ const AccountDropdown = ({
 }: AccountDropdownProps) => {
   return (
     <div
-      className={`absolute md:top-16 right-0 px-5 py-4 w-fit md:w-48 duration-700 bg-primary-main text-white ${
+      className={`absolute md:top-16 right-0 px-7 py-7 w-fit duration-700 bg-primary-main text-white ${
         showAccountDropdown
           ? "translate-y-0 transition"
           : "transition -translate-y-[9999px]"
@@ -35,15 +36,21 @@ const AccountDropdown = ({
       </h3>
 
       <div className="flex flex-col space-y-5">
-        <Link
-          className="flex items-center py-2 px-3 bg-white rounded text-primary-main text-center"
-          href={"/dashboard/profile"}
-        >
-          <MdManageAccounts size={25} />
-          <span className="mx-2 text-primary-main font-medium uppercase">
-            Account
-          </span>
-        </Link>
+        {sidebarLinks.map(
+          (accountLink, idx) =>
+            accountLink.name !== "Logout" && (
+              <Link
+                key={idx}
+                className="flex items-center py-2 px-3 bg-white rounded text-primary-main text-center"
+                href={accountLink.path}
+              >
+                <accountLink.icon size={25} />
+                <span className="mx-2 text-primary-main font-medium uppercase">
+                  {accountLink.name}
+                </span>
+              </Link>
+            )
+        )}
 
         <button
           className="items-center flex px-3 py-2 bg-white text-primary-main rounded text-center"

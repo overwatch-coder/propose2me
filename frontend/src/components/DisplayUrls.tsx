@@ -1,8 +1,9 @@
 import React from "react";
 import { VscClose } from "react-icons/vsc";
+import { IUrls } from "../../types";
 
 type DisplayUrlsProps = {
-  urls: any;
+  urls: IUrls[];
   copyToClipboard: (value: string) => void;
   success: {
     status: boolean;
@@ -41,12 +42,15 @@ const DisplayUrls = ({
 
       <small className="text-xs pb-5 flex flex-col space-y-1">
         <p>Click on a link to copy it</p>
-        <p>NB: Each link is deleted after the recipient has responded.</p>
+        <p>
+          NB: Each link with its post is deleted after the recipient has
+          responded.
+        </p>
       </small>
 
       {urls && urls?.length > 0 ? (
         <div className="flex flex-col space-y-3">
-          {urls?.map((url: any, idx: number) => (
+          {urls?.map((url, idx: number) => (
             <p
               key={idx}
               onClick={() => copyToClipboard(url.url)}
