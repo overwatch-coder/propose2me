@@ -255,6 +255,7 @@ const login = async (req, res) => {
             email: user.email,
             id: user._id,
             profilePicture: user.profilePicture,
+            isEmailVerified: user.isEmailVerified,
           },
         });
     }
