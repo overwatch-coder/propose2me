@@ -209,6 +209,10 @@ const updateRequest = async (req, res) => {
     video,
     customYesResponse,
     customNoResponse,
+    senderPhoto,
+    recipientPhoto,
+    acceptanceMusic,
+    backgroundImage,
   } = req.body;
 
   try {
@@ -223,22 +227,21 @@ const updateRequest = async (req, res) => {
       $and: [{ _id: id }, { user: user._id.toString() }],
     });
 
-    let newSenderPhoto = await uploadFile(
-      req?.files?.senderPhoto,
-      "ptm/ptm-photos"
-    );
-    let newRecipientPhoto = await uploadFile(
-      req?.files?.recipientPhoto,
-      "ptm/ptm-photos"
-    );
-    let newAcceptanceMusic = await uploadFile(
-      req?.files?.acceptanceMusic,
-      "ptm/ptm-music"
-    );
-    let newBackgroundImage = await uploadFile(
-      req?.files?.backgroundImage,
-      "ptm/ptm-bg-photos"
-    );
+    let newRecipientPhoto = recipientPhoto
+      ? recipientPhoto
+      : await uploadFile(req?.files?.recipientPhoto, "ptm/ptm-photos");
+
+    let newAcceptanceMusic = acceptanceMusic
+      ? acceptanceMusic
+      : await uploadFile(req?.files?.acceptanceMusic, "ptm/ptm-music");
+
+    // let newBackgroundImage = backgroundImage
+    //   ? backgroundImage
+    //   : await uploadFile(req?.files?.backgroundImage, "ptm/ptm-bg-photos");
+
+    let newSenderPhoto = senderPhoto
+      ? senderPhoto
+      : await uploadFile(req?.files?.senderPhoto, "ptm/ptm-photos");
 
     //create an object for the data to update
     const locallyUpdatedInfo = {
@@ -278,10 +281,10 @@ const updateRequest = async (req, res) => {
         newAcceptanceMusic === ""
           ? originalRequest.acceptanceMusic
           : newAcceptanceMusic,
-      backgroundImage:
-        newBackgroundImage === ""
-          ? originalRequest.backgroundImage
-          : newBackgroundImage,
+      // backgroundImage:
+      //   newBackgroundImage === ""
+      //     ? originalRequest.backgroundImage
+      //     : newBackgroundImage,
     };
 
     const updatedRequest = await Request.findOneAndUpdate(
