@@ -144,7 +144,9 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     <AppContext.Provider value={values}>
       <div
         className={`${
-          pathname === "/recipient" ? "bg-black/[0.85]" : "dark:bg-black/[0.85]"
+          pathname === "/recipient"
+            ? "bg-black/[0.85] dark:bg-black/[0.85]"
+            : "dark:bg-black/[0.85] bg-white"
         }`}
       >
         <GoogleAnalytics trackPageViews={true} strategy="lazyOnload" />
