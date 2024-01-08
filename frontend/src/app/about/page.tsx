@@ -19,7 +19,9 @@ const AboutPage = () => {
       <div className="flex flex-col space-y-6 md:flex-row md:justify-between items-center md:space-y-0 md:space-x-10">
         {/* Content */}
         <div className="flex space-y-2 border-2 border-primary-main p-5 md:p-10 lg:p-16 flex-col items-center md:items-start">
-          <h3 className="text-primary-main font-bold text-xl">Mission Statement</h3>
+          <h3 className="text-primary-main font-bold text-xl">
+            Mission Statement
+          </h3>
           <p className="dark:text-white/80">
             At PTM, we aim to provide a platform that empowers individuals to
             express their love without fear or anxiety. We strive to make
@@ -42,8 +44,8 @@ const AboutPage = () => {
 
       {/* Our Vision */}
       <h3 className="text-xl text-center mt-5 max-w-xl dark:text-white/80">
-        <span className="text-primary-main font-bold">Our vision</span> is to be the
-        go-to platform for individuals looking to create unique and
+        <span className="text-primary-main font-bold">Our vision</span> is to be
+        the go-to platform for individuals looking to create unique and
         unforgettable proposal experiences. We envision a world where love is
         expressed freely and confidently, regardless of personality type or
         social norms.

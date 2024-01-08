@@ -33,8 +33,8 @@ export const coreValues = [
     id: 4,
     title: "Support",
     desc: "We provide support and guidance to users during their proposal journey to make them feel confident and reassured.",
-    bg: "EFE95F",
-    color: "00000",
+    bg: "5009AA",
+    color: "ffff",
   },
   {
     id: 5,
