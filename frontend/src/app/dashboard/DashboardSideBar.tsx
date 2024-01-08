@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import { SidebarLinksType } from "./layout";
+import { SidebarLinksType } from "../../../types/dashboard";
 
 type SidebarProps = {
   pathname: string;

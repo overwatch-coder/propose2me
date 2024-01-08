@@ -4,12 +4,13 @@ import { useAppContext } from "@/context/AppContext";
 import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { createRequest, uploadRequestVideoFile } from "@/lib/request";
+import { updateRequest, uploadRequestVideoFile } from "@/lib/request";
 import { toast } from "react-toastify";
 import { ClipLoader } from "react-spinners";
 import { IRequestData } from "../../../../../../types";
 import { initialRequestData } from "@/constants";
 import RequestForms from "@/app/request/RequestForms";
+import Swal from "sweetalert2";
 
 export type FileType = {
   sender: string;
@@ -181,20 +182,35 @@ const RequestEditForm = ({ userRequestData }: RequestEditFormProps) => {
     setLoading(true);
 
     // send request to the server and receive the results
-    const results = await createRequest(formData, auth?.token!);
+    const results = await updateRequest(
+      formData,
+      auth?.token!,
+      requestData._id!
+    );
 
     // handle this when the request is successful
     if (!results.success) {
       setError(results.message);
       toast.error(results.message);
       setLoading(false);
+      Swal.fire({
+        title: "Oops. Something went wrong",
+        text: results?.message,
+        icon: "error",
+      });
       return;
     }
 
     setError("");
     setLoading(false);
     toast.success(results.message);
+    Swal.fire({
+      title: "Updated!",
+      text: results?.message,
+      icon: "success",
+    });
     setRequestData(initialRequestData);
+    router.push("/dashboard/requests");
   };
 
   return (

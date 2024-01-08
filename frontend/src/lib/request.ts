@@ -24,9 +24,31 @@ export const createRequest = async (data: any, token: string) => {
   }
 };
 
+// Update an existing request
+export const updateRequest = async (data: any, token: string, id: string) => {
+  try {
+    const res = await axios.post(`/api/request/${id}`, data, {
+      headers: {
+        "Content-Type": "mutlipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const results = res.data;
+
+    return results;
+  } catch (error: any) {
+    const results = {
+      success: false,
+      message: "Unexpected error encountered. Try again later",
+    };
+
+    return results;
+  }
+};
+
 // remove url from database
 export const deleteRequest = async (id: string, token: string) => {
-
   try {
     const res = await axios.delete(`/api/request/${id}`, {
       headers: {

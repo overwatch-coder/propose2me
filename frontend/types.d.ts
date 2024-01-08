@@ -33,7 +33,7 @@ export interface IRequestMessage {
   data?: IRequestData;
   message: string;
   success: boolean;
-  requests?: IRequestData
+  requests?: IRequestData;
 }
 
 export interface IUserProfileData {

@@ -28,7 +28,12 @@ const ShowPreview = ({
         {requestData.senderPhoto && (
           <div className="absolute -top-10 left-0 border-t-[15px] border-r-[15px] border-l-[15px] border-b-[60px] border-white -rotate-[25deg] w-[180px] md:w-[250px] -z-[20]">
             <Image
-              src={URL.createObjectURL(requestData?.senderPhoto)}
+              src={
+                requestData?.senderPhoto &&
+                typeof requestData.senderPhoto === "string"
+                  ? requestData?.senderPhoto
+                  : URL.createObjectURL(requestData?.senderPhoto)
+              }
               alt={requestData.senderName}
               width={700}
               height={700}
@@ -43,7 +48,12 @@ const ShowPreview = ({
         {requestData.recipientPhoto && (
           <div className="absolute -top-10 right-0 border-t-[15px] border-r-[15px] border-l-[15px] border-b-[60px] border-white rotate-[25deg] w-[180px] md:w-[250px] -z-[20]">
             <Image
-              src={URL.createObjectURL(requestData?.recipientPhoto)}
+              src={
+                requestData?.recipientPhoto &&
+                typeof requestData.recipientPhoto === "string"
+                  ? requestData.recipientPhoto
+                  : URL.createObjectURL(requestData?.recipientPhoto)
+              }
               alt={requestData.recipientName}
               width={700}
               height={700}

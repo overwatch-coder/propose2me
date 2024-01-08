@@ -8,6 +8,9 @@ import ShowPreview from "./ShowPreview";
 import { VscClose } from "react-icons/vsc";
 import { FileType, VideoFile } from "./page";
 import { useAppContext } from "@/context/AppContext";
+import ReactPlayer from "react-player";
+import Image from "next/image";
+import thumbnail from "@/assets/thumbnail.png";
 
 type AudioFileType = {
   status: boolean;
@@ -65,7 +68,10 @@ const RequestForms = ({
 
   // set audio
   useEffect(() => {
-    if (requestData.acceptanceMusic) {
+    if (
+      requestData.acceptanceMusic &&
+      typeof requestData.acceptanceMusic !== "string"
+    ) {
       const audio = new Audio(
         URL.createObjectURL(requestData?.acceptanceMusic)
       );
@@ -188,19 +194,57 @@ const RequestForms = ({
         />
       </div>
 
+      {/* hidden fields if user is updating request */}
+      {requestData._id && typeof requestData.recipientPhoto === "string" && (
+        <input
+          onChange={handleChange}
+          value={requestData.recipientPhoto}
+          type="text"
+          name="recipientPhoto"
+          hidden={true}
+        />
+      )}
+
+      {requestData._id && typeof requestData.senderPhoto === "string" && (
+        <input
+          onChange={handleChange}
+          value={requestData.senderPhoto}
+          type="text"
+          name="senderPhoto"
+          hidden={true}
+        />
+      )}
+
+      {requestData._id && typeof requestData.acceptanceMusic === "string" && (
+        <input
+          onChange={handleChange}
+          value={requestData.acceptanceMusic}
+          type="text"
+          name="acceptanceMusic"
+          hidden={true}
+        />
+      )}
+
       {/* Upload Video Request Instead */}
       <div className="flex items-center space-x-4 pt-4 pb-2">
         <ReactSwitch
           onChange={(e) => {
             setShowVideo(e);
-            e === true && setRequestData((prev) => ({ ...prev, message: "" }));
+            e === true &&
+              setRequestData((prev) => ({
+                ...prev,
+                message:
+                  requestData?._id && requestData?.message
+                    ? requestData?.message
+                    : "",
+              }));
             if (e === false) {
               setFileError((prev) => ({ ...prev, video: "" }));
               setVideoFile({ size: 0, file: "" });
               setVideoUploaded(false);
             }
           }}
-          checked={showVideo}
+          checked={showVideo || (requestData?._id && requestData?.video)}
           className="border border-gray-700"
           offColor="#fff"
           onColor="#808080"
@@ -217,6 +261,32 @@ const RequestForms = ({
 
       {showVideo && (
         <section className="flex flex-col space-y-2 w-full">
+          {requestData?._id &&
+            requestData?.video &&
+            typeof requestData?.video === "string" && (
+              <div className="flex flex-col space-y-2">
+                <h1 className="text-sm font-semibold tracking-wider">
+                  Existing Video
+                </h1>
+
+                <ReactPlayer
+                  url={requestData.video}
+                  width={"100%"}
+                  controls={true}
+                  ref={videoPlayerRef}
+                  light={
+                    <Image
+                      src={thumbnail}
+                      alt="video thumbnail"
+                      width={700}
+                      height={700}
+                      quality={100}
+                      loading="lazy"
+                    />
+                  }
+                />
+              </div>
+            )}
           <label htmlFor="video">Upload your video (Max: 50MB)</label>
           <div className="relative">
             <input
@@ -226,6 +296,7 @@ const RequestForms = ({
               name="video"
               ref={videoRef}
             />
+
             {videoFile.file && !videoUploaded && (
               <span>Video uploaded successfully</span>
             )}
@@ -236,11 +307,12 @@ const RequestForms = ({
 
             {requestData.video && (
               <div className="flex flex-row justify-between w-full pt-2">
-                <span>Size: {videoFile.size} MB</span>
+                <span>Size: {videoFile?.size || 0} MB</span>
                 <span>Max: 50MB</span>
               </div>
             )}
 
+            {/* remove video file from input field */}
             {requestData.video && (
               <span
                 className="absolute top-4 right-2 cursor-pointer"
@@ -304,13 +376,13 @@ const RequestForms = ({
           <ReactSwitch
             onChange={(e) => setShowAdvanced(e)}
             checked={showAdvanced}
-            className="border border-primary-main"
+            className="border border-gray-700"
             offColor="#fff"
-            onColor="#F6638E"
+            onColor="#808080"
             uncheckedIcon={false}
             checkedIcon={false}
             onHandleColor="#ffffff"
-            offHandleColor="#F6638E"
+            offHandleColor="#808080"
             activeBoxShadow="undefined"
           />
           <span className="text-secondary-main dark:text-white">
@@ -326,6 +398,29 @@ const RequestForms = ({
         >
           {/* Recipient Photo */}
           <div className="flex flex-col space-y-2 w-full">
+            {requestData?._id && requestData?.recipientPhoto && (
+              <div className="flex flex-col space-y-2">
+                <h2 className="text-sm font-semibold tracking-wider">
+                  Existing Recipient Photo
+                </h2>
+
+                <Image
+                  src={
+                    requestData?.recipientPhoto &&
+                    typeof requestData.recipientPhoto === "string"
+                      ? requestData.recipientPhoto
+                      : URL.createObjectURL(requestData?.recipientPhoto)
+                  }
+                  alt={requestData.recipientName}
+                  width={700}
+                  height={700}
+                  quality={100}
+                  loading="lazy"
+                  className="flex-shrink-0 w-48 h-48 object-contain"
+                />
+              </div>
+            )}
+
             <label htmlFor="recipientPhoto">Recipient Photo</label>
             <div className="relative">
               <input
@@ -361,6 +456,29 @@ const RequestForms = ({
 
           {/* Sender Photo */}
           <div className="flex flex-col space-y-2 w-full">
+            {requestData?._id && requestData?.senderPhoto && (
+              <div className="flex flex-col space-y-2">
+                <h2 className="text-sm font-semibold tracking-wider">
+                  Existing Sender Photo
+                </h2>
+
+                <Image
+                  src={
+                    requestData?.senderPhoto &&
+                    typeof requestData.senderPhoto === "string"
+                      ? requestData?.senderPhoto
+                      : URL.createObjectURL(requestData?.senderPhoto)
+                  }
+                  alt={requestData.senderName}
+                  width={700}
+                  height={700}
+                  quality={100}
+                  loading="lazy"
+                  className="flex-shrink-0 w-48 h-48 object-contain"
+                />
+              </div>
+            )}
+
             <label htmlFor="senderPhoto">Sender Photo</label>
             <div className="relative">
               <input
@@ -392,7 +510,7 @@ const RequestForms = ({
           </div>
 
           {/* Acceptance Music */}
-          <div className="flex-col space-y-2 w-full hidden">
+          {/* <div className="flex-col space-y-2 w-full hidden">
             <label htmlFor="acceptanceMusic">Acceptance Music</label>
             <div className="relative">
               <input
@@ -428,7 +546,7 @@ const RequestForms = ({
             <small className="text-red-700 text-sm hidden">
               {fileError.music}
             </small>
-          )}
+          )} */}
         </div>
 
         {/* Show Preview */}
@@ -459,24 +577,26 @@ const RequestForms = ({
           </div>
 
           {/* Test Audio file */}
-          {showPreview && requestData.acceptanceMusic && (
+          {/* {showPreview && requestData.acceptanceMusic && (
             <span
               onClick={playAudio}
               className="cursor-pointer hover:text-primary-main w-fit hidden"
             >
               {audio.status ? "Pause" : "Test Audio"}
             </span>
-          )}
+          )} */}
         </div>
 
-        {showPreview && (
-          <ShowPreview
-            requestData={requestData}
-            showVideo={showVideo}
-            videoFile={videoFile}
-            videoPlayerRef={videoPlayerRef}
-          />
-        )}
+        <div>
+          {showPreview && (
+            <ShowPreview
+              requestData={requestData}
+              showVideo={showVideo}
+              videoFile={videoFile}
+              videoPlayerRef={videoPlayerRef}
+            />
+          )}
+        </div>
       </section>
     </>
   );

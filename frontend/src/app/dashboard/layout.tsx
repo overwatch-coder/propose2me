@@ -3,46 +3,14 @@
 import React from "react";
 import { redirect, usePathname } from "next/navigation";
 import { CiLogout } from "react-icons/ci";
-import { MdManageAccounts } from "react-icons/md";
-import { CgProfile } from "react-icons/cg";
-import { TfiWrite } from "react-icons/tfi";
 import { useAppContext } from "@/context/AppContext";
-import { IconType } from "react-icons";
 import DashboardSideBar from "./DashboardSideBar";
 import { Helmet } from "react-helmet-async";
+import { sidebarLinks } from "@/constants";
 
 type DashboardLayoutProps = {
   children: React.ReactNode;
 };
-
-export type SidebarLinksType = {
-  name: string;
-  path: string;
-  icon: IconType;
-};
-
-export const sidebarLinks: SidebarLinksType[] = [
-  {
-    name: "Profile",
-    path: "/dashboard/profile",
-    icon: CgProfile,
-  },
-  {
-    name: "Account",
-    path: "/dashboard/account",
-    icon: MdManageAccounts,
-  },
-  {
-    name: "Requests",
-    path: "/dashboard/requests",
-    icon: TfiWrite,
-  },
-  {
-    name: "Logout",
-    path: "/",
-    icon: CiLogout,
-  },
-];
 
 const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const pathname = usePathname();

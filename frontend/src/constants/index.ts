@@ -1,6 +1,11 @@
 import { IconType } from "react-icons";
 import { BsFacebook, BsInstagram, BsTwitter, BsTiktok } from "react-icons/bs";
 import { IAccount, IRequestData, IUserProfileData } from "../../types";
+import { CgProfile } from "react-icons/cg";
+import { MdManageAccounts } from "react-icons/md";
+import { TfiWrite } from "react-icons/tfi";
+import { CiLogout } from "react-icons/ci";
+import { SidebarLinksType } from "../../types/dashboard";
 
 export const coreValues = [
   {
@@ -55,6 +60,29 @@ export const contactDetails = {
   address: "Lot Jacques Philipes, Morocco",
   socials: [BsFacebook, BsInstagram, BsTwitter, BsTiktok] as IconType[],
 };
+
+export const sidebarLinks: SidebarLinksType[] = [
+  {
+    name: "Profile",
+    path: "/dashboard/profile",
+    icon: CgProfile,
+  },
+  {
+    name: "Account",
+    path: "/dashboard/account",
+    icon: MdManageAccounts,
+  },
+  {
+    name: "Requests",
+    path: "/dashboard/requests",
+    icon: TfiWrite,
+  },
+  {
+    name: "Logout",
+    path: "/",
+    icon: CiLogout,
+  },
+];
 
 export const initialRequestData: IRequestData = {
   title: "",

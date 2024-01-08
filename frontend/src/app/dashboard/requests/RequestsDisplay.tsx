@@ -36,7 +36,6 @@ const RequestsDisplay = () => {
             <TableHeader>
               <TableRow>
                 <TableHead className="text-center">No.</TableHead>
-                <TableHead className="text-center">Req No.</TableHead>
                 <TableHead className="text-center">Title</TableHead>
                 <TableHead className="text-center">Url</TableHead>
                 <TableHead className="text-center">Created</TableHead>
@@ -51,10 +50,9 @@ const RequestsDisplay = () => {
                 <TableRow key={url._id}>
                   <TableCell className="text-center">{idx + 1}.</TableCell>
                   <TableCell className="text-center">
-                    {url.requestId._id.slice(-10)}
-                  </TableCell>
-                  <TableCell className="text-center">
-                    {url.requestId.title}
+                    {url.requestId.title.length > 40
+                      ? `${url.requestId.title.slice(0, 40)}...`
+                      : url.requestId.title}
                   </TableCell>
                   <TableCell className="text-center">{url.url}</TableCell>
                   <TableCell className="text-center">

@@ -1,8 +1,7 @@
-import { sidebarLinks } from "@/app/dashboard/layout";
+import { sidebarLinks } from "@/constants";
 import Link from "next/link";
 import React from "react";
 import { CiLogout } from "react-icons/ci";
-import { MdManageAccounts } from "react-icons/md";
 import { VscClose } from "react-icons/vsc";
 
 type AccountDropdownProps = {
