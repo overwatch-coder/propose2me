@@ -39,7 +39,7 @@ const Form = () => {
           <input
             type="username"
             name="username"
-            className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
+            className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
             placeholder="your username"
             required
             value={userAccountData.username}
@@ -55,7 +55,7 @@ const Form = () => {
         <input
           type="email"
           name="email"
-          className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
+          className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
           placeholder="your email address"
           required
           value={userAccountData.email}
@@ -70,7 +70,7 @@ const Form = () => {
         <input
           type={viewPassword.pass ? "text" : "password"}
           name="password"
-          className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
+          className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
           placeholder="enter password"
           required
           value={userAccountData.password}
@@ -94,7 +94,7 @@ const Form = () => {
           <input
             type={viewPassword.confirm ? "text" : "password"}
             name="confirmPassword"
-            className="border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-2 md:py-3 w-full px-2"
+            className="dark:bg-transparent dark:text-white dark:border-white/60 border border-secondary-subtle/30 shadow focus:border-secondary-subtle rounded py-3 w-full px-2"
             placeholder="confirmPassword password"
             required
             value={userAccountData.confirmPassword}
