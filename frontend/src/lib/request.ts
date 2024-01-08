@@ -27,7 +27,7 @@ export const createRequest = async (data: any, token: string) => {
 // Update an existing request
 export const updateRequest = async (data: any, token: string, id: string) => {
   try {
-    const res = await axios.post(`/api/request/${id}`, data, {
+    const res = await axios.patch(`/api/request/${id}`, data, {
       headers: {
         "Content-Type": "mutlipart/form-data",
         Authorization: `Bearer ${token}`,

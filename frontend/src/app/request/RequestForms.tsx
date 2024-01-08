@@ -66,6 +66,10 @@ const RequestForms = ({
     audio: null,
   });
 
+  useEffect(() => {
+    setShowVideo(requestData._id && requestData?.video ? true : false);
+  }, [requestData?._id, requestData?.video]);
+
   // set audio
   useEffect(() => {
     if (
@@ -225,12 +229,23 @@ const RequestForms = ({
         />
       )}
 
+      {requestData._id && typeof requestData.video === "string" && (
+        <input
+          onChange={handleChange}
+          value={requestData.video}
+          type="text"
+          name="video"
+          hidden={true}
+        />
+      )}
+
       {/* Upload Video Request Instead */}
       <div className="flex items-center space-x-4 pt-4 pb-2">
         <ReactSwitch
           onChange={(e) => {
             setShowVideo(e);
-            e === true &&
+
+            if (e === true) {
               setRequestData((prev) => ({
                 ...prev,
                 message:
@@ -238,13 +253,13 @@ const RequestForms = ({
                     ? requestData?.message
                     : "",
               }));
-            if (e === false) {
+            } else {
               setFileError((prev) => ({ ...prev, video: "" }));
               setVideoFile({ size: 0, file: "" });
               setVideoUploaded(false);
             }
           }}
-          checked={showVideo || (requestData?._id && requestData?.video)}
+          checked={showVideo}
           className="border border-gray-700"
           offColor="#fff"
           onColor="#808080"
@@ -287,6 +302,8 @@ const RequestForms = ({
                 />
               </div>
             )}
+
+          {/* Form input to upload a video request */}
           <label htmlFor="video">Upload your video (Max: 50MB)</label>
           <div className="relative">
             <input
@@ -297,14 +314,17 @@ const RequestForms = ({
               ref={videoRef}
             />
 
+            {/* Display successful upload message */}
             {videoFile.file && !videoUploaded && (
               <span>Video uploaded successfully</span>
             )}
 
+            {/* Displaying uploading status */}
             {videoFile.file && videoUploaded && (
               <span>Uploading. Please wait...</span>
             )}
 
+            {/* display video being uploaded file size */}
             {requestData.video && (
               <div className="flex flex-row justify-between w-full pt-2">
                 <span>Size: {videoFile?.size || 0} MB</span>

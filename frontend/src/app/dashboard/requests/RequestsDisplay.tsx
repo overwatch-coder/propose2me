@@ -39,6 +39,7 @@ const RequestsDisplay = () => {
                 <TableHead className="text-center">Title</TableHead>
                 <TableHead className="text-center">Url</TableHead>
                 <TableHead className="text-center">Created</TableHead>
+                <TableHead className="text-center">Updated</TableHead>
                 <TableHead className="text-center font-semibold">
                   Manage
                 </TableHead>
@@ -57,6 +58,9 @@ const RequestsDisplay = () => {
                   <TableCell className="text-center">{url.url}</TableCell>
                   <TableCell className="text-center">
                     {formatTimeAgo(new Date(url.createdAt))}
+                  </TableCell>
+                  <TableCell className="text-center">
+                    {formatTimeAgo(new Date(url.requestId.updatedAt))}
                   </TableCell>
                   <TableCell className="flex flex-row items-center space-x-2">
                     <Link

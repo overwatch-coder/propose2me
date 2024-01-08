@@ -117,7 +117,7 @@ const RequestEditForm = ({ userRequestData }: RequestEditFormProps) => {
       }
 
       // check video file size
-      const max_video_size = 51200; // in KB (= 30 MB)
+      const max_video_size = 51200; // in KB (= 50 MB)
       const uploaded_video_size = file.size / 1024; // in KB
       setVideoFile((prev) => ({
         ...prev,
@@ -158,6 +158,7 @@ const RequestEditForm = ({ userRequestData }: RequestEditFormProps) => {
       if (name !== "video") {
         setRequestData((prev) => ({ ...prev, [name]: file }));
       }
+      setVideoUploaded(false);
     }
   };
 

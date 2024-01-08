@@ -63,4 +63,5 @@ export interface IUrls {
 export interface RequestID {
   _id: string;
   title: string;
+  updatedAt: Date;
 }

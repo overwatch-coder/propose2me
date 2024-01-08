@@ -66,7 +66,7 @@ const ShowPreview = ({
         )}
 
         {/* Form content */}
-        <form className="flex flex-col space-y-7 mx-auto text-center items-center w-full  h-full relative bg-gray-400 mix-blend-screen py-10 px-2 md:px-8">
+        <div className="flex flex-col space-y-7 mx-auto text-center items-center w-full  h-full relative bg-gray-400 mix-blend-screen py-10 px-2 md:px-8">
           <h2 className="text-base md:text-xl font-bold uppercase mb-2 font-pacifico text-black tracking-wider">
             A message from <span>{requestData?.senderName}</span> to{" "}
             <span>{requestData?.recipientName}</span>
@@ -83,7 +83,7 @@ const ShowPreview = ({
                 💞💖
               </span>
 
-              <div className="">
+              <div>
                 <Editor
                   init={{
                     toolbar: false,
@@ -101,7 +101,8 @@ const ShowPreview = ({
             </section>
           )}
 
-          {showVideo && videoFile?.file && (
+          {((showVideo && videoFile?.file) ||
+            (showVideo && requestData._id && requestData.video)) && (
             <>
               <span className="animate-ping absolute top-20 right-1/3 rotate-90">
                 💞💖
@@ -154,7 +155,7 @@ const ShowPreview = ({
                 : "SORRY, NOT INTERESTED 💔"}
             </button>
           </div>
-        </form>
+        </div>
       </section>
     </div>
   );
