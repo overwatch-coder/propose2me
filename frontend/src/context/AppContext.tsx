@@ -142,11 +142,15 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <AppContext.Provider value={values}>
-      <>
+      <div
+        className={`${
+          pathname === "/recipient" ? "bg-black/[0.85]" : "dark:bg-black/[0.85]"
+        }`}
+      >
         <GoogleAnalytics trackPageViews={true} strategy="lazyOnload" />
         <HelmetProvider>{children}</HelmetProvider>
         <ToastContainer />
-      </>
+      </div>
     </AppContext.Provider>
   );
 };

@@ -18,8 +18,9 @@ import FireWorks from "./FireWorks";
 
 const RecipientPage = () => {
   const { auth, setUrls } = useAppContext();
-  const [requestMessage, setRequestMessage] =
-    useState<IRequestData | null>(null);
+  const [requestMessage, setRequestMessage] = useState<IRequestData | null>(
+    null
+  );
   const searchParams = useSearchParams();
   const [messagesFound, setMessagesFound] = useState(true);
   const [loading, setLoading] = useState({
@@ -258,7 +259,11 @@ const RecipientPage = () => {
                     </h1>
 
                     {requestMessage.message && (
-                      <section className="text-lg max-w-4xl w-full mx-auto">
+                      <section
+                        className={`text-lg max-w-4xl w-full mx-auto ${
+                          requestMessage.video ? "hidden" : "block"
+                        }`}
+                      >
                         <span className="animate-ping absolute top-20 right-1/3 rotate-90">
                           💞💖
                         </span>
