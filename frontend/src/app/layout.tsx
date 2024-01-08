@@ -29,7 +29,7 @@ export default function RootLayout({
 
       <body
         suppressHydrationWarning={true}
-        className="overflow-x-hidden scrollbar-hide"
+        className="overflow-x-hidden scrollbar-hide dark:bg-black/[0.85]"
       >
         <AppContextProvider>
           <div className="flex flex-col min-h-screen">
