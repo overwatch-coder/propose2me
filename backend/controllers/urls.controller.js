@@ -9,9 +9,9 @@ const getUserUrls = async (req, res) => {
   try {
     const user = req.user;
     const existingUrls = await Url.find({ user: user._id })
-      .populate("requestId", '_id title')
+      .populate("requestId", "_id title updatedAt")
       .sort({ createdAt: -1 })
-      .select('-__v -updatedAt')
+      .select("-__v -updatedAt")
       .lean()
       .exec();
 
