@@ -78,6 +78,7 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     setIsOpen(false);
     setShowAccountDropdown(false);
+    setUserAccountData(initialUserAccountData);
   }, [pathname]);
 
   const values = {
