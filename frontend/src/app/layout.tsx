@@ -30,7 +30,7 @@ export default function RootLayout({
 
       <body
         suppressHydrationWarning={true}
-        className="overflow-x-hidden scrollbar-hide dark:bg-black/[0.85]"
+        className="overflow-x-hidden scrollbar-hide dark:bg-black/30"
       >
         <ThemeProvider
           attribute="class"
