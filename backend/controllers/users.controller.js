@@ -10,6 +10,10 @@ const Request = require("../models/requests.models");
 //library imports
 const { sendEmailVerification, verifyEmailAddress } = require("../lib/email");
 const { uploadFile } = require("../middleware/fileUpload");
+const {
+  generateForgotPasswordLink,
+  resetAccountPassword,
+} = require("../lib/forgot-password");
 
 // POST - Register a new User
 const register = async (req, res) => {
@@ -160,6 +164,13 @@ const verifyEmail = async (req, res) => {
     user
   );
 
+  if (!success) {
+    res.status(400).json({
+      success,
+      message: messageSent,
+    });
+  }
+
   res.status(200).json({
     success,
     message: "Email has been successfully verified. You can log in now",
@@ -214,13 +225,13 @@ const login = async (req, res) => {
     if (!user)
       return res
         .status(400)
-        .json({ success: false, message: "Email address does not exist!" });
+        .json({ success: false, message: "Incorrect user credentials!" });
 
     // verify user's password
     if (!bcrypt.compareSync(password, user.password))
       return res
         .status(400)
-        .json({ success: false, message: "Incorrect password!" });
+        .json({ success: false, message: "Incorrect user credentials!" });
 
     //check if the user is already verified
     if (user.isEmailVerified === false) {
@@ -389,7 +400,9 @@ const deleteUser = async (req, res) => {
 
     // if user is deleted, delete the user's request as well
     if (deletedUser) {
-      const requestsToDelete = await Request.find({ user: user._id.toString() });
+      const requestsToDelete = await Request.find({
+        user: user._id.toString(),
+      });
       requestsToDelete.forEach(async (request) => {
         await Request.findOneAndDelete({ _id: request._id.toString() });
       });
@@ -535,6 +548,137 @@ const sendCustomEmailVerificationLink = async (req, res) => {
   }
 };
 
+// @POST - send a link to current user's email address to reset the password
+const sendForgotPasswordLink = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'send a link to the user to reset the password containing the password reset link'
+
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            email: {
+                              type: "string",
+                            },
+                        },
+                        required: ["email"]
+                    }
+                }
+            } 
+        }
+    */
+
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email }).lean().exec();
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "No user with this email address exists!",
+      });
+    }
+
+    const { messageSent, resetPasswordHash } = await generateForgotPasswordLink(
+      user
+    );
+
+    res.status(200).json({
+      success: true,
+      message:
+        "A reset password link has been sent to your email address. Check your inbox",
+      resetPasswordHash,
+      messageSent,
+    });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({
+      stack: process.env.NODE_ENV !== "production" ? error : "",
+      success: false,
+      message: "An error occured while sending the password reset link",
+    });
+  }
+};
+
+// @PATCH - Reset the user's password based on the verication details provided
+const updateAccountPassword = async (req, res) => {
+  // #swagger.tags = ['Users']
+  // #swagger.description = 'Reset the user's password based on the verication details provided'
+
+  /*	#swagger.requestBody = {
+            required: true,
+            "@content": {
+                "application/json": {
+                    schema: {
+                        type: "object",
+                        properties: {
+                            verification: {
+                              type: "string",
+                            },
+                            userId: {
+                              type: "string",
+                            },
+                        },
+                        required: ["verification", "userId"]
+                    }
+                }
+            } 
+        }
+    */
+
+  try {
+    const { verificationID, password } = req.body;
+
+    if (!verificationID) {
+      return res.status(400).json({
+        success: false,
+        message: "Password reset failed. No verification ID present!",
+      });
+    }
+
+    if (!password || !validator.isStrongPassword(password)) {
+      return res.status(400).json({
+        success: false,
+        message: "Please provide a strong password!",
+      });
+    }
+
+    const verification = verificationID.split("-")[0];
+    const userId = verificationID.split("-")[1];
+
+    const user = await User.findOne({ _id: userId }).lean().exec();
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "No user with this email address exists!",
+      });
+    }
+
+    const { success, message, messageSent } = await resetAccountPassword(
+      verification,
+      user.email,
+      password
+    );
+
+    res.status(success ? 200 : 400).json({
+      success,
+      message,
+      messageSent,
+    });
+  } catch (error) {
+    console.log({ error });
+    res.status(500).json({
+      stack: process.env.NODE_ENV !== "production" ? error : "",
+      success: false,
+      message: "An error occured while sending the password reset link",
+    });
+  }
+};
+
 module.exports = {
   register,
   login,
@@ -545,4 +689,6 @@ module.exports = {
   updateProfilePicture,
   getSpecificUserDetails,
   sendCustomEmailVerificationLink,
+  sendForgotPasswordLink,
+  updateAccountPassword,
 };

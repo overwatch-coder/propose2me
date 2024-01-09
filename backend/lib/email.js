@@ -46,9 +46,11 @@ const verifyEmailAddress = async (verification, email, user) => {
   );
 
   if (!isEmailVerified)
-    return res
-      .status(400)
-      .json({ success: false, message: "Email verification failed!" });
+    return {
+      messageSent:
+        "The email verification link is either invalid or expired. Try again later",
+      success: false,
+    };
 
   await User.findOneAndUpdate(
     { email },
