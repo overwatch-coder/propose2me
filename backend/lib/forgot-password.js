@@ -17,7 +17,7 @@ const generateForgotPasswordLink = async (user) => {
   );
 
   //generate a verification url and send email to client
-  const resetPasswordLink = `${frontend_url}/forgot-password?verification=${resetPasswordHash}-${user._id}`;
+  const resetPasswordLink = `${frontend_url}/reset-password?verification=${resetPasswordHash}-${user._id}`;
 
   const emailContent = `
               <p>Hello, ${user.username},</p>
