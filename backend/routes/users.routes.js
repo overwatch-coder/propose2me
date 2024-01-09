@@ -25,7 +25,7 @@ router.post("/verify", verifyEmail);
 router.post("/login", login);
 router.post("/logout", logout);
 router.post("/forgot-password", sendForgotPasswordLink);
-router.patch("/reset-password", updateAccountPassword);
+router.post("/reset-password", updateAccountPassword);
 
 //middle to protect authenticated routes
 router.use(authenticateUser);
