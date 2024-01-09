@@ -16,8 +16,10 @@ import copy from "copy-to-clipboard";
 import Image from "next/image";
 import DisplayUrls from "./DisplayUrls";
 import AccountDropdown from "./AccountDropdown";
+import { useTheme } from "next-themes";
 
 const Header = () => {
+  const { setTheme, resolvedTheme } = useTheme();
   const pathname = usePathname();
   const {
     toggleNavbar,
@@ -25,11 +27,10 @@ const Header = () => {
     auth,
     logout,
     urls,
-    theme,
-    setTheme,
     showAccountDropdown,
     setShowAccountDropdown,
   } = useAppContext();
+
   const [displayUrls, setDisplayUrls] = useState(false);
   const [success, setSuccess] = useState({
     status: false,
@@ -82,10 +83,10 @@ const Header = () => {
           <span
             className="cursor-pointer"
             onClick={() =>
-              setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
             }
           >
-            {theme === "light" ? (
+            {resolvedTheme === "light" ? (
               <BsFillMoonStarsFill size={20} className="text-white" />
             ) : (
               <BsFillSunFill size={20} className="text-white" />
@@ -120,10 +121,10 @@ const Header = () => {
           <span
             className="hidden md:block mx-3 cursor-pointer"
             onClick={() =>
-              setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+              setTheme(resolvedTheme === "dark" ? "light" : "dark")
             }
           >
-            {theme === "light" ? (
+            {resolvedTheme === "light" ? (
               <BsFillMoonStarsFill size={25} className="text-white" />
             ) : (
               <BsFillSunFill size={25} className="text-white" />

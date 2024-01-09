@@ -23,8 +23,6 @@ type AppContextProps = {
   setAuth: React.Dispatch<React.SetStateAction<IAuth | null>>;
   urls: IUrls[];
   setUrls: React.Dispatch<React.SetStateAction<IUrls[]>>;
-  theme: "light" | "dark" | null;
-  setTheme: React.Dispatch<React.SetStateAction<"light" | "dark" | null>>;
 };
 
 const initialValues = {
@@ -38,8 +36,6 @@ const initialValues = {
   setAuth: () => {},
   urls: [],
   setUrls: () => [],
-  theme: null,
-  setTheme: () => null,
   setShowAccountDropdown: () => false,
   showAccountDropdown: false,
 };
@@ -54,48 +50,9 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
   );
   const [auth, setAuth] = useState<IAuth | null>(null);
   const [urls, setUrls] = useState<IUrls[]>([]);
-  const [theme, setTheme] = useState<"light" | "dark" | null>(null);
   const [showAccountDropdown, setShowAccountDropdown] = useState(false);
 
   const pathname = usePathname();
-
-  //check theme
-  useEffect(() => {
-    if (window.matchMedia("(prefers-colors-theme: dark)").matches) {
-      setTheme("dark");
-    } else {
-      setTheme("light");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (theme === "light" || theme === "dark") {
-      localStorage.setItem("ptm-theme", JSON?.stringify({ theme }));
-    }
-  }, [theme]);
-
-  useEffect(() => {
-    if (!localStorage) {
-      return;
-    }
-
-    const localThemeString: any =
-      localStorage?.getItem("ptm-theme") ??
-      JSON.stringify({
-        theme: "light",
-      });
-    const localTheme: any = JSON?.parse(localThemeString) ?? { theme: "light" };
-    setTheme(localTheme.theme);
-  }, []);
-
-  //check theme
-  useEffect(() => {
-    if (theme === "dark") {
-      document.documentElement.classList.add("dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-    }
-  }, [theme]);
 
   useEffect(() => {
     if (!localStorage) {
@@ -134,19 +91,17 @@ const AppContextProvider = ({ children }: { children: React.ReactNode }) => {
     setAuth,
     urls,
     setUrls,
-    theme,
-    setTheme,
     showAccountDropdown,
     setShowAccountDropdown,
   };
 
   return (
     <AppContext.Provider value={values}>
-      <div className={`${pathname === '/recipient' ? 'bg-black/[0.85]' : 'dark:bg-black/[0.85]'}`}>
+      <>
         <GoogleAnalytics trackPageViews={true} strategy="lazyOnload" />
         <HelmetProvider>{children}</HelmetProvider>
         <ToastContainer />
-      </div>
+      </>
     </AppContext.Provider>
   );
 };
@@ -163,8 +118,6 @@ export const useAppContext = () => {
     setAuth,
     urls,
     setUrls,
-    theme,
-    setTheme,
     showAccountDropdown,
     setShowAccountDropdown,
   } = useContext(AppContext);
@@ -192,8 +145,6 @@ export const useAppContext = () => {
     logout,
     urls,
     setUrls,
-    theme,
-    setTheme,
     showAccountDropdown,
     setShowAccountDropdown,
   };
