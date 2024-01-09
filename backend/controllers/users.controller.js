@@ -590,8 +590,6 @@ const sendForgotPasswordLink = async (req, res) => {
       success: true,
       message:
         "A reset password link has been sent to your email address. Check your inbox",
-      resetPasswordHash,
-      messageSent,
     });
   } catch (error) {
     console.log({ error });
@@ -667,7 +665,6 @@ const updateAccountPassword = async (req, res) => {
     res.status(success ? 200 : 400).json({
       success,
       message,
-      messageSent,
     });
   } catch (error) {
     console.log({ error });
