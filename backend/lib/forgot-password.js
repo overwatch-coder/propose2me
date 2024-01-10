@@ -13,7 +13,7 @@ const generateForgotPasswordLink = async (user) => {
   const resetPasswordHash = generateVerificationHash(
     user.email,
     process.env.JWT_SECRET_KEY,
-    30
+    10
   );
 
   //generate a verification url and send email to client
