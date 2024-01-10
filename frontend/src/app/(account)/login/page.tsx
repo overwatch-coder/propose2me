@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import React, { useEffect, useState } from "react";
 import Form from "@/components/Form";
 import { useAppContext } from "@/context/AppContext";
 import { loginOrRegisterAccount } from "@/lib/user";
@@ -14,6 +14,7 @@ import { initialUserAccountData } from "@/constants";
 const LoginPage = () => {
   const pathname = usePathname();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const {
     userAccountData,
@@ -26,6 +27,12 @@ const LoginPage = () => {
   const [error, setError] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [redirectUrl, setRedirectUrl] = useState("");
+
+  useEffect(() => {
+    const redirect = searchParams.get("redirect");
+    setRedirectUrl(() => (redirect ? redirect : "/request"));
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -56,7 +63,7 @@ const LoginPage = () => {
 
         setUserAccountData(initialUserAccountData);
 
-        router.push("/request");
+        router.push(redirectUrl);
       }
     } else {
       setEmailMessage("");
@@ -67,7 +74,7 @@ const LoginPage = () => {
   };
 
   if (auth?.email) {
-    router.push("/request");
+    router.push(redirectUrl);
   }
 
   return (

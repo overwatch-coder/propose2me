@@ -23,7 +23,7 @@ const AccountUpdate = () => {
       const data = await getProfileData(auth?.token!);
       if (!data?.success && data?.authError) {
         toast.error(data?.message);
-        return redirect("/login");
+        return redirect("/login?redirect=/dashboard/account");
       }
 
       if (!data?.success) {

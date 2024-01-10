@@ -18,7 +18,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
   const { logout, auth } = useAppContext();
 
   if (!auth) {
-    return redirect("/login");
+    return redirect("/login?redirect=/dashboard/profile");
   }
 
   return (

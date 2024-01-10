@@ -58,7 +58,7 @@ const RequestEditForm = ({ userRequestData }: RequestEditFormProps) => {
 
   // redirect to login page if user is not logged in
   if (!auth?.email) {
-    router.push("/login");
+    router.push(`/login?redirect=/dashboard/requests/${requestData._id}/edit`);
   }
 
   // set request data to its corresponding values when an input element changes
