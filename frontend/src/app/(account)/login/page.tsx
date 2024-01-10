@@ -78,7 +78,7 @@ const LoginPage = () => {
         <meta name="description" content="User Login Page" />
       </Helmet>
 
-      <main className="shadow-lg p-5 md:max-w-2xl mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
+      <main className="shadow-lg p-5 md:max-w-lg mx-auto flex flex-col space-y-5 border border-secondary-subtle/20 dark:border-white/50">
         <section className="flex flex-col space-y-6">
           <h2 className="font-pacifico uppercase text-3xl text-primary-main text-center">
             PTM - {pathname === "/login" ? "Login" : "Register"}{" "}
@@ -120,7 +120,7 @@ const LoginPage = () => {
             {/* Form Fields */}
             <section className="my-4 flex flex-col space-y-4">
               {error && (
-                <small className="p-4 rounded bg-red-300/70 text-red-700 text-sm">
+                <small className="p-4 rounded bg-red-300/70 dark:bg-white dark:border-red-600 dark:border text-red-700 text-sm">
                   {error}
                 </small>
               )}
@@ -128,11 +128,20 @@ const LoginPage = () => {
               <Form />
             </section>
 
+            {pathname === "/login" && (
+              <Link
+                href={"/forgot-password"}
+                className="hover:underline text-primary-main outline-none hover:border-0 hover:bg-transparent hover:outline-none border-0 bg-transparent"
+              >
+                Forgot password?
+              </Link>
+            )}
+
             {/* Buttons */}
             <section className="flex flex-col mx-auto w-full gap-y-3">
               <button
                 disabled={loading}
-                className={`text-center w-full sm:w-fit bg-primary-main sm:px-5 py-2 uppercase text-white border-primary-main  rounded ${
+                className={`text-center w-full bg-primary-main py-3 uppercase text-white border-primary-main  rounded ${
                   loading
                     ? ""
                     : "hover:border hover:bg-transparent hover:text-primary-main"

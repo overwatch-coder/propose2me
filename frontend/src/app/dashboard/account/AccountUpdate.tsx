@@ -117,7 +117,7 @@ const AccountUpdate = () => {
         </h2>
 
         {error && (
-          <small className="p-4 rounded bg-red-300/70 text-red-700 text-sm">
+          <small className="p-4 rounded bg-red-300/70 dark:bg-white dark:border-red-600 dark:border text-red-700 text-sm">
             {error}
           </small>
         )}

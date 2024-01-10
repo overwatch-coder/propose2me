@@ -330,7 +330,7 @@ const RequestPage = () => {
             {/* Form Fields */}
             <section className="my-4 flex flex-col space-y-6 dark:text-white">
               {error && (
-                <small className="p-4 rounded bg-red-200/80 text-red-700 text-sm">
+                <small className="p-4 rounded bg-red-200/80 dark:bg-white dark:border-red-600 dark:border text-red-700 text-sm">
                   {error}
                 </small>
               )}
