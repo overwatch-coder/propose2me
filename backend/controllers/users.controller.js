@@ -656,11 +656,28 @@ const updateAccountPassword = async (req, res) => {
       });
     }
 
-    const { success, message, messageSent } = await resetAccountPassword(
+    // check if user has requested to reset password
+    if (!user.resetPassword) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Password already reset. Verification link can be used only once.",
+      });
+    }
+
+    const { success, message } = await resetAccountPassword(
       verification,
       user.email,
       password
     );
+
+    if (success) {
+      await User.findOneAndUpdate(
+        { email: user.email },
+        { resetPassword: false },
+        { new: true }
+      );
+    }
 
     res.status(success ? 200 : 400).json({
       success,

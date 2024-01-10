@@ -33,6 +33,14 @@ const generateForgotPasswordLink = async (user) => {
     emailContent
   );
 
+  if (messageSent) {
+    await User.findOneAndUpdate(
+      { email: user.email },
+      { resetPassword: true },
+      { new: true }
+    );
+  }
+
   return {
     messageSent,
     resetPasswordHash,
@@ -52,7 +60,6 @@ const resetAccountPassword = async (resetPasswordHash, email, password) => {
       message:
         "The email verification link is either invalid or expired. Try again later",
       success: false,
-      messageSent: null,
     };
   }
 
@@ -72,7 +79,6 @@ const resetAccountPassword = async (resetPasswordHash, email, password) => {
       success: false,
       message:
         "There was a problem updating the new password. Please try again later!",
-      messageSent: null,
     };
   }
 
@@ -83,7 +89,7 @@ const resetAccountPassword = async (resetPasswordHash, email, password) => {
     <p>You can now log with your new password here: <a href="${frontend_url}/login">Login</a></p>
     `;
 
-  const messageSent = await sendUserEmail(
+  await sendUserEmail(
     updatedUser.email,
     "Password Reset Successful",
     emailContent
@@ -92,7 +98,6 @@ const resetAccountPassword = async (resetPasswordHash, email, password) => {
   return {
     success: true,
     message: "Your account password has been reset successfully!",
-    messageSent,
   };
 };
 
