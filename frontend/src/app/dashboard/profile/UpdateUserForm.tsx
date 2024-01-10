@@ -56,8 +56,12 @@ const UpdateUserForm = ({
     setLoading(true);
 
     try {
+      const userFormData: IUserProfileData = {
+        ...updateFormData,
+        email: undefined,
+      };
       const data = await updateUserProfileDetails(
-        updateFormData,
+        userFormData,
         userData._id,
         auth?.token!
       );
