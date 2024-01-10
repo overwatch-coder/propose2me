@@ -201,7 +201,7 @@ const Header = () => {
       {/* Mobile Navbar */}
       <nav
         className={`flex-col pt-5 pb-10 space-y-5 text-sm px-5 text-white uppercase md:hidden ${
-          isOpen ? "flex bg-primary-main" : "hidden"
+          isOpen ? "flex bg-primary-main h-full" : "hidden"
         } font-medium`}
       >
         <Link
@@ -250,16 +250,18 @@ const Header = () => {
             Account
           </Link>
         ) : (
+          <>
           <button
             onClick={() => {
               setShowAccountDropdown((prev) => !prev);
               toggleNavbar();
               !showAccountDropdown && setDisplayUrls(false);
             }}
-            className="px-5 py-2 text-black bg-white rounded hover:text-primary-main text-center"
+            className="px-5 py-3 text-black bg-white rounded hover:text-primary-main text-center uppercase"
           >
-            Account
+            Manage Account
           </button>
+          </>
         )}
       </nav>
 
