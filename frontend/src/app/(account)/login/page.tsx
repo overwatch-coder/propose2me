@@ -136,12 +136,15 @@ const LoginPage = () => {
             </section>
 
             {pathname === "/login" && (
+              <small className="dark:text-white">
+              Forgot password?{" "}
               <Link
                 href={"/forgot-password"}
-                className="hover:underline text-primary-main outline-none hover:border-0 hover:bg-transparent hover:outline-none border-0 bg-transparent"
+                className="hover:underline text-primary-main hover:font-semibold"
               >
-                Forgot password?
+                Click here
               </Link>
+            </small>
             )}
 
             {/* Buttons */}
