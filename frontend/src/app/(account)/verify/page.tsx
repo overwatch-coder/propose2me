@@ -15,15 +15,13 @@ const VerifyEmail = () => {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (!searchParams.has("verification") || !searchParams.has("email")) {
+    if (!searchParams.has("verification")) {
       return redirect("/");
     }
 
     const verifyEmail = async () => {
       const verification = searchParams.get("verification") as string;
-      const email = searchParams.get("email") as string;
-
-      const results = await verifyAccount(verification, email);
+      const results = await verifyAccount(verification);
 
       if (results.success) {
         setEmailVerified(true);
@@ -44,7 +42,7 @@ const VerifyEmail = () => {
     <>
       <Helmet>
         <meta charSet="utf-8" />
-        <title>Verifying Email... | PTM</title>
+        <title>Verify Your Account | PTM</title>
         <meta name="description" content="Verify your PTM account" />
       </Helmet>
 

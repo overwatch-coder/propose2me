@@ -31,14 +31,14 @@ export const loginOrRegisterAccount = async (
 };
 
 // Verify An Existing Account
-export const verifyAccount = async (verification: string, email: string) => {
+export const verifyAccount = async (verification: string) => {
   try {
     const res = await fetch("/api/verify", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ verification, email }),
+      body: JSON.stringify({ verification }),
     });
 
     const results = await res.json();
