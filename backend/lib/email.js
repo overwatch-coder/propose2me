@@ -15,7 +15,7 @@ const sendEmailVerification = async (user) => {
   );
 
   //generate a verification url and send email to client
-  const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}&email=${user.email}`;
+  const verificationURL = `${frontend_url}/verify?verification=${verifyEmailHash}-${user._id}`;
 
   const emailContent = `
             <p>Hello, ${user.username},</p>

@@ -140,10 +140,21 @@ const verifyEmail = async (req, res) => {
         }
     */
 
-  const { verification, email } = req.body;
+  const { verificationID } = req.body;
+
+  if (!verificationID) {
+    return res.status(400).json({
+      success: false,
+      message: "Password reset failed. No verification ID present!",
+    });
+  }
+
+  const verification = verificationID.split("-")[0];
+  const userId = verificationID.split("-")[1];
+
+  const user = await User.findOne({ _id: userId }).lean().exec();
 
   //check if the user with the email actually exists
-  const user = await User.findOne({ email });
   if (!user)
     return res.status(404).json({
       success: false,
@@ -160,7 +171,7 @@ const verifyEmail = async (req, res) => {
 
   const { messageSent, success } = await verifyEmailAddress(
     verification,
-    email,
+    user.email,
     user
   );
 
@@ -221,7 +232,7 @@ const login = async (req, res) => {
     }
 
     //check to see if user already exists
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email }).lean().exec();
     if (!user)
       return res
         .status(400)
