@@ -245,22 +245,26 @@ const Header = () => {
         {!auth?.email ? (
           <Link
             href={"/login"}
-            className="px-5 py-2 text-black bg-white rounded hover:text-primary-main text-center"
+            className="px-5 py-3 text-black bg-white rounded-full hover:text-primary-main text-center"
           >
             Account
           </Link>
         ) : (
           <>
-          <button
-            onClick={() => {
-              setShowAccountDropdown((prev) => !prev);
-              toggleNavbar();
-              !showAccountDropdown && setDisplayUrls(false);
-            }}
-            className="px-5 py-3 text-black bg-white rounded hover:text-primary-main text-center uppercase"
-          >
-            Manage Account
-          </button>
+            <Link
+              href={"/dashboard/profile"}
+              className="px-5 py-3 text-black rounded-full bg-white hover:text-primary-main text-center uppercase"
+            >
+              Manage Account
+            </Link>
+
+            <button
+              type="button"
+              onClick={logout}
+              className="px-5 py-3 text-black rounded-full bg-white hover:text-primary-main text-center uppercase"
+            >
+              Logout
+            </button>
           </>
         )}
       </nav>
