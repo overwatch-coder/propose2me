@@ -126,14 +126,11 @@ const verifyEmail = async (req, res) => {
                     schema: {
                         type: "object",
                         properties: {
-                            verification: {
+                            verificationID: {
                                 type: "string"
                             },
-                            email: {
-                                type: "string"
-                            }
                         },
-                        required: ["verification", "email"]
+                        required: ["verification"]
                     }
                 }
             } 

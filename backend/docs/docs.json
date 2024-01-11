@@ -85,16 +85,12 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "verification": {
-                    "type": "string"
-                  },
-                  "email": {
+                  "verificationID": {
                     "type": "string"
                   }
                 },
                 "required": [
-                  "verification",
-                  "email"
+                  "verification"
                 ]
               }
             }
@@ -194,7 +190,7 @@
       }
     },
     "/api/auth/reset-password": {
-      "patch": {
+      "post": {
         "tags": [
           "Users"
         ],
