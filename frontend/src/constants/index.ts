@@ -55,9 +55,9 @@ export const coreValues = [
 export const contactDetails = {
   title: "Contact Details",
   desc: "We look forward to hearing from you and helping you create the perfect proposal experience!",
-  email: "devbrainy98@gmail.com",
-  phone: "+212 (0) 777-824-970",
-  address: "Lot Jacques Philipes, Morocco",
+  email: "maksolutionscode@gmail.com",
+  phone: "+212 (0) 709-162-123",
+  address: "Rabat, Morocco",
   socials: [BsFacebook, BsInstagram, BsTwitter, BsTiktok] as IconType[],
 };
 
