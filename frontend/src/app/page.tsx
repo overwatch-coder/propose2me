@@ -6,6 +6,7 @@ import Link from "next/link";
 import homeHero from "@/assets/hug-hero.png";
 import signUp from "@/assets/request-dark.png";
 import link from "@/assets/link-real.png";
+import recipient from "@/assets/recipient-large.png";
 
 const Home = () => {
   return (
@@ -141,6 +142,59 @@ const Home = () => {
                 width={700}
                 height={700}
                 className="object-contain w-full h-full md:h-auto border-2 border-secondary-subtle shadow-md"
+                loading="lazy"
+                quality={100}
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-y-5 md:gap-y-0 md:gap-x-10">
+              {/* Image */}
+              <Image
+                alt="ptm link image"
+                src={recipient}
+                width={700}
+                height={700}
+                className="object-contain hidden md:block w-full h-full md:h-auto border-2 border-secondary-subtle shadow-md"
+                loading="lazy"
+                quality={100}
+              />
+
+              {/* Content */}
+              <div>
+                <h3 className="uppercase text-primary-main md:text-xl mb-2">
+                  The Recipient Reads the request and makes a decision.
+                </h3>
+                <ul className="dark:text-white">
+                  <li className="flex space-x-1 md:space-x-2">
+                    <span>1.</span>
+                    <span>
+                      Recipient opens the generated link sent to them.
+                    </span>
+                  </li>
+                  <li className="flex space-x-1 md:space-x-2">
+                    <span>2.</span>
+                    <span>
+                      They engage with the message or video on the recipient
+                      page.
+                    </span>
+                  </li>
+                  <li className="flex space-x-1 md:space-x-2">
+                    <span>3.</span>
+                    <span>
+                      Click a button to make a decision; the response is
+                      automatically sent to your email.
+                    </span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* Image on small devices */}
+              <Image
+                alt="ptm link image"
+                src={recipient}
+                width={700}
+                height={700}
+                className="object-contain md:hidden w-full h-full md:h-auto border-2 border-secondary-subtle shadow-md"
                 loading="lazy"
                 quality={100}
               />
