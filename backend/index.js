@@ -71,8 +71,7 @@ mongoose
     console.log({ error: err });
   });
 
-const SWAGGER_UI_CSS_URL =
-  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.3.0/swagger-ui.min.css";
+const SWAGGER_UI_CSS_URL = "https://unpkg.com/swagger-ui-dist@3/swagger-ui.css";
 
 // api custom middleware
 app.use("/api/auth", userRoutes);
