@@ -62,8 +62,8 @@ mongoose
         console.log(
           `connected to db and listening on http://localhost:${PORT}/docs`
         );
-      }else{
-        console.log(`Connected to db and listening on PORT: ${PORT}`)
+      } else {
+        console.log(`Connected to db and listening on PORT: ${PORT}`);
       }
     });
   })
@@ -71,7 +71,8 @@ mongoose
     console.log({ error: err });
   });
 
-const SWAGGER_UI_CSS_URL = "https://unpkg.com/swagger-ui-dist@3/swagger-ui.css";
+const SWAGGER_UI_CSS_URL =
+  "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.1/swagger-ui.css";
 
 // api custom middleware
 app.use("/api/auth", userRoutes);
@@ -85,4 +86,6 @@ app.use(
 );
 
 //redirect to swagger docs when you hit an undefined route
-app.use("*", (req, res) => res.status(301).redirect("/docs"));
+app.use("*", (req, res) =>
+  res.status(301).redirect(process.env.PTM_API_DOCS_URL)
+);
