@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const ls = require("tiny-url-generator");
+const shortUrl = require("node-url-shortener");
 
 // Send email
 const sendUserEmail = async (recipient, subject, content) => {
@@ -29,24 +29,36 @@ const sendUserEmail = async (recipient, subject, content) => {
 
 // generate a shortened url
 const shortenUrl = async (urlToShorten, title, expiry) => {
-  const results = ls
-    .generate({
-      url: urlToShorten,
-      title,
-      expiry,
-    })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      process.env.NODE_ENV === "development" && console.log(err);
-      const results = {
-        status: false,
-      };
-      return results;
+  try {
+    const url = await new Promise((resolve, reject) => {
+      shortUrl.short(urlToShorten, (err, shortenedUrl) => {
+        if (err) {
+          process.env.NODE_ENV === "development" && console.log(err);
+          reject({
+            status: false,
+            message: "Unexpected error encountered. Try again later",
+            error: process.env.NODE_ENV !== "production" ? err : null,
+          });
+        } else {
+          resolve(shortenedUrl);
+        }
+      });
     });
 
-  return await results;
+    const results = {
+      status: true,
+      data: {
+        link: url,
+      },
+      message: "Shortened URL generated successfully",
+    };
+
+    console.log({ results, in: "final" });
+    return results;
+  } catch (error) {
+    console.log({ error, in: "catch" });
+    return error;
+  }
 };
 
 module.exports = {

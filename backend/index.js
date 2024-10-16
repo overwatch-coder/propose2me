@@ -20,6 +20,7 @@ const urlRoutes = require("./routes/urls.routes");
 
 // import swagger docs
 const swaggerDocs = require("./docs/docs.json");
+const { shortenUrl } = require("./lib");
 
 // register express app
 const app = express();
