@@ -75,6 +75,30 @@ mongoose
 const SWAGGER_UI_CSS_URL =
   "https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/5.17.1/swagger-ui.css";
 
+// test shorten url
+app.post("/api/shorten", async (req, res) => {
+  try {
+    const { url } = req.body;
+    const shortUrl = await shortenUrl(url);
+    res.status(200).json(shortUrl);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
+// test shorten url using query params
+app.get("/api/shorten", async (req, res) => {
+  try {
+    const { url } = req.query;
+    const shortUrl = await shortenUrl(url);
+    res.status(200).json(shortUrl);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error });
+  }
+});
+
 // api custom middleware
 app.use("/api/auth", userRoutes);
 app.use("/api/auth/requests", requestRoutes);

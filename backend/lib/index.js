@@ -1,5 +1,5 @@
 const nodemailer = require("nodemailer");
-const shortUrl = require("node-url-shortener");
+const { shortenUrl: shortenUrlLink } = require("shaveurl");
 
 // Send email
 const sendUserEmail = async (recipient, subject, content) => {
@@ -30,30 +30,16 @@ const sendUserEmail = async (recipient, subject, content) => {
 // generate a shortened url
 const shortenUrl = async (urlToShorten, title, expiry) => {
   try {
-    const url = await new Promise((resolve, reject) => {
-      shortUrl.short(urlToShorten, (err, shortenedUrl) => {
-        if (err) {
-          process.env.NODE_ENV === "development" && console.log(err);
-          reject({
-            status: false,
-            message: "Unexpected error encountered. Try again later",
-            error: process.env.NODE_ENV !== "production" ? err : null,
-          });
-        } else {
-          resolve(shortenedUrl);
-        }
-      });
-    });
+    const url = await shortenUrlLink(urlToShorten);
 
     const results = {
       status: true,
       data: {
-        link: url,
+        link: url || urlToShorten,
       },
       message: "Shortened URL generated successfully",
     };
 
-    console.log({ results, in: "final" });
     return results;
   } catch (error) {
     console.log({ error, in: "catch" });
